@@ -3,11 +3,8 @@ const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
 /* --- GLOBAL NAVIGATION FUNCTIONS (MUST BE AT TOP FOR HTML ONCLICK) --- */
+// (Replaced complex gallery logic with simple placeholders)
 
-let slideIndex = 0;
-let galleryItems = []; // This will be filled later in DOMContentLoaded
-
-// Global function to manage tab switching (called by Navbar buttons)
 function openTab(tabName) {
     var allTabs = document.getElementsByClassName("tab-content");
     for (var i = 0; i < allTabs.length; i++) {
@@ -32,47 +29,15 @@ function openTab(tabName) {
     }
 }
 
-// Global function to close the Lightbox (called by onclick on the dark background)
+// Global function to close the Lightbox (simple version)
 window.closeLightbox = function(event) {
-    // Only close if clicking the close button or the dark background
     if (event.target === document.getElementById('lightbox') || event.target.classList.contains('close-btn')) {
         document.getElementById('lightbox').style.display = "none";
-        // Reset zoom state
-        document.getElementById('lightbox-img').style.transform = 'scale(1)';
-        document.getElementById('lightbox-img').style.cursor = 'grab';
     }
 }
 
-// Global function to navigate slides (called by onclick on the arrows)
-window.plusSlides = function(n, event) {
-    event.stopPropagation(); // Prevents closing the lightbox when clicking arrows
-    showSlides(slideIndex += n);
-}
 
-// Internal logic to display the image
-function showSlides(n) {
-    if (n > galleryItems.length - 1) {
-        slideIndex = 0;
-    }
-    if (n < 0) {
-        slideIndex = galleryItems.length - 1;
-    }
-    
-    const currentImgElement = galleryItems[slideIndex];
-    if (currentImgElement) {
-        document.getElementById('lightbox-img').src = currentImgElement.src;
-        document.getElementById('lightbox-caption').innerText = currentImgElement.alt;
-    }
-}
-
-// Internal function to open lightbox (called by the image click listeners)
-function openLightbox(element, index) {
-    slideIndex = index;
-    document.getElementById('lightbox').style.display = "flex";
-    showSlides(slideIndex);
-}
-
-// --- MAIN LOGIC (Runs when page loads) ---
+/* --- MAIN LOGIC (Runs when page loads) --- */
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- ELEMENT INITIALIZATION ---
@@ -97,38 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let ws;
     let isManualDisconnect = false;
 
-    // --- 1. GALLERY INIT & EVENT ATTACHMENT ---
-    const allGalleryImages = document.querySelectorAll('.scrolling-gallery-track .gallery-item img');
-    // Assuming the first half are the original unique images (8 unique images in HTML)
-    const uniqueCount = 8; 
-    
-    for (let i = 0; i < uniqueCount; i++) {
-        galleryItems.push(allGalleryImages[i]);
-        // Attach click listener to each image
-        allGalleryImages[i].addEventListener('click', () => openLightbox(allGalleryImages[i], i));
-    }
-    
-    // Attach Zoom/Drag logic
+    // --- 1. GALLERY INIT (Simple Click-to-Zoom) ---
+    const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    let currentZoom = 1;
-    lightboxImg.addEventListener('dblclick', (e) => {
-        e.preventDefault();
-        currentZoom = currentZoom === 1 ? 2.5 : 1;
-        lightboxImg.style.transform = `scale(${currentZoom})`;
-        lightboxImg.style.cursor = currentZoom === 1 ? 'grab' : 'zoom-in';
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const galleryImages = document.querySelectorAll('.scrolling-gallery-track .gallery-item img');
 
-        if (currentZoom > 1) {
-            const rect = lightboxImg.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            lightboxImg.style.transformOrigin = `${x * 100}% ${y * 100}%`;
-        } else {
-            lightboxImg.style.transformOrigin = 'center center';
-        }
+    galleryImages.forEach(img => {
+        img.addEventListener('click', function() {
+            lightbox.style.display = "flex";
+            lightbox.style.flexDirection = "column";
+            lightbox.style.justifyContent = "center";
+            lightbox.style.alignItems = "center"; 
+            
+            lightboxImg.src = this.src;
+            lightboxCaption.innerText = this.nextElementSibling ? this.nextElementSibling.innerText : this.alt;
+        });
     });
 
 
-    // --- 2. SERVER STATUS ---
+    // --- 2. SERVER STATUS (PLAYER COUNT & LIST) ---
     function updateServerStatus() {
         if (!playerText) return;
 
@@ -139,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     playerText.innerText = `${data.players.online} / ${data.players.max}`;
                     statusDot.style.backgroundColor = "#55ff55";
                     statusDot.style.boxShadow = "0 0 5px #55ff55";
+
                     if (data.players.list && data.players.list.length > 0) {
                         let playerHtml = '';
                         data.players.list.forEach(player => {
@@ -150,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                          playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players currently online.</div>";
                     }
+
                 } else {
                     playerText.innerText = "Offline";
                     statusDot.style.backgroundColor = "#ff5555";
@@ -168,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- 3. COPY IP BUTTON ---
-    const copyButton = document.getElementById('copy-btn');
     if (copyButton && ipTextElement) {
         copyButton.addEventListener('click', () => {
             const ipText = ipTextElement.innerText;
@@ -177,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
 
     // --- 4. AUDIO SYSTEM LOGIC ---
     if (connectBtn) {
@@ -288,4 +241,5 @@ connectBtn.addEventListener('click', async () => {
         audioPlayer.currentTime = 0;
         nowPlayingText.innerText = "Waiting for music...";
     }
+
 });
