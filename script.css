@@ -11,14 +11,13 @@ body {
     padding-bottom: 50px;
     line-height: 1.6;
     overflow-x: hidden;
-    /* Prevents scrollbar from popping during animations */
 }
 
-/* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
 }
 
+/* General headers use VT323, but the Server MOTD will use the specific 'Minecraft' font below */
 h1,
 h2,
 h3,
@@ -37,13 +36,9 @@ h3,
     max-width: 900px;
     margin: 80px auto 0;
     padding: 0 20px;
-    /* Entrance Animation for the whole page */
     animation: fadeInUp 0.8s ease-out;
 }
 
-/* --- 2. ANIMATIONS --- */
-
-/* The Slide Up Effect */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -56,7 +51,6 @@ h3,
     }
 }
 
-/* The Pulse Effect for the Status Dot */
 @keyframes pulseRed {
     0% {
         box-shadow: 0 0 0 0 rgba(255, 85, 85, 0.7);
@@ -71,7 +65,6 @@ h3,
     }
 }
 
-/* The Float Effect for Logo */
 @keyframes float {
     0% {
         transform: translateY(0px);
@@ -86,12 +79,11 @@ h3,
     }
 }
 
-/* This class makes the tabs animate when switched */
 .tab-content {
     animation: fadeInUp 0.5s ease-out;
 }
 
-/* --- 3. NAVIGATION BAR --- */
+/* --- 2. NAVIGATION BAR --- */
 .navbar {
     position: fixed;
     top: 0;
@@ -102,7 +94,6 @@ h3,
     z-index: 1000;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-    /* Makes background slightly blurry */
 }
 
 .nav-content {
@@ -137,7 +128,6 @@ h3,
     transition: color 0.3s ease;
 }
 
-/* Underline animation for nav links */
 .nav-btn::after {
     content: '';
     position: absolute;
@@ -149,67 +139,83 @@ h3,
     transition: width 0.3s ease;
 }
 
-.nav-btn:hover::after {
-    width: 100%;
-}
-
-.nav-btn:hover {
-    color: #ffaa00;
-}
-
-.active-link {
-    color: #ffaa00;
-}
-
+.nav-btn:hover::after,
 .active-link::after {
     width: 100%;
 }
 
-/* --- 4. HERO HEADER --- */
+.nav-btn:hover,
+.active-link {
+    color: #ffaa00;
+}
+
+/* --- 3. HERO HEADER (UPDATED FONT) --- */
 .header-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 50px;
+    gap: 40px;
     padding: 40px 20px;
     margin-bottom: 40px;
-}
-
-.header-text {
-    text-align: right;
-}
-
-.header-text h1 {
-    font-size: 90px;
-    margin: -15px 0;
-    color: #ffaa00;
-    text-shadow: 0px 0px 20px rgba(255, 170, 0, 0.4), 4px 4px 0px #8b0000;
-    line-height: 0.9;
-    transition: transform 0.3s ease;
-}
-
-/* Subtle hover interaction on the title */
-.header-text:hover h1 {
-    transform: scale(1.02);
-}
-
-.subtitle {
-    font-size: 18px;
-    letter-spacing: 5px;
-    color: #888;
-    margin-top: 15px;
-    text-transform: uppercase;
-    font-weight: bold;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
 .header-logo img {
-    height: 180px;
+    height: 140px;
     image-rendering: pixelated;
-    filter: drop-shadow(0 0 20px rgba(255, 170, 0, 0.3));
+    filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.2));
     animation: float 3s ease-in-out infinite;
 }
 
-/* --- 5. SERVER STATUS BAR --- */
+/* --- THE FIX: Using 'Minecraft' font family here --- */
+.header-text-motd {
+    text-align: left;
+    line-height: 1.2;
+    font-family: 'Minecraft', 'VT323', monospace;
+    /* This is the key change */
+}
+
+/* Line 1: "Sequence SMP" */
+.server-name-top {
+    font-size: 24px;
+    color: #ffffff;
+    text-shadow: 2px 2px #000000;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+/* Line 2: SEQUENCE • 1.21.10+ */
+.motd-main-line {
+    font-size: 32px;
+    /* Smaller, chunkier size to match screenshot */
+    text-shadow: 3px 3px #222;
+    margin-bottom: 8px;
+}
+
+/* Line 3: Fire ULTIMATE... Fire */
+.motd-sub-line {
+    font-size: 22px;
+    text-shadow: 2px 2px #222;
+    letter-spacing: 0px;
+}
+
+.gold-text {
+    color: #FFAA00;
+    font-weight: normal;
+    /* Pixel fonts are usually bold by default */
+}
+
+.gray-text {
+    color: #AAAAAA;
+}
+
+.fire-icon {
+    display: inline-block;
+    filter: drop-shadow(0 0 5px #ffaa00);
+}
+
+
+/* --- 4. SERVER STATUS BAR --- */
 .status-bar {
     background: linear-gradient(90deg, #222, #1a1a1a);
     border: 2px solid #333;
@@ -264,11 +270,10 @@ h3,
     background-color: #ff5555;
     border-radius: 50%;
     display: inline-block;
-    /* PULSE ANIMATION HERE */
     animation: pulseRed 2s infinite;
 }
 
-/* --- 6. CARDS & CONTENT --- */
+/* --- 5. CARDS & CONTENT --- */
 .card {
     background-color: #1a1a1a;
     border: 1px solid #333;
@@ -296,7 +301,6 @@ h3,
     background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%);
 }
 
-/* About Us Styling */
 .about-header h2 {
     font-size: 36px;
     color: #ffaa00;
@@ -331,7 +335,6 @@ h3,
     transition: all 0.3s ease;
 }
 
-/* Feature List Hover Effect */
 .feature-list li:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateX(5px);
@@ -355,7 +358,6 @@ h3,
     border: 1px solid #444;
 }
 
-/* Rules Styling */
 .rules-list {
     list-style: none;
     padding: 0;
@@ -375,7 +377,6 @@ h3,
     background: rgba(0, 0, 0, 0.5);
 }
 
-/* Titles */
 .title-blue {
     color: #5555ff;
     font-size: 50px;
@@ -404,7 +405,6 @@ h3,
     font-size: 24px;
 }
 
-/* Buttons */
 .action-btn {
     padding: 10px 30px;
     border: none;
@@ -449,22 +449,18 @@ hr {
 /* Mobile */
 @media (max-width: 768px) {
     .header-box {
-        flex-direction: column-reverse;
+        flex-direction: column;
         text-align: center;
         gap: 20px;
     }
 
-    .header-text h1 {
-        font-size: 60px;
+    .header-text-motd {
+        text-align: center;
     }
 
     .status-bar {
         flex-direction: column;
         gap: 15px;
         text-align: center;
-    }
-
-    .feature-list li:hover {
-        transform: none;
     }
 }
