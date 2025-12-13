@@ -5,61 +5,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sequence SMP</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Minecraft Font from Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+    <!-- LINK TO YOUR CSS FILE -->
+    <link rel="stylesheet" href="script.css">
 </head>
 
 <body>
 
-    <header class="header-banner">
-        <div class="logo-container">
-            <div class="logo-text">SEQUENCE SMP</div>
-        </div>
-    </header>
+    <div class="container">
 
-    <main class="container">
+        <!-- HEADER -->
+        <header class="header-box">
+            <h1>Sequence SMP</h1>
+        </header>
 
-        <section class="box status-box">
-            <h2>Server Status</h2>
-            <p class="ip-address">
-                IP Address: <span id="server-ip">sequence.playmc.cloud</span>
-            </p>
-            <div class="status-info">
-                <p>Players Online: <span id="player-count">Loading...</span></p>
-                <button id="copy-button" onclick="copyIP()" class="copy-btn">COPY</button>
+        <!-- SERVER STATUS -->
+        <div class="status-section">
+            <div class="ip-box">
+                IP Address: <span id="server-ip" style="color:#ffaa00">sequence.playmc.cloud</span>
             </div>
-        </section>
+            <!-- We gave this button an ID so the JS file can find it -->
+            <button id="copy-btn" class="copy-btn">COPY</button>
+            <div class="player-count">Players Online: <span style="color: #ff5555;">Offline</span></div>
+        </div>
 
-        <section class="box news-box">
-            <h2>Server News</h2>
-            <article>
-                <p class="news-date">October 15, 2025</p>
-                <p>New Nether Update Live! Check out the new biomes and mobs. We've added custom enchantments for
-                    end-game loot.</p>
-            </article>
-            <article>
-                <p class="news-date">September 28, 2025</p>
-                <p>Staff applications are now open for Builder and Helper roles. Apply on our Discord channel!</p>
-            </article>
-        </section>
+        <!-- MAIN CONTENT GRID -->
+        <div class="content-grid">
 
-        <section class="box rules-box">
-            <h2>Game Rules</h2>
-            <ul>
-                <li>No Griefing or unnecessary destruction.</li>
-                <li>Be respectful to all players and staff.</li>
-                <li>Hacks, exploits, and third-party mods are prohibited.</li>
-                <li>Keep the spawn area clean and clutter-free.</li>
-                <li>PvP is allowed in designated arenas only.</li>
-            </ul>
-        </section>
-    </main>
+            <!-- LEFT COLUMN: LATEST NEWS -->
+            <div class="card">
+                <h2>Latest Update</h2>
+                <h3>New Nether Update Live!</h3>
+                <span class="date">October 15, 2025</span>
+                <p>Check out the new biomes and mobs. We've added custom enchantments for end-game loot.</p>
 
-    <footer>
-        &copy; 2025 SEQUENCE SMP | Hosted on GitHub Pages
-    </footer>
+                <br>
 
+                <h3>Staff Apps Open</h3>
+                <span class="date">September 28, 2025</span>
+                <p>Staff applications are now open for Builder and Helper roles. Apply on Discord!</p>
+            </div>
+
+            <!-- MIDDLE COLUMN: COMMUNITY -->
+            <div class="card">
+                <h2>Community</h2>
+                <ul>
+                    <li><strong>Discord:</strong> <a href="#" style="color:#ffaa00">Join Here</a></li>
+                    <li><strong>Store:</strong> <a href="#" style="color:#ffaa00">Buy Ranks</a></li>
+                    <li><strong>Vote:</strong> <a href="#" style="color:#ffaa00">Vote for us</a></li>
+                </ul>
+                <p>Don't forget to vote daily to receive crate keys and in-game money!</p>
+            </div>
+
+            <!-- RIGHT COLUMN: RULES -->
+            <div class="card">
+                <h2>Game Rules</h2>
+                <ul>
+                    <li>No Griefing or unnecessary destruction.</li>
+                    <li>Be respectful to all players and staff.</li>
+                    <li>Hacks, exploits, and third-party mods are prohibited.</li>
+                    <li>Keep the spawn area clean and clutter-free.</li>
+                    <li>PvP is allowed in designated arenas only.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            &copy; 2025 SEQUENCE SMP | Hosted on GitHub Pages
+        </div>
+
+    </div>
+
+    <!-- LINK TO YOUR JS FILE -->
     <script src="script.js"></script>
+
 </body>
 
 </html>
