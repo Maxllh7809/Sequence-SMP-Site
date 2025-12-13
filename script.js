@@ -1,23 +1,19 @@
-// --- CONFIGURATION ---
-// REPLACE THIS URL with your Render URL (start with wss://)
+/* --- CONFIGURATION --- */
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 
-// --- TAB SWITCHING LOGIC ---
+/* --- TAB SWITCHING LOGIC --- */
 function openTab(tabName) {
-    // 1. Hide all tabs
     var allTabs = document.getElementsByClassName("tab-content");
     for (var i = 0; i < allTabs.length; i++) {
         allTabs[i].style.display = "none";
         allTabs[i].classList.remove("fade-in");
     }
 
-    // 2. Reset buttons
     var navButtons = document.getElementsByClassName("nav-btn");
     for (var i = 0; i < navButtons.length; i++) {
         navButtons[i].classList.remove("active-link");
     }
 
-    // 3. Show correct tab
     var selectedTab = document.getElementById(tabName);
     if (selectedTab) {
         selectedTab.style.display = "block";
@@ -25,19 +21,18 @@ function openTab(tabName) {
         selectedTab.classList.add("fade-in");
     }
 
-    // 4. Highlight button
     if (event && event.currentTarget) {
         event.currentTarget.classList.add("active-link");
     }
 }
 
+/* --- MAIN LOGIC --- */
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- VARIABLES ---
     const copyButton = document.getElementById('copy-btn');
     const ipTextElement = document.getElementById('server-ip');
 
-    // Audio Elements
     const connectBtn = document.getElementById('connect-audio-btn');
     const disconnectBtn = document.getElementById('disconnect-btn');
     const connectWrapper = document.getElementById('connect-wrapper');
@@ -50,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let ws;
     let isManualDisconnect = false;
 
-    // --- 1. COPY IP FUNCTION ---
+    // --- 1. COPY IP ---
     if (copyButton && ipTextElement) {
         copyButton.addEventListener('click', () => {
             const ipText = ipTextElement.innerText;
@@ -73,29 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 2. AUDIO: CONNECT ---
-    connectBtn.addEventListener('click', async () => {
-        connectWrapper.style.display = 'none';
-        playerControls.style.display = 'block';
+    // --- 2. CONNECT ---
+    if (connectBtn) {
+        connectBtn.addEventListener('click', () => {
+            connectWrapper.style.display = 'none';
+            playerControls.style.display = 'block';
+            if (volumeSlider && audioPlayer) audioPlayer.volume = volumeSlider.value;
+            isManualDisconnect = false;
+            initWebSocket();
+        });
+    }
 
-        if (volumeSlider && audioPlayer) {
-            audioPlayer.volume = volumeSlider.value;
-        }
-
-        // autoplay unlock on user gesture
-        try {
-            audioPlayer.muted = false;
-            audioPlayer.src = "";
-            await audioPlayer.play().catch(() => { });
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-        } catch { }
-
-        isManualDisconnect = false;
-        initWebSocket();
-    });
-
-    // --- 3. AUDIO: DISCONNECT ---
+    // --- 3. DISCONNECT ---
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
             isManualDisconnect = true;
@@ -109,14 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. VOLUME CONTROL ---
+    // --- 4. VOLUME ---
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             if (audioPlayer) audioPlayer.volume = e.target.value;
         });
     }
 
-    // --- 5. WEBSOCKET LOGIC ---
+    // --- 5. WEBSOCKET ---
     function initWebSocket() {
         if (!audioStatus) return;
 
@@ -135,9 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = JSON.parse(event.data);
                 if (data.action === 'play') playAudio(data.url, data.text);
                 else if (data.action === 'stop') stopAudio();
-            } catch (e) {
-                console.error("JSON Error:", e);
-            }
+            } catch (e) { console.error("JSON Error:", e); }
         };
 
         ws.onclose = () => {
