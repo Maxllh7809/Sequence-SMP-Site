@@ -2,11 +2,11 @@
 
 The official community website for **Sequence SMP**, a semi-vanilla Minecraft server focused on friendly cooperation and long-term progression.
 
-<!-- BADGES -->
+<!-- BADGES: Linking to other repos -->
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-[![Backend](https://img.shields.io/badge/GitHub-Audio_Backend_Repo-181717?style=for-the-badge&logo=github)](https://github.com/Maxllh7809/sequence-audio-backend)
+[![Audio Backend](https://img.shields.io/badge/GitHub-Audio_Backend_Repo-181717?style=for-the-badge&logo=github)](https://github.com/Maxllh7809/sequence-audio-backend)
+[![Minecraft Plugin](https://img.shields.io/badge/GitHub-Radio_Plugin_Repo-blue?style=for-the-badge&logo=github)](https://github.com/Maxllh7809/sequence-radio-audio)
 
 ## 🌟 Features
 
