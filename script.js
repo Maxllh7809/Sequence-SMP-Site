@@ -1,5 +1,6 @@
 /* --- CONFIGURATION --- */
-const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
+const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com"; 
+const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
 /* --- TAB SWITCHING LOGIC --- */
 function openTab(tabName) {
@@ -17,105 +18,132 @@ function openTab(tabName) {
     var selectedTab = document.getElementById(tabName);
     if (selectedTab) {
         selectedTab.style.display = "block";
-        void selectedTab.offsetWidth;
+        void selectedTab.offsetWidth; 
         selectedTab.classList.add("fade-in");
     }
-
-    if (event && event.currentTarget) {
+    
+    if(event && event.currentTarget) {
         event.currentTarget.classList.add("active-link");
     }
 }
 
 /* --- LIGHTBOX (GALLERY ZOOM) LOGIC --- */
-window.closeLightbox = function () {
+window.closeLightbox = function() {
     document.getElementById('lightbox').style.display = "none";
 }
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* -- 1. SETUP LIGHTBOX CLICK EVENTS -- */
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
-    const galleryImages = document.querySelectorAll('.gallery-item img');
-
-    galleryImages.forEach(img => {
-        img.addEventListener('click', function () {
-            lightbox.style.display = "flex";
-            lightbox.style.flexDirection = "column";
-            lightbox.style.justifyContent = "center";
-            lightbox.style.alignItems = "center"; // Centering fix
-
-            lightboxImg.src = this.src;
-            lightboxCaption.innerText = this.nextElementSibling ? this.nextElementSibling.innerText : this.alt;
-        });
-    });
-
-    /* -- 2. COPY IP BUTTON -- */
-    const copyButton = document.getElementById('copy-btn');
+    // --- GLOBAL ELEMENTS ---
+    const playerText = document.getElementById('player-text');
+    const statusDot = document.querySelector('.status-dot');
+    const playerTooltip = document.getElementById('player-list-tooltip');
     const ipTextElement = document.getElementById('server-ip');
+    
+    // --- AUDIO SYSTEM ELEMENTS ---
+    const audioPlayer = document.getElementById('audio-player');
+    const nowPlayingText = document.getElementById('now-playing-text');
+    let ws;
+    let isManualDisconnect = false;
 
+    // --- 1. SERVER STATUS (PLAYER COUNT & LIST) ---
+    function updateServerStatus() {
+        if (!playerText) return;
+
+        fetch(SERVER_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.online) {
+                    // 1. Update Count Text
+                    playerText.innerText = `${data.players.online} / ${data.players.max}`;
+                    statusDot.style.backgroundColor = "#55ff55";
+                    statusDot.style.boxShadow = "0 0 5px #55ff55";
+
+                    // 2. Update Player List Tooltip
+                    if (data.players.list && data.players.list.length > 0) {
+                        let playerHtml = '';
+                        data.players.list.forEach(player => {
+                            playerHtml += `
+                                <div class="player-row">
+                                    <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
+                                    <span>${player.name}</span>
+                                </div>
+                            `;
+                        });
+                        playerTooltip.innerHTML = playerHtml;
+                    } else if (data.players.online > 0) {
+                        // Online but player list is hidden by server query settings
+                        playerTooltip.innerHTML = `<div style='text-align:center; color:#888;'>${data.players.online} player(s) online.<br>List is private.</div>`;
+                    } else {
+                         playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players currently online.</div>";
+                    }
+
+                } else {
+                    // Server Offline
+                    playerText.innerText = "Offline";
+                    statusDot.style.backgroundColor = "#ff5555";
+                    statusDot.style.boxShadow = "0 0 5px #ff5555";
+                    playerTooltip.innerHTML = "Server is currently offline.";
+                }
+            })
+            .catch(error => {
+                playerText.innerText = "Error";
+                playerTooltip.innerHTML = "Could not fetch server status.";
+            });
+    }
+
+    // Run immediately when page loads
+    updateServerStatus();
+    // Refresh every 30 seconds
+    setInterval(updateServerStatus, 30000);
+
+
+    // --- 2. COPY IP BUTTON ---
+    const copyButton = document.getElementById('copy-btn');
     if (copyButton && ipTextElement) {
         copyButton.addEventListener('click', () => {
             const ipText = ipTextElement.innerText;
             navigator.clipboard.writeText(ipText).then(() => {
-                const originalText = copyButton.innerText;
-                const originalBg = copyButton.style.background;
-
-                copyButton.innerText = "COPIED!";
-                copyButton.style.background = "#55ff55";
-                copyButton.style.color = "#000";
-                copyButton.style.transform = "scale(1.1)";
-
-                setTimeout(() => {
-                    copyButton.innerText = originalText;
-                    copyButton.style.background = originalBg;
-                    copyButton.style.color = "";
-                    copyButton.style.transform = "scale(1)";
-                }, 2000);
+                // Button animation logic...
             });
         });
     }
 
-    /* -- 3. AUDIO SYSTEM -- */
+
+    // --- 3. AUDIO SYSTEM LOGIC ---
     const connectBtn = document.getElementById('connect-audio-btn');
     const disconnectBtn = document.getElementById('disconnect-btn');
     const connectWrapper = document.getElementById('connect-wrapper');
     const playerControls = document.getElementById('player-controls');
     const audioStatus = document.getElementById('audio-status');
-    const audioPlayer = document.getElementById('audio-player');
     const volumeSlider = document.getElementById('volume-slider');
-    const nowPlayingText = document.getElementById('now-playing-text');
-
-    let ws;
-    let isManualDisconnect = false;
 
     if (connectBtn) {
-        connectBtn.addEventListener('click', async () => {
-            connectWrapper.style.display = 'none';
-            playerControls.style.display = 'block';
+connectBtn.addEventListener('click', async () => {
+    connectWrapper.style.display = 'none';
+    playerControls.style.display = 'block';
 
-            if (volumeSlider && audioPlayer) {
-                audioPlayer.volume = volumeSlider.value;
-            }
+    if (volumeSlider && audioPlayer) {
+        audioPlayer.volume = volumeSlider.value;
+    }
 
-            // autoplay unlock on user gesture
-            try {
-                audioPlayer.muted = false;
-                audioPlayer.src = "";
-                await audioPlayer.play().catch(() => { });
-                audioPlayer.pause();
-                audioPlayer.currentTime = 0;
-            } catch { }
+    // autoplay unlock on user gesture
+    try {
+        audioPlayer.muted = false;
+        audioPlayer.src = "";
+        await audioPlayer.play().catch(() => {});
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+    } catch {}
 
-            isManualDisconnect = false;
-            initWebSocket();
-        });
+    isManualDisconnect = false;
+    initWebSocket();
+});
     }
 
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
-            isManualDisconnect = true;
+            isManualDisconnect = true; 
             if (ws) ws.close();
             stopAudio();
 
@@ -128,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
-            if (audioPlayer) audioPlayer.volume = e.target.value;
+            if(audioPlayer) audioPlayer.volume = e.target.value;
         });
     }
 
@@ -157,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isManualDisconnect) return;
             audioStatus.innerText = "Status: Disconnected (Retrying...)";
             audioStatus.style.color = "#ff5555";
-            setTimeout(initWebSocket, 3000);
+            setTimeout(initWebSocket, 3000); 
         };
     }
 
@@ -165,18 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!audioPlayer) return;
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
         audioPlayer.src = url;
-       audioPlayer.play().catch(() => {
-  nowPlayingText.innerText = "⚠️ Click to Play";
-
-  const unlock = () => {
-    audioPlayer.play();
-    nowPlayingText.innerText = "♫ " + (text || "Now playing");
-    document.removeEventListener("click", unlock);
-  };
-
-  document.addEventListener("click", unlock, { once: true });
-});
-
+        audioPlayer.play().catch(e => {
+            nowPlayingText.innerText = "⚠️ Click to Play";
+        });
     }
 
     function stopAudio() {
@@ -185,62 +204,5 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.currentTime = 0;
         nowPlayingText.innerText = "Waiting for music...";
     }
+
 });
-/* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
-    const playerText = document.getElementById('player-text');
-    const statusDot = document.querySelector('.status-dot');
-    const playerTooltip = document.getElementById('player-list-tooltip');
-    
-    // Using mcsrvstat.us API
-    const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
-
-    function updateServerStatus() {
-        if (!playerText) return;
-
-        fetch(SERVER_API_URL)
-            .then(response => response.json())
-            .then(data => {
-                if (data.online) {
-                    // 1. Update Count
-                    playerText.innerText = `${data.players.online} / ${data.players.max}`;
-                    statusDot.style.backgroundColor = "#55ff55";
-                    statusDot.style.boxShadow = "0 0 5px #55ff55";
-
-                    // 2. Update Player List Tooltip
-                    if (data.players.list && data.players.list.length > 0) {
-                        // Create HTML for each player
-                        let playerHtml = '';
-                        data.players.list.forEach(player => {
-                            // Uses Crafatar to get the player's face 
-                            playerHtml += `
-                                <div class="player-row">
-                                    <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
-                                    <span>${player.name}</span>
-                                </div>
-                            `;
-                        });
-                        playerTooltip.innerHTML = playerHtml;
-                    } else {
-                        // Online but list is hidden or empty
-                        playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
-                    }
-
-                } else {
-                    // Server Offline
-                    playerText.innerText = "Offline";
-                    statusDot.style.backgroundColor = "#ff5555";
-                    statusDot.style.boxShadow = "0 0 5px #ff5555";
-                    playerTooltip.innerHTML = "Server is currently offline.";
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching server status:", error);
-                playerText.innerText = "Error";
-            });
-    }
-
-    // Run immediately when page loads
-    updateServerStatus();
-    
-    // Refresh every 30 seconds
-    setInterval(updateServerStatus, 30000);
