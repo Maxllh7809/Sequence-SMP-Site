@@ -494,32 +494,89 @@ h3,
     box-shadow: 0 0 10px #5555ff;
 }
 
-/* Gallery */
-.gallery-grid {
-    display: flex;
-    gap: 10px;
+/* --- AUTO SCROLLING GALLERY --- */
+.scrolling-gallery-container {
+    width: 100%;
+    overflow: hidden;
+    /* Hides the scrollbar */
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #000;
     margin-top: 15px;
     margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.scrolling-gallery-track {
+    display: flex;
+    width: max-content;
+    /* Allows track to be wider than screen */
+    /* Adjust '30s' to change speed. Linear makes it smooth. */
+    animation: scrollGallery 30s linear infinite;
+}
+
+/* Pause scrolling when mouse hovers over it */
+.scrolling-gallery-track:hover {
+    animation-play-state: paused;
 }
 
 .gallery-item {
-    flex: 1;
-    overflow: hidden;
-    border-radius: 5px;
-    border: 2px solid #333;
-    height: 120px;
+    position: relative;
+    /* Needed to position the caption */
+    width: 300px;
+    /* Width of each image */
+    height: 200px;
+    /* Height of each image */
+    flex-shrink: 0;
+    /* Prevents squishing */
+    margin-right: 10px;
+    /* Gap between images */
+    border-right: 2px solid #333;
 }
 
 .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s;
-    cursor: pointer;
+    display: block;
 }
 
-.gallery-item img:hover {
-    transform: scale(1.1);
+/* The Caption (Alt Text) Styling */
+.caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* Semi-transparent black background */
+    color: #ffaa00;
+    /* Gold text */
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px 0;
+    border-top: 1px solid #333;
+}
+
+/* The Animation */
+@keyframes scrollGallery {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        /* Move left by 50% because we duplicated the images. 
+           Once it hits 50%, it snaps back to 0 seamlessly. */
+        transform: translateX(-50%);
+    }
+}
+
+/* Mobile Adjustment */
+@media (max-width: 768px) {
+    .gallery-item {
+        width: 200px;
+        height: 150px;
+    }
 }
 
 /* Audio Slider & Viz */
