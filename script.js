@@ -186,11 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
         nowPlayingText.innerText = "Waiting for music...";
     }
 });
-/* --- 4. SERVER STATUS (PLAYER COUNT) --- */
+/* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
     const playerText = document.getElementById('player-text');
     const statusDot = document.querySelector('.status-dot');
+    const playerTooltip = document.getElementById('player-list-tooltip');
     
-    // Using mcsrvstat.us API (free, no key required)
+    // Using mcsrvstat.us API
     const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
     function updateServerStatus() {
@@ -200,15 +201,36 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.online) {
-                    // Server is online
+                    // 1. Update Count
                     playerText.innerText = `${data.players.online} / ${data.players.max}`;
-                    statusDot.style.backgroundColor = "#55ff55"; // Green
+                    statusDot.style.backgroundColor = "#55ff55";
                     statusDot.style.boxShadow = "0 0 5px #55ff55";
+
+                    // 2. Update Player List Tooltip
+                    if (data.players.list && data.players.list.length > 0) {
+                        // Create HTML for each player
+                        let playerHtml = '';
+                        data.players.list.forEach(player => {
+                            // Uses Crafatar to get the player's face 
+                            playerHtml += `
+                                <div class="player-row">
+                                    <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
+                                    <span>${player.name}</span>
+                                </div>
+                            `;
+                        });
+                        playerTooltip.innerHTML = playerHtml;
+                    } else {
+                        // Online but list is hidden or empty
+                        playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
+                    }
+
                 } else {
-                    // Server is offline
+                    // Server Offline
                     playerText.innerText = "Offline";
-                    statusDot.style.backgroundColor = "#ff5555"; // Red
+                    statusDot.style.backgroundColor = "#ff5555";
                     statusDot.style.boxShadow = "0 0 5px #ff5555";
+                    playerTooltip.innerHTML = "Server is currently offline.";
                 }
             })
             .catch(error => {
@@ -220,5 +242,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Run immediately when page loads
     updateServerStatus();
     
-    // Optional: Refresh every 30 seconds
+    // Refresh every 30 seconds
     setInterval(updateServerStatus, 30000);
