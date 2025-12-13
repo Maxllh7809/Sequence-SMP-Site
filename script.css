@@ -832,3 +832,14 @@ hr {
         height: 150px;
     }
 }
+/* --- ICON STYLING --- */
+/* Add space between icon and text */
+i {
+    margin-right: 8px;
+}
+
+/* Specific color tweaks for icons in lists if needed */
+.feature-list i, .rules-list i {
+    width: 25px; /* Ensures text aligns perfectly even if icons differ in width */
+    text-align: center;
+}
