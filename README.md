@@ -63,7 +63,6 @@ To add or change images, open `index.html` and look for the `scrolling-gallery-t
 *   **Website Development:** Loh Wei Feng (Max)
 *   **Plugin Development:** Jishnu H Maruthamutu (Hooman)
 *   **Server Owner:** Siqns
-
 ---
 &copy; 2025 Sequence SMP
 ```
