@@ -2,9 +2,11 @@
 
 The official community website for **Sequence SMP**, a semi-vanilla Minecraft server focused on friendly cooperation and long-term progression.
 
+<!-- BADGES -->
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+[![Backend](https://img.shields.io/badge/GitHub-Audio_Backend_Repo-181717?style=for-the-badge&logo=github)](https://github.com/Maxllh7809/sequence-audio-backend)
 
 ## 🌟 Features
 
@@ -12,15 +14,20 @@ The official community website for **Sequence SMP**, a semi-vanilla Minecraft se
 *   **Tabbed Navigation:** Seamless switching between Home, Discord, Rules, and Audio without reloading.
 *   **Live Audio Client:** Integrated WebSocket client allowing players to listen to server music/voice directly from the browser.
 *   **Auto-Scrolling Gallery:** An infinite-scroll marquee showcasing server builds, with a clickable Lightbox (zoom) view.
-*   **Server Status:** One-click button to copy the Server IP (`sequence.playmc.cloud`).
+*   **Server Status:** One-click button to copy the Server IP (`sequence.playmc.cloud`) and live player count syncing.
 *   **Responsive Design:** Fully functional on mobile and desktop.
+
+## 🔗 Related Repositories
+
+This website works in tandem with a backend server to handle the audio streaming features.
+*   **Audio Backend:** [sequence-audio-backend](https://github.com/Maxllh7809/sequence-audio-backend)
 
 ## 📂 Project Structure
 
 *   `index.html` - The main structure, text content, and gallery images.
 *   `script.css` - All styling, animations, fonts, and responsive layout rules.
 *   `script.js` - Logic for tabs, the audio client (WebSocket), the gallery lightbox, and the copy-IP button.
-*   `logo.png` - The server icon displayed in the header.
+*   `logo.png` - The server icon displayed in the header and browser tab.
 
 ## ⚙️ Configuration
 
@@ -34,13 +41,14 @@ Open `index.html` and find the `status-bar` section:
 This website requires a backend WebSocket server to handle audio streaming.
 Open `script.js` and update the top line:
 ```javascript
-const WEBSOCKET_URL = "wss://your-backend-url.onrender.com";
+// Replace with your Render/Glitch URL
+const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 ```
 
 ### 3. Updating the Gallery
 To add or change images, open `index.html` and look for the `scrolling-gallery-track`.
-*   Ensure you add images to **both** sets (Original and Duplicate) to keep the scrolling loop seamless.
-*   The `alt` text in the `<img>` tag is automatically used as the caption.
+*   **Important:** You must add the new images to **both** sets of divs (the original set and the duplicate set) to ensure the infinite scroll loop remains seamless.
+*   The `alt` text in the `<img>` tag is automatically displayed as the caption.
 
 ```html
 <div class="gallery-item">
@@ -61,8 +69,7 @@ To add or change images, open `index.html` and look for the `scrolling-gallery-t
 ## 👥 Credits
 
 *   **Website Development:** Loh Wei Feng (Max)
-*   **Plugin Development:** Jishnu H Maruthamutu (Hooman)
+*   **Plugin Development:** Jishnu H Marathamutu (Hooman)
 *   **Server Owner:** Siqns
----
+
 &copy; 2025 Sequence SMP
-```
