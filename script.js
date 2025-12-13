@@ -1,6 +1,6 @@
 // --- CONFIGURATION ---
 // IMPORTANT: Change this URL to your backend server URL when you have one.
-const WEBSOCKET_URL = "ws://sequence-audio-backend.onrender.com";
+const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 
 // --- TAB SWITCHING LOGIC ---
 function openTab(tabName) {
