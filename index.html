@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMBERFALL SMP</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header-banner">
+        <div class="logo-container">
+            <div class="logo-text">Sequence SMP</div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="box status-box">
+            <h2>Server Status</h2>
+            <p class="ip-address">
+                IP Address: <span id="server-ip">sequence.playmc.cloud</span>
+            </p>
+            <div class="status-info">
+                <p>Players Online: <span id="player-count">Loading...</span></p>
+                <button id="copy-button" onclick="copyIP()" class="copy-btn">COPY</button>
+            </div>
+        </section>
+
+        <section class="box news-box">
+            <h2>Server News</h2>
+            <article>
+                <p class="news-date">October 15, 2025</p>
+                <p>New Nether Update Live! Check out the new biomes and mobs. We've added custom enchantments for
+                    end-game loot.</p>
+            </article>
+            <article>
+                <p class="news-date">September 28, 2025</p>
+                <p>Staff applications are now open for Builder and Helper roles. Apply on our Discord channel!</p>
+            </article>
+        </section>
+
+        <section class="box rules-box">
+            <h2>Game Rules</h2>
+            <ul>
+                <li>No Griefing or unnecessary destruction.</li>
+                <li>Be respectful to all players and staff.</li>
+                <li>Hacks, exploits, and third-party mods are prohibited.</li>
+                <li>Keep the spawn area clean and clutter-free.</li>
+                <li>PvP is allowed in designated arenas only.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 Sequence SMP | Hosted on GitHub Pages
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
