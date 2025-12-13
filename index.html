@@ -9,8 +9,11 @@
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Nunito for reading text -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <!-- VT323 for pixel style -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <!-- Real Minecraft Font -->
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
     <!-- CSS LINK -->
@@ -18,6 +21,12 @@
 </head>
 
 <body>
+
+    <!-- BACKGROUND PARTICLES -->
+    <div class="particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="navbar">
@@ -27,7 +36,6 @@
                 <button class="nav-btn active-link" onclick="openTab('home')">About Us</button>
                 <button class="nav-btn" onclick="openTab('discord')">Discord</button>
                 <button class="nav-btn" onclick="openTab('rules')">Rules</button>
-                <!-- NEW AUDIO BUTTON -->
                 <button class="nav-btn" onclick="openTab('audio')">Audio</button>
             </div>
         </div>
@@ -37,9 +45,12 @@
 
         <!-- HEADER -->
         <header class="header-box">
+            <!-- Logo Left -->
             <div class="header-logo">
                 <img src="logo.png" alt="Server Logo" class="floating-logo">
             </div>
+
+            <!-- Text Right (Exact Minecraft Server List Style) -->
             <div class="header-text-motd">
                 <div class="server-name-top">SEQUENCE SMP</div>
                 <div class="motd-main-line">
@@ -66,24 +77,54 @@
             </div>
         </div>
 
-        <!-- === TAB 1: HOME === -->
+        <!-- === TAB 1: HOME (ABOUT US) === -->
         <div id="home" class="tab-content active-tab">
             <div class="card news-card">
                 <div class="about-header">
                     <h2>📖 Sequence SMP: Where Every Chapter Unfolds</h2>
                 </div>
+
                 <div class="about-text">
-                    <p>Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created
-                            by siqns in December 2025</span>.</p>
-                    <hr>
+                    <p>
+                        Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created
+                            by siqns in December 2025</span>, and built on the foundational principles of
+                        <strong>friendly cooperation, creative freedom, and unforgettable long-term
+                            progression</strong>.
+                    </p>
+
+                    <!-- NEW GALLERY SECTION -->
+                    <br>
+                    <h3>📸 Server Gallery</h3>
+                    <div class="gallery-grid">
+                        <div class="gallery-item"><img
+                                src="https://media.forgecdn.net/attachments/304/412/screenshot_2020-07-09-20-42-05.png"
+                                alt="Spawn"></div>
+                        <div class="gallery-item"><img
+                                src="https://media.forgecdn.net/attachments/295/670/2020-06-05_00.png" alt="Arena">
+                        </div>
+                        <div class="gallery-item"><img
+                                src="https://media.forgecdn.net/attachments/265/233/2019-12-04_18.png" alt="Hub"></div>
+                    </div>
+                    <br>
+
                     <h3>✨ What We Offer</h3>
                     <ul class="feature-list">
-                        <li><strong>Semi-Vanilla Survival</strong> with /tpa, /back, /warps.</li>
+                        <li>
+                            <strong>Semi-Vanilla Survival:</strong> Classic experience with quality-of-life plugins:
+                            <div class="command-list">
+                                <span class="cmd">/tpa</span> Teleport to a friend.<br>
+                                <span class="cmd">/randomtpa</span> Explore the vast world instantly.<br>
+                                <span class="cmd">/back</span> Return to your last death spot.<br>
+                                <span class="cmd">/warps</span> Travel to key locations.
+                            </div>
+                        </li>
                         <li><strong>A Mature & Welcoming Community</strong></li>
                         <li><strong>Community Events & Projects</strong></li>
                     </ul>
                     <hr>
-                    <p style="text-align: center; font-weight: bold; color: #ffaa00;">Join Sequence SMP today.</p>
+                    <p style="text-align: center; font-weight: bold; font-size: 1.1em; color: #ffaa00;">
+                        Join Sequence SMP and start shaping your story today.
+                    </p>
                 </div>
             </div>
         </div>
@@ -114,6 +155,7 @@
                     <li><strong>2. No Hacking</strong></li>
                     <li><strong>3. Be Respectful</strong></li>
                     <li><strong>4. No Spamming</strong></li>
+                    <li><strong>5. PvP Allowed in Arenas Only</strong></li>
                 </ul>
                 <div class="center-content">
                     <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
@@ -121,7 +163,7 @@
             </div>
         </div>
 
-        <!-- === TAB 4: AUDIO (UPDATED) === -->
+        <!-- === TAB 4: AUDIO === -->
         <div id="audio" class="tab-content" style="display:none;">
             <div class="card audio-card full-page-card center-content">
                 <h2 style="color: #55ff55; font-size: 40px; margin-bottom: 5px;">SERVER RADIO</h2>
@@ -139,7 +181,7 @@
                 <!-- Player Controls (Hidden until connected) -->
                 <div id="player-controls" style="display: none; width: 100%; max-width: 400px; margin: 0 auto;">
 
-                    <!-- Fake Visualizer Bars -->
+                    <!-- Visualizer Bars -->
                     <div class="visualizer">
                         <div class="bar"></div>
                         <div class="bar"></div>
@@ -156,13 +198,25 @@
                         VOLUME</label>
                     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
 
-                    <!-- NEW DISCONNECT BUTTON -->
+                    <!-- Disconnect Button -->
                     <button id="disconnect-btn" class="action-btn"
                         style="background-color: #ff5555; color: white; box-shadow: 0 0 10px #ff5555; margin-top: 30px; font-size: 20px;">DISCONNECT</button>
                 </div>
-
             </div>
         </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>&copy; 2025 SEQUENCE SMP</p>
+        </div>
+
     </div>
+
+    <!-- Hidden Audio Player -->
+    <audio id="audio-player"></audio>
+
+    <!-- JS LINK -->
     <script src="script.js"></script>
 </body>
+
+</html>

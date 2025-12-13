@@ -1,10 +1,9 @@
-/* --- CONFIGURATION --- */
+// --- CONFIGURATION ---
+// REPLACE THIS URL with your Render URL (start with wss://)
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 
-/* --- TAB SWITCHING LOGIC (Must be at the top) --- */
+// --- TAB SWITCHING LOGIC ---
 function openTab(tabName) {
-    console.log("Switching to tab:", tabName); // Debug message
-
     // 1. Hide all tabs
     var allTabs = document.getElementsByClassName("tab-content");
     for (var i = 0; i < allTabs.length; i++) {
@@ -18,26 +17,21 @@ function openTab(tabName) {
         navButtons[i].classList.remove("active-link");
     }
 
-    // 3. Show the correct tab
+    // 3. Show correct tab
     var selectedTab = document.getElementById(tabName);
     if (selectedTab) {
         selectedTab.style.display = "block";
-        // Trigger animation
         void selectedTab.offsetWidth;
         selectedTab.classList.add("fade-in");
-    } else {
-        console.error("Could not find tab with ID:", tabName);
     }
 
-    // 4. Highlight the button
+    // 4. Highlight button
     if (event && event.currentTarget) {
         event.currentTarget.classList.add("active-link");
     }
 }
 
-/* --- MAIN LOGIC (Runs when page loads) --- */
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Website Loaded Successfully");
 
     // --- VARIABLES ---
     const copyButton = document.getElementById('copy-btn');
@@ -82,17 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 2. AUDIO: CONNECT ---
     if (connectBtn) {
         connectBtn.addEventListener('click', () => {
-            console.log("Connect button clicked");
-            // UI Transition
             connectWrapper.style.display = 'none';
             playerControls.style.display = 'block';
 
-            // Set Volume
             if (volumeSlider && audioPlayer) {
                 audioPlayer.volume = volumeSlider.value;
             }
 
-            // Connect
             isManualDisconnect = false;
             initWebSocket();
         });
@@ -101,13 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. AUDIO: DISCONNECT ---
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
-            console.log("Disconnect button clicked");
             isManualDisconnect = true;
-
             if (ws) ws.close();
             stopAudio();
 
-            // Reset UI
             playerControls.style.display = 'none';
             connectWrapper.style.display = 'block';
             audioStatus.innerText = "Status: Disconnected";
@@ -134,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ws.onopen = () => {
             audioStatus.innerText = "Status: Connected ●";
             audioStatus.style.color = "#55ff55";
-            console.log("WebSocket connection established");
         };
 
         ws.onmessage = (event) => {
@@ -171,5 +157,4 @@ document.addEventListener('DOMContentLoaded', () => {
         audioPlayer.currentTime = 0;
         nowPlayingText.innerText = "Waiting for music...";
     }
-
 });
