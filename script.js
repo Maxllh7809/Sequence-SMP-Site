@@ -186,3 +186,39 @@ document.addEventListener('DOMContentLoaded', () => {
         nowPlayingText.innerText = "Waiting for music...";
     }
 });
+/* --- 4. SERVER STATUS (PLAYER COUNT) --- */
+    const playerText = document.getElementById('player-text');
+    const statusDot = document.querySelector('.status-dot');
+    
+    // Using mcsrvstat.us API (free, no key required)
+    const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
+
+    function updateServerStatus() {
+        if (!playerText) return;
+
+        fetch(SERVER_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.online) {
+                    // Server is online
+                    playerText.innerText = `${data.players.online} / ${data.players.max}`;
+                    statusDot.style.backgroundColor = "#55ff55"; // Green
+                    statusDot.style.boxShadow = "0 0 5px #55ff55";
+                } else {
+                    // Server is offline
+                    playerText.innerText = "Offline";
+                    statusDot.style.backgroundColor = "#ff5555"; // Red
+                    statusDot.style.boxShadow = "0 0 5px #ff5555";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching server status:", error);
+                playerText.innerText = "Error";
+            });
+    }
+
+    // Run immediately when page loads
+    updateServerStatus();
+    
+    // Optional: Refresh every 30 seconds
+    setInterval(updateServerStatus, 30000);
