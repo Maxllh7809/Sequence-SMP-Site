@@ -21,7 +21,14 @@
 
         <!-- HEADER -->
         <header class="header-box">
-            <h1>Sequence SMP</h1>
+            <div class="header-text">
+                <h1>SEQUENCE</h1>
+                <h1>SMP</h1>
+            </div>
+            <div class="header-logo">
+                <!-- This pulls the image you uploaded -->
+                <img src="logo.png" alt="Server Logo">
+            </div>
         </header>
 
         <!-- SERVER STATUS -->
@@ -29,7 +36,6 @@
             <div class="ip-box">
                 IP Address: <span id="server-ip" style="color:#ffaa00">sequence.playmc.cloud</span>
             </div>
-            <!-- We gave this button an ID so the JS file can find it -->
             <button id="copy-btn" class="copy-btn">COPY</button>
             <div class="player-count">Players Online: <span style="color: #ff5555;">Offline</span></div>
         </div>
@@ -37,41 +43,30 @@
         <!-- MAIN CONTENT GRID -->
         <div class="content-grid">
 
-            <!-- LEFT COLUMN: LATEST NEWS -->
+            <!-- LEFT COLUMN: LATEST NEWS (Kept this the same) -->
             <div class="card">
                 <h2>Latest Update</h2>
                 <h3>New Nether Update Live!</h3>
                 <span class="date">October 15, 2025</span>
                 <p>Check out the new biomes and mobs. We've added custom enchantments for end-game loot.</p>
-
                 <br>
-
                 <h3>Staff Apps Open</h3>
                 <span class="date">September 28, 2025</span>
                 <p>Staff applications are now open for Builder and Helper roles. Apply on Discord!</p>
             </div>
 
-            <!-- MIDDLE COLUMN: COMMUNITY -->
-            <div class="card">
-                <h2>Community</h2>
-                <ul>
-                    <li><strong>Discord:</strong> <a href="#" style="color:#ffaa00">Join Here</a></li>
-                    <li><strong>Store:</strong> <a href="#" style="color:#ffaa00">Buy Ranks</a></li>
-                    <li><strong>Vote:</strong> <a href="#" style="color:#ffaa00">Vote for us</a></li>
-                </ul>
-                <p>Don't forget to vote daily to receive crate keys and in-game money!</p>
+            <!-- MIDDLE COLUMN: DISCORD (Updated to match image) -->
+            <div class="card center-content">
+                <h2 class="title-blue">DISCORD</h2>
+                <p class="big-text">We do NOT have a Discord server!<br>Just use Diddy Party for now.</p>
+                <div class="dots-blue">▪ ▪ ▪ ▪ ▪</div>
             </div>
 
-            <!-- RIGHT COLUMN: RULES -->
-            <div class="card">
-                <h2>Game Rules</h2>
-                <ul>
-                    <li>No Griefing or unnecessary destruction.</li>
-                    <li>Be respectful to all players and staff.</li>
-                    <li>Hacks, exploits, and third-party mods are prohibited.</li>
-                    <li>Keep the spawn area clean and clutter-free.</li>
-                    <li>PvP is allowed in designated arenas only.</li>
-                </ul>
+            <!-- RIGHT COLUMN: RULES (Updated to match image) -->
+            <div class="card center-content">
+                <h2 class="title-red">RULES</h2>
+                <p class="big-text">We do have some rules!<br>Don't cheat & use common sense.</p>
+                <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
             </div>
 
         </div>

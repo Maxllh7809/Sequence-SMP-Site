@@ -15,23 +15,61 @@ body {
     margin: 0 auto;
 }
 
-/* 3. The Big Header */
+/* 3. The Big Header (Updated for Logo) */
 .header-box {
     border: 4px solid #ffaa00;
     background-color: #000000;
-    text-align: center;
-    padding: 40px;
+    padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);
+
+    /* Flexbox to put Text and Logo side-by-side */
+    display: flex;
+    align-items: center;
+    /* Centers them vertically */
+    justify-content: center;
+    /* Centers the whole group */
+    gap: 40px;
+    /* Space between text and logo */
+    flex-wrap: wrap;
+    /* Allows stacking on mobile phones */
 }
 
-.header-box h1 {
+/* Style for the Text part */
+.header-text {
+    text-align: right;
+    /* Aligns text towards the logo */
+}
+
+.header-text h1 {
     font-size: 80px;
     margin: 0;
     color: #ffaa00;
     text-shadow: 4px 4px #8b0000;
     text-transform: uppercase;
+    line-height: 0.9;
+    /* Brings the words closer together */
     letter-spacing: 5px;
+}
+
+/* Style for the Logo part */
+.header-logo img {
+    height: 160px;
+    /* Controls the size of the logo */
+    image-rendering: pixelated;
+    /* Keeps the pixel art sharp */
+    display: block;
+}
+
+/* Mobile Fix: When screen is small, stack them */
+@media (max-width: 600px) {
+    .header-text {
+        text-align: center;
+    }
+
+    .header-box {
+        gap: 20px;
+    }
 }
 
 /* 4. Server Status Section */
@@ -69,7 +107,7 @@ body {
     flex-wrap: wrap;
 }
 
-/* 6. The "Cards" */
+/* 6. The "Cards" General Style */
 .card {
     border: 4px solid #ffaa00;
     background-color: #252525;
@@ -90,6 +128,7 @@ body {
     background-color: #ffaa00;
 }
 
+/* Standard Header (Gold) */
 .card h2 {
     color: #ffaa00;
     margin-top: 0;
@@ -97,6 +136,55 @@ body {
     padding-bottom: 10px;
 }
 
+/* --- NEW STYLES FOR RULES & DISCORD --- */
+
+.center-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.big-text {
+    font-size: 1.2em;
+    line-height: 1.4;
+}
+
+/* BLUE CARD STYLES */
+.title-blue {
+    color: #5555ff !important;
+    /* Minecraft Blue */
+    border-bottom: none !important;
+    /* Remove line */
+    font-size: 40px !important;
+    text-shadow: 2px 2px #000;
+}
+
+.dots-blue {
+    color: #5555ff;
+    font-size: 24px;
+    letter-spacing: 5px;
+    margin-top: 10px;
+}
+
+/* RED CARD STYLES */
+.title-red {
+    color: #ff5555 !important;
+    /* Minecraft Red */
+    border-bottom: none !important;
+    /* Remove line */
+    font-size: 40px !important;
+    text-shadow: 2px 2px #000;
+}
+
+.dots-red {
+    color: #ff5555;
+    font-size: 24px;
+    letter-spacing: 5px;
+    margin-top: 10px;
+}
+
+/* Standard text styles */
 .card h3 {
     color: #ddd;
     margin-bottom: 5px;
@@ -107,14 +195,6 @@ body {
     font-size: 0.8em;
     display: block;
     margin-bottom: 10px;
-}
-
-ul {
-    padding-left: 20px;
-}
-
-li {
-    margin-bottom: 8px;
 }
 
 /* 7. Footer */
