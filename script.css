@@ -10,7 +10,13 @@ body {
     margin: 0;
     padding-bottom: 50px;
     line-height: 1.6;
-    /* Better reading spacing */
+    overflow-x: hidden;
+    /* Prevents scrollbar from popping during animations */
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
 }
 
 h1,
@@ -31,9 +37,61 @@ h3,
     max-width: 900px;
     margin: 80px auto 0;
     padding: 0 20px;
+    /* Entrance Animation for the whole page */
+    animation: fadeInUp 0.8s ease-out;
 }
 
-/* --- 2. NAVIGATION BAR --- */
+/* --- 2. ANIMATIONS --- */
+
+/* The Slide Up Effect */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* The Pulse Effect for the Status Dot */
+@keyframes pulseRed {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 85, 85, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 85, 85, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 85, 85, 0);
+    }
+}
+
+/* The Float Effect for Logo */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* This class makes the tabs animate when switched */
+.tab-content {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* --- 3. NAVIGATION BAR --- */
 .navbar {
     position: fixed;
     top: 0;
@@ -43,6 +101,8 @@ h3,
     border-bottom: 3px solid #ffaa00;
     z-index: 1000;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    /* Makes background slightly blurry */
 }
 
 .nav-content {
@@ -72,8 +132,25 @@ h3,
     font-size: 20px;
     cursor: pointer;
     text-decoration: none;
-    transition: color 0.3s;
     text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* Underline animation for nav links */
+.nav-btn::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #ffaa00;
+    transition: width 0.3s ease;
+}
+
+.nav-btn:hover::after {
+    width: 100%;
 }
 
 .nav-btn:hover {
@@ -82,10 +159,13 @@ h3,
 
 .active-link {
     color: #ffaa00;
-    border-bottom: 2px solid #ffaa00;
 }
 
-/* --- 3. HERO HEADER --- */
+.active-link::after {
+    width: 100%;
+}
+
+/* --- 4. HERO HEADER --- */
 .header-box {
     display: flex;
     align-items: center;
@@ -105,6 +185,12 @@ h3,
     color: #ffaa00;
     text-shadow: 0px 0px 20px rgba(255, 170, 0, 0.4), 4px 4px 0px #8b0000;
     line-height: 0.9;
+    transition: transform 0.3s ease;
+}
+
+/* Subtle hover interaction on the title */
+.header-text:hover h1 {
+    transform: scale(1.02);
 }
 
 .subtitle {
@@ -123,21 +209,7 @@ h3,
     animation: float 3s ease-in-out infinite;
 }
 
-@keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
-
-    100% {
-        transform: translateY(0px);
-    }
-}
-
-/* --- 4. SERVER STATUS BAR --- */
+/* --- 5. SERVER STATUS BAR --- */
 .status-bar {
     background: linear-gradient(90deg, #222, #1a1a1a);
     border: 2px solid #333;
@@ -147,6 +219,13 @@ h3,
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.status-bar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-color: #444;
 }
 
 .status-label {
@@ -170,11 +249,13 @@ h3,
     cursor: pointer;
     font-weight: bold;
     border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
 .copy-btn:hover {
     background: #fff;
-    transform: scale(1.05);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .status-dot {
@@ -183,11 +264,11 @@ h3,
     background-color: #ff5555;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 5px #ff5555;
+    /* PULSE ANIMATION HERE */
+    animation: pulseRed 2s infinite;
 }
 
-/* --- 5. CARDS & CONTENT --- */
-
+/* --- 6. CARDS & CONTENT --- */
 .card {
     background-color: #1a1a1a;
     border: 1px solid #333;
@@ -215,7 +296,7 @@ h3,
     background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%);
 }
 
-/* About Us Section Styling */
+/* About Us Styling */
 .about-header h2 {
     font-size: 36px;
     color: #ffaa00;
@@ -246,9 +327,17 @@ h3,
     background: rgba(255, 255, 255, 0.03);
     padding: 15px;
     border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: all 0.3s ease;
 }
 
-/* Command List Style */
+/* Feature List Hover Effect */
+.feature-list li:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+    border-left: 2px solid #ffaa00;
+}
+
 .command-list {
     margin-top: 10px;
     margin-left: 20px;
@@ -278,9 +367,15 @@ h3,
     padding: 15px;
     margin-bottom: 10px;
     border-left: 3px solid #ff5555;
+    transition: transform 0.2s ease;
 }
 
-/* Titles & Dots */
+.rules-list li:hover {
+    transform: scale(1.02);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Titles */
 .title-blue {
     color: #5555ff;
     font-size: 50px;
@@ -309,6 +404,7 @@ h3,
     font-size: 24px;
 }
 
+/* Buttons */
 .action-btn {
     padding: 10px 30px;
     border: none;
@@ -316,6 +412,7 @@ h3,
     font-size: 24px;
     cursor: pointer;
     margin-top: 20px;
+    transition: all 0.3s ease;
 }
 
 .blue-btn {
@@ -327,6 +424,8 @@ h3,
 .blue-btn:hover {
     background-color: white;
     color: #5555ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px #5555ff;
 }
 
 hr {
@@ -363,5 +462,9 @@ hr {
         flex-direction: column;
         gap: 15px;
         text-align: center;
+    }
+
+    .feature-list li:hover {
+        transform: none;
     }
 }

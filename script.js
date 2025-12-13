@@ -1,27 +1,31 @@
-// Function to handle Tab Switching
+// Function to handle Tab Switching with Animation
 function openTab(tabName) {
     // 1. Hide all elements with class="tab-content"
-    var i;
     var x = document.getElementsByClassName("tab-content");
-    for (i = 0; i < x.length; i++) {
+    for (var i = 0; i < x.length; i++) {
         x[i].style.display = "none";
+        // Remove animation class to reset it
+        x[i].classList.remove("fade-in");
     }
 
     // 2. Remove "active-link" class from all buttons
     var navButtons = document.getElementsByClassName("nav-btn");
-    for (i = 0; i < navButtons.length; i++) {
+    for (var i = 0; i < navButtons.length; i++) {
         navButtons[i].classList.remove("active-link");
     }
 
     // 3. Show the specific tab requested
-    document.getElementById(tabName).style.display = "block";
+    var tab = document.getElementById(tabName);
+    tab.style.display = "block";
 
-    // 4. Add "active-link" to the button that was clicked
-    // We find the button by checking which one triggered the event
+    // 4. Force a browser reflow (trick to restart CSS animation)
+    void tab.offsetWidth;
+
+    // 5. Add "active-link" to the button that was clicked
     event.currentTarget.classList.add("active-link");
 }
 
-// Existing Code for Copy IP
+// Copy IP Logic
 document.addEventListener('DOMContentLoaded', () => {
 
     const copyButton = document.getElementById('copy-btn');
@@ -33,14 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const originalText = copyButton.innerText;
                 const originalBg = copyButton.style.background;
 
+                // Animate button success
                 copyButton.innerText = "COPIED!";
                 copyButton.style.background = "#55ff55";
                 copyButton.style.color = "#000";
+                copyButton.style.transform = "scale(1.1)";
 
                 setTimeout(() => {
                     copyButton.innerText = originalText;
                     copyButton.style.background = originalBg;
                     copyButton.style.color = "";
+                    copyButton.style.transform = "scale(1)";
                 }, 2000);
             });
         });
