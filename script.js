@@ -186,32 +186,31 @@ document.addEventListener('DOMContentLoaded', () => {
         nowPlayingText.innerText = "Waiting for music...";
     }
 });
-/* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* --- Your variable initializations (playerText, statusDot, etc.) are here --- */
     const playerText = document.getElementById('player-text');
     const statusDot = document.querySelector('.status-dot');
-    const playerTooltip = document.getElementById('player-list-tooltip');
-    
-    // Using mcsrvstat.us API
+    const playerTooltip = document.getElementById('player-list-tooltip
+
+       /* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
     const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
     function updateServerStatus() {
-        if (!playerText) return;
+        if (!playerText) return; // This check is now safe!
 
         fetch(SERVER_API_URL)
             .then(response => response.json())
             .then(data => {
                 if (data.online) {
-                    // 1. Update Count
                     playerText.innerText = `${data.players.online} / ${data.players.max}`;
-                    statusDot.style.backgroundColor = "#55ff55";
+                    statusDot.style.backgroundColor = "#55ff55"; // Green
                     statusDot.style.boxShadow = "0 0 5px #55ff55";
 
-                    // 2. Update Player List Tooltip
                     if (data.players.list && data.players.list.length > 0) {
-                        // Create HTML for each player
                         let playerHtml = '';
                         data.players.list.forEach(player => {
-                            // Uses Crafatar to get the player's face 
                             playerHtml += `
                                 <div class="player-row">
                                     <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
@@ -220,27 +219,26 @@ document.addEventListener('DOMContentLoaded', () => {
                             `;
                         });
                         playerTooltip.innerHTML = playerHtml;
+                    } else if (data.players.online > 0) {
+                        playerTooltip.innerHTML = `<div style='text-align:center; color:#888;'>${data.players.online} player(s) online.<br>List is private.</div>`;
                     } else {
-                        // Online but list is hidden or empty
-                        playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
+                         playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players currently online.</div>";
                     }
 
                 } else {
-                    // Server Offline
                     playerText.innerText = "Offline";
-                    statusDot.style.backgroundColor = "#ff5555";
+                    statusDot.style.backgroundColor = "#ff5555"; // Red
                     statusDot.style.boxShadow = "0 0 5px #ff5555";
                     playerTooltip.innerHTML = "Server is currently offline.";
                 }
             })
             .catch(error => {
-                console.error("Error fetching server status:", error);
-                playerText.innerText = "Error";
+                // This 'catch' runs if the API call fails (network error, server down, etc.)
+                playerText.innerText = "Error"; 
+                statusDot.style.backgroundColor = "#ffaa00"; // Orange
+                playerTooltip.innerHTML = "Could not fetch server status.";
             });
     }
-
-    // Run immediately when page loads
+    // --- EXECUTE STATUS CHECK (The final piece) ---
     updateServerStatus();
-    
-    // Refresh every 30 seconds
-    setInterval(updateServerStatus, 30000);
+    setInterval(updateServerStatus, 3
