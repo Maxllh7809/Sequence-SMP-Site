@@ -1,19 +1,16 @@
 /* --- 1. GLOBAL SETTINGS --- */
 body {
     background-color: #121212;
-    /* Cool dark gradient background */
     background-image:
         radial-gradient(circle at 50% 50%, #1e1e1e 0%, #0d0d0d 100%),
         url('https://www.transparenttextures.com/patterns/dark-matter.png');
     background-blend-mode: overlay;
     font-family: 'Nunito', sans-serif;
-    /* Readable font for text */
     color: #e0e0e0;
     margin: 0;
     padding-bottom: 50px;
 }
 
-/* Titles use the Minecraft font */
 h1,
 h2,
 h3,
@@ -22,14 +19,15 @@ h3,
 .ip-text,
 .status-label,
 .dots-blue,
-.dots-red {
+.dots-red,
+.nav-btn {
     font-family: 'VT323', monospace;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 900px;
+    /* Made slightly smaller for focused reading */
     margin: 80px auto 0;
-    /* Margin top 80px to clear navbar */
     padding: 0 20px;
 }
 
@@ -39,7 +37,7 @@ h3,
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95);
     border-bottom: 3px solid #ffaa00;
     z-index: 1000;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
@@ -60,16 +58,34 @@ h3,
     letter-spacing: 2px;
 }
 
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 20px;
-    font-weight: bold;
-    transition: color 0.3s;
+.nav-links {
+    display: flex;
+    gap: 20px;
 }
 
-.nav-links a:hover {
+/* Style for the Tab Buttons */
+.nav-btn,
+.nav-item {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-family: 'VT323', monospace;
+    text-transform: uppercase;
+}
+
+.nav-btn:hover,
+.nav-item:hover {
     color: #ffaa00;
+}
+
+/* The Active Tab (Highlighted) */
+.active-link {
+    color: #ffaa00;
+    border-bottom: 2px solid #ffaa00;
 }
 
 /* --- 3. HERO HEADER --- */
@@ -78,9 +94,8 @@ h3,
     align-items: center;
     justify-content: center;
     gap: 50px;
-    padding: 60px 20px;
+    padding: 40px 20px;
     margin-bottom: 40px;
-    /* No border, just glow */
 }
 
 .header-text {
@@ -108,11 +123,9 @@ h3,
     height: 180px;
     image-rendering: pixelated;
     filter: drop-shadow(0 0 20px rgba(255, 170, 0, 0.3));
-    /* Float Animation */
     animation: float 3s ease-in-out infinite;
 }
 
-/* Floating Animation Keyframes */
 @keyframes float {
     0% {
         transform: translateY(0px);
@@ -136,8 +149,7 @@ h3,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 50px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
 }
 
 .status-label {
@@ -156,13 +168,11 @@ h3,
     background: #ffaa00;
     color: #000;
     border: none;
-    padding: 8px 20px;
+    padding: 5px 15px;
     font-size: 20px;
     cursor: pointer;
     font-weight: bold;
     border-radius: 4px;
-    transition: 0.2s;
-    box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
 }
 
 .copy-btn:hover {
@@ -170,73 +180,41 @@ h3,
     transform: scale(1.05);
 }
 
-.player-count {
-    font-weight: bold;
-    color: #888;
-}
-
 .status-dot {
     height: 10px;
     width: 10px;
     background-color: #ff5555;
-    /* Red for offline, Green for online */
     border-radius: 50%;
     display: inline-block;
     box-shadow: 0 0 5px #ff5555;
 }
 
-/* --- 5. CARDS GRID --- */
-.content-grid {
-    display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
-}
+/* --- 5. CARDS & TABS --- */
 
+/* Basic Card */
 .card {
     background-color: #1a1a1a;
     border: 1px solid #333;
     border-radius: 8px;
-    padding: 25px;
-    flex: 1;
-    min-width: 280px;
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-    overflow: hidden;
-    /* Hides internal spills */
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover Effect for Cards */
-.card:hover {
-    transform: translateY(-10px);
-    /* Moves up */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    border-color: #555;
+.full-page-card {
+    min-height: 400px;
+    /* Ensures tab feels substantial */
 }
 
-/* Specific Card Styles */
+/* News Card */
 .news-card {
     border-top: 4px solid #ffaa00;
-}
-
-.discord-card {
-    border-top: 4px solid #5555ff;
-    background: linear-gradient(180deg, #1a1a1a 0%, #1e1e24 100%);
-}
-
-.rules-card {
-    border-top: 4px solid #ff5555;
-    background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%);
-}
-
-.card h2 {
-    margin-top: 0;
-    font-size: 32px;
 }
 
 .news-item h3 {
     color: #ffaa00;
     margin-bottom: 5px;
-    font-size: 24px;
+    font-size: 28px;
+    margin-top: 0;
 }
 
 .date {
@@ -244,69 +222,105 @@ h3,
     color: #666;
     font-weight: bold;
     text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
 }
 
-hr {
-    border: 0;
-    border-top: 1px solid #333;
-    margin: 20px 0;
+/* Discord Card */
+.discord-card {
+    border-top: 4px solid #5555ff;
+    background: linear-gradient(180deg, #1a1a1a 0%, #1e1e24 100%);
+    text-align: center;
 }
 
-/* Special Text Styles */
+/* Rules Card */
+.rules-card {
+    border-top: 4px solid #ff5555;
+    background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%);
+}
+
+.rules-list {
+    list-style: none;
+    padding: 0;
+    font-size: 18px;
+}
+
+.rules-list li {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 3px solid #ff5555;
+}
+
+/* Typography & Colors */
 .title-blue {
     color: #5555ff;
-    text-shadow: 0 0 10px rgba(85, 85, 255, 0.4);
-    font-size: 45px !important;
-    margin-bottom: 10px;
+    font-size: 50px;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(85, 85, 255, 0.4);
 }
 
 .title-red {
     color: #ff5555;
-    text-shadow: 0 0 10px rgba(255, 85, 85, 0.4);
-    font-size: 45px !important;
-    margin-bottom: 10px;
-}
-
-.big-text {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.small-text {
-    font-size: 16px;
-    color: #888;
+    font-size: 50px;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(255, 85, 85, 0.4);
 }
 
 .dots-blue {
     color: #5555ff;
     letter-spacing: 5px;
     margin-top: 20px;
+    font-size: 24px;
 }
 
 .dots-red {
     color: #ff5555;
     letter-spacing: 5px;
     margin-top: 20px;
+    font-size: 24px;
 }
 
-.center-content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+/* Buttons */
+.action-btn {
+    padding: 10px 30px;
+    border: none;
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
-/* --- 6. FOOTER --- */
+.blue-btn {
+    background-color: #5555ff;
+    color: white;
+    box-shadow: 0 0 10px #5555ff;
+}
+
+.blue-btn:hover {
+    background-color: white;
+    color: #5555ff;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 30px 0;
+}
+
 .footer {
     text-align: center;
-    margin-top: 80px;
+    margin-top: 50px;
     color: #555;
     border-top: 1px solid #222;
     padding-top: 20px;
 }
 
-/* Mobile Responsive */
+.center-content {
+    text-align: center;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
     .header-box {
         flex-direction: column-reverse;
@@ -329,11 +343,10 @@ hr {
     }
 
     .nav-links {
-        display: none;
+        gap: 10px;
     }
 
-    /* Hide links on mobile for now */
-    .nav-content {
-        justify-content: center;
+    .nav-btn {
+        font-size: 18px;
     }
 }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sequence SMP</title>
 
-    <!-- FONTS: 'VT323' for Titles, 'Nunito' for reading text -->
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=VT323&display=swap"
@@ -23,17 +23,19 @@
         <div class="nav-content">
             <span class="nav-title">SEQUENCE SMP</span>
             <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#">Store</a>
-                <a href="#">Vote</a>
-                <a href="#">Discord</a>
+                <!-- We use onclick to switch tabs via JavaScript -->
+                <button class="nav-btn active-link" onclick="openTab('home')">Home</button>
+                <button class="nav-btn" onclick="openTab('discord')">Discord</button>
+                <button class="nav-btn" onclick="openTab('rules')">Rules</button>
+                <!-- External links (Store/Vote) can remain as normal links -->
+                <a href="#" class="nav-item">Store</a>
             </div>
         </div>
     </nav>
 
     <div class="container">
 
-        <!-- HEADER WITH ANIMATED LOGO -->
+        <!-- HEADER (Visible on all pages) -->
         <header class="header-box">
             <div class="header-text">
                 <h1>SEQUENCE</h1>
@@ -45,7 +47,7 @@
             </div>
         </header>
 
-        <!-- SERVER STATUS BAR -->
+        <!-- SERVER STATUS BAR (Visible on all pages) -->
         <div class="status-bar">
             <div class="status-content">
                 <span class="status-label">SERVER IP:</span>
@@ -57,10 +59,8 @@
             </div>
         </div>
 
-        <!-- MAIN GRID -->
-        <div class="content-grid">
-
-            <!-- CARD 1: UPDATES -->
+        <!-- === TAB 1: HOME === -->
+        <div id="home" class="tab-content active-tab">
             <div class="card news-card">
                 <div class="card-header">
                     <h2>LATEST NEWS</h2>
@@ -77,29 +77,45 @@
                     <p>We are looking for builders! Apply on our Discord channel today.</p>
                 </div>
             </div>
+        </div>
 
-            <!-- CARD 2: DISCORD (Blue Theme) -->
-            <div class="card center-content discord-card">
-                <h2 class="title-blue">DISCORD</h2>
+        <!-- === TAB 2: DISCORD === -->
+        <div id="discord" class="tab-content" style="display:none;">
+            <div class="card center-content discord-card full-page-card">
+                <h2 class="title-blue">DISCORD COMMUNITY</h2>
+                <div style="font-size: 80px; margin: 20px;">💬</div>
                 <p class="big-text">We do NOT have a Discord server yet!</p>
-                <p class="small-text">Just use Diddy Party for now.</p>
+                <p class="small-text">Please use Diddy Party for now to communicate.</p>
+                <br>
+                <button class="action-btn blue-btn">Join Diddy Party</button>
                 <div class="dots-blue">▪ ▪ ▪ ▪ ▪</div>
             </div>
+        </div>
 
-            <!-- CARD 3: RULES (Red Theme) -->
-            <div class="card center-content rules-card">
-                <h2 class="title-red">RULES</h2>
-                <p class="big-text">We do have some rules!</p>
-                <p class="small-text">Don't cheat & use common sense.</p>
-                <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
+        <!-- === TAB 3: RULES === -->
+        <div id="rules" class="tab-content" style="display:none;">
+            <div class="card rules-card full-page-card">
+                <div class="center-content">
+                    <h2 class="title-red">SERVER RULES</h2>
+                    <p class="small-text">Failure to follow these rules will result in a ban.</p>
+                </div>
+                <br>
+                <ul class="rules-list">
+                    <li><strong>1. No Griefing:</strong> Do not destroy other players' builds.</li>
+                    <li><strong>2. No Hacking:</strong> X-ray, Fly, and Kill Aura are strictly banned.</li>
+                    <li><strong>3. Be Respectful:</strong> No toxicity, racism, or harassment.</li>
+                    <li><strong>4. No Spamming:</strong> Keep the chat clean.</li>
+                    <li><strong>5. Important:</strong> Respcet the owner of the server</li>
+                </ul>
+                <div class="center-content">
+                    <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
+                </div>
             </div>
-
         </div>
 
         <!-- FOOTER -->
         <div class="footer">
             <p>&copy; 2025 SEQUENCE SMP</p>
-            <p style="font-size: 14px; opacity: 0.5;">Not affiliated with Mojang AB.</p>
         </div>
 
     </div>
