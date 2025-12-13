@@ -67,8 +67,7 @@
                 </div>
             </div>
         </header>
-
-        <!-- SERVER STATUS BAR -->
+<!-- SERVER STATUS BAR -->
         <div class="status-bar">
             <div class="status-content">
                 <span class="status-label">SERVER IP:</span>
@@ -76,10 +75,11 @@
             </div>
             <button id="copy-btn" class="copy-btn">COPY IP</button>
             <div class="player-count">
-                <span class="status-dot"></span> Online: <span style="color: #fff;">0 / 100</span>
+                <!-- ADDED id="player-text" HERE -->
+                <span class="status-dot"></span> Online: <span id="player-text" style="color: #fff;">Loading...</span>
             </div>
         </div>
-
+        
         <!-- === TAB 1: HOME (ABOUT US) === -->
         <div id="home" class="tab-content active-tab">
             <div class="card news-card">
