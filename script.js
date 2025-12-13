@@ -165,10 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!audioPlayer) return;
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
         audioPlayer.src = url;
-        audioPlayer.play().catch(e => {
-            console.error("Autoplay error:", e);
-            nowPlayingText.innerText = "⚠️ Click to Play";
-        });
+       audioPlayer.play().catch(() => {
+  nowPlayingText.innerText = "⚠️ Click to Play";
+
+  const unlock = () => {
+    audioPlayer.play();
+    nowPlayingText.innerText = "♫ " + (text || "Now playing");
+    document.removeEventListener("click", unlock);
+  };
+
+  document.addEventListener("click", unlock, { once: true });
+});
+
     }
 
     function stopAudio() {
