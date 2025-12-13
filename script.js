@@ -69,15 +69,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 2. CONNECT ---
-    if (connectBtn) {
-        connectBtn.addEventListener('click', () => {
-            connectWrapper.style.display = 'none';
-            playerControls.style.display = 'block';
-            if (volumeSlider && audioPlayer) audioPlayer.volume = volumeSlider.value;
-            isManualDisconnect = false;
-            initWebSocket();
-        });
-    }
+    connectBtn.addEventListener('click', async () => {
+        connectWrapper.style.display = 'none';
+        playerControls.style.display = 'block';
+
+        if (volumeSlider && audioPlayer) {
+            audioPlayer.volume = volumeSlider.value;
+        }
+
+        // autoplay unlock on user gesture
+        try {
+            audioPlayer.muted = false;
+            audioPlayer.src = "";
+            await audioPlayer.play().catch(() => { });
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+        } catch { }
+
+        isManualDisconnect = false;
+        initWebSocket();
+    });
 
     // --- 3. DISCONNECT ---
     if (disconnectBtn) {
