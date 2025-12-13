@@ -23,7 +23,6 @@
         <div class="nav-content">
             <span class="nav-title">SEQUENCE SMP</span>
             <div class="nav-links">
-                <!-- TABS (Vote is removed) -->
                 <button class="nav-btn active-link" onclick="openTab('home')">About Us</button>
                 <button class="nav-btn" onclick="openTab('discord')">Discord</button>
                 <button class="nav-btn" onclick="openTab('rules')">Rules</button>
@@ -35,14 +34,29 @@
 
         <!-- HEADER -->
         <header class="header-box">
-            <div class="header-text">
-                <h1>SEQUENCE</h1>
-                <h1>SMP</h1>
-                <p class="subtitle">THE ULTIMATE MINECRAFT EXPERIENCE</p>
-            </div>
+
+            <!-- Logo Left -->
             <div class="header-logo">
                 <img src="logo.png" alt="Server Logo" class="floating-logo">
             </div>
+
+            <!-- Text Right (Updated Top Line) -->
+            <div class="header-text-motd">
+                <!-- CHANGED THIS LINE BELOW -->
+                <div class="server-name-top">Sequence SMP</div>
+
+                <div class="motd-main-line">
+                    <span class="gold-text">SEQUENCE</span>
+                    <span class="gray-text"> • 1.21.10+</span>
+                </div>
+
+                <div class="motd-sub-line">
+                    <span class="fire-icon">🔥</span>
+                    <span class="gold-text">ULTIMATE MINECRAFT SMP REBIRTHED</span>
+                    <span class="fire-icon">🔥</span>
+                </div>
+            </div>
+
         </header>
 
         <!-- SERVER STATUS BAR -->
@@ -60,70 +74,43 @@
         <!-- === TAB 1: HOME (ABOUT US) === -->
         <div id="home" class="tab-content active-tab">
             <div class="card news-card">
-
-                <!-- Main Title -->
                 <div class="about-header">
                     <h2>📖 Sequence SMP: Where Every Chapter Unfolds</h2>
                 </div>
-
                 <div class="about-text">
                     <p>
                         Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created
                             by siqns in December 2025</span>, and built on the foundational principles of
                         <strong>friendly cooperation, creative freedom, and unforgettable long-term
-                            progression</strong>. We are more than just a server; we are a growing collective of players
-                        who value meaningful interaction, ambitious building projects, and shared experiences.
+                            progression</strong>.
                     </p>
-
                     <hr>
-
                     <h3>🌟 Our Vision</h3>
                     <p>
-                        We believe that the best Minecraft memories are created when players feel connected and their
-                        contributions truly matter. Sequence SMP is designed as a semi-vanilla environment where players
-                        shape the world's history through their individual and collaborative efforts. From the humble
-                        beginnings of your first shelter to the grand design of a community-wide megabase, your journey
-                        dictates the next chapter in our shared sequence.
+                        We believe that the best Minecraft memories are created when players feel connected. Sequence
+                        SMP is designed as a semi-vanilla environment where players shape the world's history through
+                        their individual and collaborative efforts.
                     </p>
-
                     <br>
-
                     <h3>✨ What We Offer</h3>
                     <ul class="feature-list">
                         <li>
-                            <strong>Semi-Vanilla Survival:</strong> Enjoy the classic Minecraft survival experience
-                            enhanced only by quality-of-life plugins:
+                            <strong>Semi-Vanilla Survival:</strong> Classic experience with quality-of-life plugins:
                             <div class="command-list">
                                 <span class="cmd">/tpa</span> Teleport to a friend.<br>
                                 <span class="cmd">/randomtpa</span> Explore the vast world instantly.<br>
                                 <span class="cmd">/back</span> Return to your last death spot.<br>
-                                <span class="cmd">/warps</span> Travel to key locations & hubs.
+                                <span class="cmd">/warps</span> Travel to key locations.
                             </div>
                         </li>
-                        <li>
-                            <strong>A Mature & Welcoming Community:</strong> Our rules are simple: be respectful, be
-                            constructive, and have fun. We maintain a friendly, inclusive atmosphere suitable for
-                            players who are looking for a reliable, long-term home.
-                        </li>
-                        <li>
-                            <strong>Community Events & Projects:</strong> Participate in server-wide events, cooperative
-                            mega-builds, and engaging challenges that provide opportunities to meet new people and leave
-                            a permanent mark on the world.
-                        </li>
-                        <li>
-                            <strong>Longevity & Stability:</strong> The server is committed to a long-term map, ensuring
-                            that the time and dedication you invest in your builds and progression will remain secure
-                            for years to come.
-                        </li>
+                        <li><strong>A Mature & Welcoming Community</strong></li>
+                        <li><strong>Community Events & Projects</strong></li>
+                        <li><strong>Longevity & Stability</strong></li>
                     </ul>
-
                     <hr>
-
                     <p style="text-align: center; font-weight: bold; font-size: 1.1em; color: #ffaa00;">
-                        Join Sequence SMP and start shaping your story today.<br>
-                        What will your contribution be to the sequence?
+                        Join Sequence SMP and start shaping your story today.
                     </p>
-
                 </div>
             </div>
         </div>
@@ -133,16 +120,11 @@
             <div class="card center-content discord-card full-page-card">
                 <h2 class="title-blue">DISCORD COMMUNITY</h2>
                 <div style="font-size: 80px; margin: 20px;">💬</div>
-
                 <p class="big-text">Join the official Sequence SMP Discord!</p>
-                <p class="small-text">Get support, chat with other players, and see updates.</p>
-
                 <br>
-
                 <a href="https://discord.gg/BFdVGHWAfY" target="_blank" style="text-decoration: none;">
                     <button class="action-btn blue-btn">JOIN SERVER</button>
                 </a>
-
                 <div class="dots-blue">▪ ▪ ▪ ▪ ▪</div>
             </div>
         </div>
@@ -152,15 +134,14 @@
             <div class="card rules-card full-page-card">
                 <div class="center-content">
                     <h2 class="title-red">SERVER RULES</h2>
-                    <p class="small-text">Failure to follow these rules will result in a ban.</p>
                 </div>
                 <br>
                 <ul class="rules-list">
-                    <li><strong>1. No Griefing:</strong> Do not destroy other players' builds.</li>
-                    <li><strong>2. No Hacking:</strong> X-ray, Fly, and Kill Aura are strictly banned.</li>
-                    <li><strong>3. Be Respectful:</strong> No toxicity, racism, or harassment.</li>
-                    <li><strong>4. No Spamming:</strong> Keep the chat clean.</li>
-                    <li><strong>5. PvP Rules:</strong> PvP is only allowed in designated arenas.</li>
+                    <li><strong>1. No Griefing</strong></li>
+                    <li><strong>2. No Hacking</strong></li>
+                    <li><strong>3. Be Respectful</strong></li>
+                    <li><strong>4. No Spamming</strong></li>
+                    <li><strong>5. PvP Allowed in Arenas Only</strong></li>
                 </ul>
                 <div class="center-content">
                     <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
@@ -175,9 +156,7 @@
 
     </div>
 
-    <!-- JS LINK -->
     <script src="script.js"></script>
-
 </body>
 
 </html>
