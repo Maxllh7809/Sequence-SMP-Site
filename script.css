@@ -1,17 +1,12 @@
-/* Custom CSS for EMBERFALL SMP Theme */
+/* Custom CSS for SEQUENCE SMP Theme */
 
-/* --- Base Setup --- */
+/* --- Variables and Base Setup --- */
 :root {
-    --color-background: #000000;
-    /* Black */
-    --color-text: #ffffff;
-    /* White/Silver */
-    --color-accent: #f5c71a;
-    /* High-contrast Yellow/Gold */
-    --color-secondary-accent: #ff4500;
-    /* Orange/Lava for contrast */
-    --font-main: 'Roboto Mono', monospace;
-    /* Blocky, pixel-like font */
+    --color-background: #000000; /* Black */
+    --color-text: #ffffff;      /* White/Silver */
+    --color-accent: #f5c71a;    /* High-contrast Yellow/Gold */
+    --color-secondary-accent: #ff4500; /* Orange/Lava for contrast */
+    --font-main: 'Roboto Mono', monospace; /* Blocky, pixel-like font */
     --border-thickness: 3px;
     --spacing: 20px;
 }
@@ -23,9 +18,8 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    /* Optional: Use a repeatable texture image for the background like the example */
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACozSGnAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5g0WIA0L42K87QAAABd0RVhhY29tbWVudABDb3BpZGl0cyBNYnF0YcE9AAAAEElEQVQY02NgZmBgYGYAAALeAASr7g64AAAAAElFTkSuQmCC');
-    /* Placeholder for dark texture */
+    /* You may replace this with a lava texture image if you find one */
+    background-image: none; 
     background-repeat: repeat;
     background-attachment: fixed;
 }
@@ -35,14 +29,13 @@ body {
     margin: 0 auto;
     padding: var(--spacing);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    /* Three equal columns */
+    /* Desktop: Three columns for the status/news/rules */
+    grid-template-columns: 1fr 1fr 1fr; 
     gap: var(--spacing);
 }
 
 /* --- Typography and Headings --- */
-h1,
-h2 {
+h1, h2 {
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -51,19 +44,13 @@ h2 {
     margin-bottom: var(--spacing);
 }
 
-p,
-ul {
-    margin-bottom: 10px;
-}
-
 ul {
     list-style-type: none;
     padding: 0;
 }
 
 ul li::before {
-    content: '>> ';
-    /* Simple blocky bullet point */
+    content: '>> '; /* Simple blocky bullet point */
     color: var(--color-secondary-accent);
     font-weight: bold;
 }
@@ -81,28 +68,28 @@ ul li::before {
     font-size: 3em;
     font-weight: 700;
     text-shadow: 2px 2px var(--color-secondary-accent);
-    /* Fiery shadow */
     color: var(--color-accent);
+}
+
+.server-logo {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
 }
 
 /* --- Box Styling (Main Content) --- */
 .box {
     background-color: rgba(10, 10, 10, 0.9);
-    /* Slightly transparent dark background */
     padding: var(--spacing);
-    border: var(--border-thickness) solid var(--color-accent);
-    /* The iconic yellow border */
-    /* Use a linear gradient for the border for a blocky 3D effect if desired */
+    border: var(--border-thickness) solid var(--color-accent); /* Yellow border */
     box-shadow: 0 0 5px rgba(245, 199, 26, 0.5);
-    /* Subtle glow */
     height: 100%;
-    /* Ensure boxes in the grid are the same height */
 }
 
-/* --- Status Box Specifics --- */
+/* Status box spans the full width of the main content area */
 .status-box {
-    grid-column: span 3;
-    /* Status box spans all three columns on desktop */
+    grid-column: span 3; 
     display: flex;
     flex-direction: column;
 }
@@ -159,21 +146,10 @@ footer {
 /* --- Responsiveness for Mobile --- */
 @media (max-width: 900px) {
     .container {
-        /* On smaller screens, stack the boxes */
-        grid-template-columns: 1fr;
+        /* On smaller screens, stack all boxes vertically */
+        grid-template-columns: 1fr; 
     }
-
     .status-box {
-        grid-column: span 1;
-        /* Status box reverts to single column */
-    }
-
-    .status-info {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .copy-btn {
-        margin-top: 10px;
+        grid-column: span 1; 
     }
 }
