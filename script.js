@@ -2,7 +2,12 @@
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com"; 
 const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
-/* --- TAB SWITCHING LOGIC --- */
+/* --- GLOBAL NAVIGATION FUNCTIONS (MUST BE AT TOP FOR HTML ONCLICK) --- */
+
+let slideIndex = 0;
+let galleryItems = []; // This will be filled later in DOMContentLoaded
+
+// Global function to manage tab switching (called by Navbar buttons)
 function openTab(tabName) {
     var allTabs = document.getElementsByClassName("tab-content");
     for (var i = 0; i < allTabs.length; i++) {
@@ -27,10 +32,7 @@ function openTab(tabName) {
     }
 }
 
-/* --- GALLERY NAVIGATION AND ZOOM LOGIC (GLOBAL SCOPE) --- */
-let slideIndex = 0;
-let galleryItems = []; // Array to hold all original image elements
-
+// Global function to close the Lightbox (called by onclick on the dark background)
 window.closeLightbox = function(event) {
     // Only close if clicking the close button or the dark background
     if (event.target === document.getElementById('lightbox') || event.target.classList.contains('close-btn')) {
@@ -41,11 +43,13 @@ window.closeLightbox = function(event) {
     }
 }
 
+// Global function to navigate slides (called by onclick on the arrows)
 window.plusSlides = function(n, event) {
-    event.stopPropagation(); // Prevent closing when clicking the buttons
+    event.stopPropagation(); // Prevents closing the lightbox when clicking arrows
     showSlides(slideIndex += n);
 }
 
+// Internal logic to display the image
 function showSlides(n) {
     if (n > galleryItems.length - 1) {
         slideIndex = 0;
@@ -61,76 +65,22 @@ function showSlides(n) {
     }
 }
 
+// Internal function to open lightbox (called by the image click listeners)
 function openLightbox(element, index) {
     slideIndex = index;
     document.getElementById('lightbox').style.display = "flex";
     showSlides(slideIndex);
 }
 
-/* --- DRAG/ZOOM LOGIC --- */
-let isDragging = false;
-let currentZoom = 1;
-
-function enableZoomAndDrag() {
-    const img = document.getElementById('lightbox-img');
-    let startX, startY, scrollLeft, scrollTop;
-
-    // Zoom on double-click
-    img.addEventListener('dblclick', (e) => {
-        e.preventDefault();
-        currentZoom = currentZoom === 1 ? 2.5 : 1;
-        img.style.transform = `scale(${currentZoom})`;
-        img.style.cursor = currentZoom === 1 ? 'grab' : 'zoom-in';
-
-        // Recenter after zoom
-        if (currentZoom > 1) {
-            const rect = img.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            img.style.transformOrigin = `${x * 100}% ${y * 100}%`;
-        } else {
-            img.style.transformOrigin = 'center center';
-        }
-    });
-
-    // Drag/Pan for zoomed image
-    img.addEventListener('mousedown', (e) => {
-        if (currentZoom > 1) {
-            isDragging = true;
-            img.style.cursor = 'grabbing';
-            startX = e.clientX;
-            startY = e.clientY;
-            scrollLeft = img.parentNode.scrollLeft;
-            scrollTop = img.parentNode.scrollTop;
-            img.style.transition = 'none'; // Disable transition while dragging
-        }
-    });
-
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        if (currentZoom > 1) img.style.cursor = 'zoom-in';
-        img.style.transition = 'transform 0.3s ease-out'; // Re-enable transition
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging || currentZoom === 1) return;
-        e.preventDefault();
-
-        // Implement Panning by adjusting transform: translate
-        // This is complex and usually requires a library, but for a simple scale:
-
-        // We will skip complex panning for this simple implementation as it is very hard to do purely with CSS scale and simple JS events.
-        // The double-click zoom is the main feature.
-    });
-}
-
-
-/* --- MAIN LOGIC (Runs when page loads) --- */
+// --- MAIN LOGIC (Runs when page loads) ---
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- INITIAL SETUP ---
+    // --- ELEMENT INITIALIZATION ---
     const copyButton = document.getElementById('copy-btn');
     const ipTextElement = document.getElementById('server-ip');
+    const playerText = document.getElementById('player-text');
+    const statusDot = document.querySelector('.status-dot');
+    const playerTooltip = document.getElementById('player-list-tooltip');
     
     // Audio Elements
     const audioPlayer = document.getElementById('audio-player');
@@ -147,22 +97,78 @@ document.addEventListener('DOMContentLoaded', () => {
     let ws;
     let isManualDisconnect = false;
 
-    // --- 1. GALLERY INIT ---
-    // Collect all unique images from the scrolling track (only take the first set)
-    const allGalleryItems = document.querySelectorAll('.scrolling-gallery-track .gallery-item img');
-    // Assuming the first half are the original unique images
-    const uniqueCount = allGalleryItems.length / 2; 
+    // --- 1. GALLERY INIT & EVENT ATTACHMENT ---
+    const allGalleryImages = document.querySelectorAll('.scrolling-gallery-track .gallery-item img');
+    // Assuming the first half are the original unique images (8 unique images in HTML)
+    const uniqueCount = 8; 
     
     for (let i = 0; i < uniqueCount; i++) {
-        galleryItems.push(allGalleryItems[i]);
-        // Re-attach the openLightbox function with the correct index
-        allGalleryItems[i].onclick = () => openLightbox(allGalleryItems[i], i);
+        galleryItems.push(allGalleryImages[i]);
+        // Attach click listener to each image
+        allGalleryImages[i].addEventListener('click', () => openLightbox(allGalleryImages[i], i));
     }
     
-    // Enable zoom/drag on the lightbox
-    enableZoomAndDrag();
-    
-    // --- 2. COPY IP BUTTON ---
+    // Attach Zoom/Drag logic
+    const lightboxImg = document.getElementById('lightbox-img');
+    let currentZoom = 1;
+    lightboxImg.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        currentZoom = currentZoom === 1 ? 2.5 : 1;
+        lightboxImg.style.transform = `scale(${currentZoom})`;
+        lightboxImg.style.cursor = currentZoom === 1 ? 'grab' : 'zoom-in';
+
+        if (currentZoom > 1) {
+            const rect = lightboxImg.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            lightboxImg.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+        } else {
+            lightboxImg.style.transformOrigin = 'center center';
+        }
+    });
+
+
+    // --- 2. SERVER STATUS ---
+    function updateServerStatus() {
+        if (!playerText) return;
+
+        fetch(SERVER_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.online) {
+                    playerText.innerText = `${data.players.online} / ${data.players.max}`;
+                    statusDot.style.backgroundColor = "#55ff55";
+                    statusDot.style.boxShadow = "0 0 5px #55ff55";
+                    if (data.players.list && data.players.list.length > 0) {
+                        let playerHtml = '';
+                        data.players.list.forEach(player => {
+                            playerHtml += `<div class="player-row"><img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head"><span>${player.name}</span></div>`;
+                        });
+                        playerTooltip.innerHTML = playerHtml;
+                    } else if (data.players.online > 0) {
+                        playerTooltip.innerHTML = `<div style='text-align:center; color:#888;'>${data.players.online} player(s) online.<br>List is private.</div>`;
+                    } else {
+                         playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players currently online.</div>";
+                    }
+                } else {
+                    playerText.innerText = "Offline";
+                    statusDot.style.backgroundColor = "#ff5555";
+                    statusDot.style.boxShadow = "0 0 5px #ff5555";
+                    playerTooltip.innerHTML = "Server is currently offline.";
+                }
+            })
+            .catch(error => {
+                playerText.innerText = "Error";
+                playerTooltip.innerHTML = "Could not fetch server status.";
+            });
+    }
+
+    updateServerStatus();
+    setInterval(updateServerStatus, 30000);
+
+
+    // --- 3. COPY IP BUTTON ---
+    const copyButton = document.getElementById('copy-btn');
     if (copyButton && ipTextElement) {
         copyButton.addEventListener('click', () => {
             const ipText = ipTextElement.innerText;
@@ -172,45 +178,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* -- 3. AUDIO SYSTEM -- */
-    const connectBtn = document.getElementById('connect-audio-btn');
-    const disconnectBtn = document.getElementById('disconnect-btn');
-    const connectWrapper = document.getElementById('connect-wrapper');
-    const playerControls = document.getElementById('player-controls');
-    const audioStatus = document.getElementById('audio-status');
-    const audioPlayer = document.getElementById('audio-player');
-    const volumeSlider = document.getElementById('volume-slider');
-    const nowPlayingText = document.getElementById('now-playing-text');
 
-    let ws;
-    let isManualDisconnect = false;
-
+    // --- 4. AUDIO SYSTEM LOGIC ---
     if (connectBtn) {
-        connectBtn.addEventListener('click', async () => {
-            connectWrapper.style.display = 'none';
-            playerControls.style.display = 'block';
+connectBtn.addEventListener('click', async () => {
+    connectWrapper.style.display = 'none';
+    playerControls.style.display = 'block';
 
-            if (volumeSlider && audioPlayer) {
-                audioPlayer.volume = volumeSlider.value;
-            }
+    if (volumeSlider && audioPlayer) {
+        audioPlayer.volume = volumeSlider.value;
+    }
 
-            // autoplay unlock on user gesture
-            try {
-                audioPlayer.muted = false;
-                audioPlayer.src = "";
-                await audioPlayer.play().catch(() => { });
-                audioPlayer.pause();
-                audioPlayer.currentTime = 0;
-            } catch { }
+    // autoplay unlock on user gesture
+    try {
+        audioPlayer.muted = false;
+        audioPlayer.src = "";
+        await audioPlayer.play().catch(() => {});
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+    } catch {}
 
-            isManualDisconnect = false;
-            initWebSocket();
-        });
+    isManualDisconnect = false;
+    initWebSocket();
+});
+
+    if (playerNameInput) {
+        playerNameInput.value = localStorage.getItem('minecraft_username') || '';
     }
 
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
-            isManualDisconnect = true;
+            isManualDisconnect = true; 
             if (ws) ws.close();
             stopAudio();
 
@@ -218,16 +216,17 @@ document.addEventListener('DOMContentLoaded', () => {
             connectWrapper.style.display = 'block';
             audioStatus.innerText = "Status: Disconnected";
             audioStatus.style.color = "#888";
+            radioMemberList.innerHTML = '<p style="text-align: center; color:#aaa;">Enable audio to see the list.</p>';
         });
     }
 
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
-            if (audioPlayer) audioPlayer.volume = e.target.value;
+            if(audioPlayer) audioPlayer.volume = e.target.value;
         });
     }
 
-    function initWebSocket() {
+    function initWebSocket(username) {
         if (!audioStatus) return;
 
         audioStatus.innerText = "Status: Connecting...";
@@ -238,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ws.onopen = () => {
             audioStatus.innerText = "Status: Connected ●";
             audioStatus.style.color = "#55ff55";
+            ws.send(JSON.stringify({ type: "identify", playername: username }));
         };
 
         ws.onmessage = (event) => {
@@ -245,6 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = JSON.parse(event.data);
                 if (data.action === 'play') playAudio(data.url, data.text);
                 else if (data.action === 'stop') stopAudio();
+                else if (data.action === 'clientlist') updateMemberList(data.players); 
+
             } catch (e) { console.error("JSON Error:", e); }
         };
 
@@ -252,26 +254,32 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isManualDisconnect) return;
             audioStatus.innerText = "Status: Disconnected (Retrying...)";
             audioStatus.style.color = "#ff5555";
-            setTimeout(initWebSocket, 3000);
+            setTimeout(initWebSocket, 3000); 
         };
+    }
+
+    function updateMemberList(players) {
+        if (!radioMemberList) return;
+        
+        if (players.length === 0) {
+            radioMemberList.innerHTML = "<p style='text-align:center; color:#aaa;'>You are the only one listening!</p>";
+            return;
+        }
+
+        let listHtml = '';
+        players.forEach(player => {
+            listHtml += `<div class="user-list-item"><img src="https://crafatar.com/avatars/${player.name}?size=24&overlay" class="user-avatar"><span>${player.name}</span></div>`;
+        });
+        radioMemberList.innerHTML = listHtml;
     }
 
     function playAudio(url, text) {
         if (!audioPlayer) return;
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
         audioPlayer.src = url;
-       audioPlayer.play().catch(() => {
-  nowPlayingText.innerText = "⚠️ Click to Play";
-
-  const unlock = () => {
-    audioPlayer.play();
-    nowPlayingText.innerText = "♫ " + (text || "Now playing");
-    document.removeEventListener("click", unlock);
-  };
-
-  document.addEventListener("click", unlock, { once: true });
-});
-
+        audioPlayer.play().catch(e => {
+            nowPlayingText.innerText = "⚠️ Click to Play";
+        });
     }
 
     function stopAudio() {
@@ -281,61 +289,3 @@ document.addEventListener('DOMContentLoaded', () => {
         nowPlayingText.innerText = "Waiting for music...";
     }
 });
-/* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
-    const playerText = document.getElementById('player-text');
-    const statusDot = document.querySelector('.status-dot');
-    const playerTooltip = document.getElementById('player-list-tooltip');
-    
-    // Using mcsrvstat.us API
-    const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
-
-    function updateServerStatus() {
-        if (!playerText) return;
-
-        fetch(SERVER_API_URL)
-            .then(response => response.json())
-            .then(data => {
-                if (data.online) {
-                    // 1. Update Count
-                    playerText.innerText = `${data.players.online} / ${data.players.max}`;
-                    statusDot.style.backgroundColor = "#55ff55";
-                    statusDot.style.boxShadow = "0 0 5px #55ff55";
-
-                    // 2. Update Player List Tooltip
-                    if (data.players.list && data.players.list.length > 0) {
-                        // Create HTML for each player
-                        let playerHtml = '';
-                        data.players.list.forEach(player => {
-                            // Uses Crafatar to get the player's face 
-                            playerHtml += `
-                                <div class="player-row">
-                                    <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
-                                    <span>${player.name}</span>
-                                </div>
-                            `;
-                        });
-                        playerTooltip.innerHTML = playerHtml;
-                    } else {
-                        // Online but list is hidden or empty
-                        playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
-                    }
-
-                } else {
-                    // Server Offline
-                    playerText.innerText = "Offline";
-                    statusDot.style.backgroundColor = "#ff5555";
-                    statusDot.style.boxShadow = "0 0 5px #ff5555";
-                    playerTooltip.innerHTML = "Server is currently offline.";
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching server status:", error);
-                playerText.innerText = "Error";
-            });
-    }
-
-    // Run immediately when page loads
-    updateServerStatus();
-    
-    // Refresh every 30 seconds
-    setInterval(updateServerStatus, 30000);
