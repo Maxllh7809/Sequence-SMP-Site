@@ -1,11 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sequence SMP</title>
     
-    <!-- FAVICON (THIS IS THE NEW LINE) -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="logo.png">
-
+    
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +21,7 @@
     <!-- CSS LINK -->
     <link rel="stylesheet" href="script.css">
 </head>
+<body>
 
     <!-- BACKGROUND PARTICLES -->
     <div class="particles">
@@ -60,26 +63,24 @@
             </div>
         </header>
 
-<!-- SERVER STATUS BAR -->
+        <!-- SERVER STATUS BAR -->
         <div class="status-bar">
             <div class="status-content">
                 <span class="status-label"><i class="fas fa-wifi"></i> SERVER IP:</span>
                 <span id="server-ip" class="ip-text">sequence.playmc.cloud</span>
             </div>
             <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> COPY IP</button>
-            
-            <!-- Player Count Area -->
             <div class="player-count">
-                <span class="status-dot"></span> Online: <span id="player-text">Loading...</span>
+                <span class="status-dot"></span> Online: <span id="player-text" style="color: #fff;">Loading...</span>
                 
-                <!-- NEW: HIDDEN PLAYER LIST -->
+                <!-- PLAYER LIST TOOLTIP (Hidden by default) -->
                 <div id="player-list-tooltip" class="player-tooltip">
                     No players online.
                 </div>
             </div>
         </div>
 
-        <!-- === TAB 1: HOME === -->
+        <!-- === TAB 1: HOME (ABOUT US) === -->
         <div id="home" class="tab-content active-tab">
             <div class="card news-card">
                 <div class="about-header">
@@ -91,23 +92,56 @@
                         Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created by siqns in December 2025</span>, and built on the foundational principles of <strong>friendly cooperation, creative freedom, and unforgettable long-term progression</strong>.
                     </p>
                     
-                    <!-- SCROLLING GALLERY -->
+                    <!-- SCROLLING GALLERY SECTION -->
                     <br>
                     <h3><i class="fas fa-camera"></i> Server Gallery</h3>
                     <div class="scrolling-gallery-container">
                         <div class="scrolling-gallery-track">
-                            <!-- IMAGES -->
-                            <div class="gallery-item"><img src="serverowner.jpg" alt="Server Owner"><div class="caption">Server Owner</div></div>
-                            <div class="gallery-item"><img src="spawn.png" alt="Front Spawn"><div class="caption">Front Spawn</div></div>
-                            <div class="gallery-item"><img src="spawnback.png" alt="Back Spawn"><div class="caption">Back Spawn</div></div>
-                            <div class="gallery-item"><img src="spawnleft.png" alt="Left Spawn"><div class="caption">Left Spawn</div></div>
-                            <div class="gallery-item"><img src="spawnright.png" alt="Right Spawn"><div class="caption">Right Spawn</div></div>
-                            <!-- DUPLICATES -->
-                            <div class="gallery-item"><img src="serverowner.jpg" alt="Server Owner"><div class="caption">Server Owner</div></div>
-                            <div class="gallery-item"><img src="spawn.png" alt="Front Spawn"><div class="caption">Front Spawn</div></div>
-                            <div class="gallery-item"><img src="spawnback.png" alt="Back Spawn"><div class="caption">Back Spawn</div></div>
-                            <div class="gallery-item"><img src="spawnleft.png" alt="Left Spawn"><div class="caption">Left Spawn</div></div>
-                            <div class="gallery-item"><img src="spawnright.png" alt="Right Spawn"><div class="caption">Right Spawn</div></div>
+                            
+                            <!-- IMAGES (Set 1) -->
+                            <div class="gallery-item">
+                                <img src="serverowner.jpg" alt="Server Owner">
+                                <div class="caption">Server Owner</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawn.png" alt="Front Spawn">
+                                <div class="caption">Front Spawn</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawnback.png" alt="Back Spawn">
+                                <div class="caption">Back Spawn</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawnleft.png" alt="Left Spawn">
+                                <div class="caption">Left Spawn</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawnright.png" alt="Right Spawn">
+                                <div class="caption">Right Spawn</div>
+                            </div>
+
+                            <!-- IMAGES (Set 2 - Duplicate for Loop) -->
+                            <div class="gallery-item">
+                                <img src="serverowner.jpg" alt="Server Owner">
+                                <div class="caption">Server Owner</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawn.png" alt="Front Spawn">
+                                <div class="caption">Front Spawn</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawnback.png" alt="Back Spawn">
+                                <div class="caption">Back Spawn</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawnleft.png" alt="Left Spawn">
+                                <div class="caption">Left Spawn</div>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="spawnright.png" alt="Right Spawn">
+                                <div class="caption">Right Spawn</div>
+                            </div>
+
                         </div>
                     </div>
                     <p style="font-size: 14px; text-align:center; color: #666;">(Click an image to zoom in)</p>
@@ -161,7 +195,7 @@
                     <li><i class="fas fa-shield-alt"></i> <strong>2. No Hacking</strong></li>
                     <li><i class="fas fa-handshake"></i> <strong>3. Be Respectful</strong></li>
                     <li><i class="fas fa-comment-slash"></i> <strong>4. No Spamming</strong></li>
-                    <li><i class="fas fa-skull-crossbones"></i> <strong>5. PvP Outside Spawn Only</strong></li>
+                    <li><i class="fas fa-skull-crossbones"></i> <strong>5. PvP Allowed Outside Spawn Only</strong></li>
                 </ul>
                 <div class="center-content"><div class="dots-red">▪ ▪ ▪ ▪ ▪</div></div>
             </div>
@@ -173,51 +207,59 @@
                 <h2 style="color: #55ff55; font-size: 40px; margin-bottom: 5px;"><i class="fas fa-broadcast-tower"></i> SERVER RADIO</h2>
                 <p id="audio-status" style="color: #888; font-size: 16px;">Status: Disconnected</p>
 
-                <div id="connect-wrapper">
-                    <div style="font-size: 60px; margin: 20px;">🔊</div>
-                    <p>Click below to connect to Voice/Music</p>
-                    <button id="connect-audio-btn" class="action-btn" style="background-color: #55ff55; color: black; box-shadow: 0 0 10px #55ff55;"><i class="fas fa-plug"></i> ENABLE AUDIO</button>
-                </div>
+                <!-- Audio UI Wrapper -->
+                <div id="audio-ui-wrapper" style="display: flex; justify-content: center; width: 100%; gap: 20px;">
+                    
+                    <!-- LEFT SIDE: CONTROLS & STATUS -->
+                    <div style="flex-grow: 1; max-width: 300px;">
+                        
+                        <!-- Initial Connect Button -->
+                        <div id="connect-wrapper">
+                            <div style="font-size: 60px; margin: 20px;">🔊</div>
+                            <p>Click below to connect to Voice/Music</p>
+                            <input type="text" id="player-name-input" placeholder="Your Minecraft Username" style="margin-top: 15px; padding: 5px; border-radius: 4px; border: 1px solid #444; background:#333; color:white; font-family:'Nunito', sans-serif;">
+                            <button id="connect-audio-btn" class="action-btn" style="background-color: #55ff55; color: black; box-shadow: 0 0 10px #55ff55;"><i class="fas fa-plug"></i> ENABLE AUDIO</button>
+                        </div>
 
-                <div id="player-controls" style="display: none; width: 100%; max-width: 400px; margin: 0 auto;">
-                    <div class="visualizer">
-                        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        <!-- Player Controls (Hidden until connected) -->
+                        <div id="player-controls" style="display: none; width: 100%;">
+                            <div class="visualizer">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            </div>
+                            <p id="now-playing-text" style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">Waiting for music...</p>
+                            <label for="volume-slider" style="display: block; margin-bottom: 10px; color: #aaa;">MASTER VOLUME</label>
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                            <button id="disconnect-btn" class="action-btn" style="background-color: #ff5555; color: white; box-shadow: 0 0 10px #ff5555; margin-top: 30px; font-size: 20px;"><i class="fas fa-power-off"></i> DISCONNECT</button>
+                        </div>
                     </div>
-                    <p id="now-playing-text" style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">Waiting for music...</p>
-                    <label for="volume-slider" style="display: block; margin-bottom: 10px; color: #aaa;">MASTER VOLUME</label>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-                    <button id="disconnect-btn" class="action-btn" style="background-color: #ff5555; color: white; box-shadow: 0 0 10px #ff5555; margin-top: 30px; font-size: 20px;"><i class="fas fa-power-off"></i> DISCONNECT</button>
+
+                    <!-- RIGHT SIDE: MEMBER LIST -->
+                    <div style="flex-grow: 1; max-width: 300px; text-align: left;" class="member-list-card">
+                        <h3 style="color: #55ff55; font-size: 24px; margin-bottom: 10px; margin-top: 0; text-align: center;"><i class="fas fa-list"></i> Connected Users</h3>
+                        <div id="radio-member-list" class="user-list">
+                            <p style="text-align: center; color:#aaa;">Enable audio to see the list.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
-        <!-- FOOTER -->
+        <!-- FOOTER WITH CREDITS -->
         <div class="footer">
             <p>&copy; 2025 SEQUENCE SMP</p>
             <div class="credits-box">
                 <p>Website by <span class="credit-name">Loh Wei Feng (Max)</span></p>
-                <p>Plugins by <span class="credit-name">Jishnu H Maruthamutu (Hooman)</span></p>
+                <p>Plugins by <span class="credit-name">Jishnu H Marathamutu (Hooman)</span></p>
             </div>
         </div>
 
     </div>
 
-    <!-- NEW LIGHTBOX (Pop-up Image Viewer with Navigation) -->
+    <!-- LIGHTBOX (Pop-up Image Viewer) -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="close-btn">&times;</span>
-        <div class="lightbox-wrapper">
-            
-            <!-- Previous Button -->
-            <a class="prev" onclick="plusSlides(-1, event)">&#10094;</a>
-            
-            <!-- Image Content -->
-            <img class="lightbox-content" id="lightbox-img" src="">
-            
-            <!-- Next Button -->
-            <a class="next" onclick="plusSlides(1, event)">&#10095;</a>
-        </div>
-        
-        <!-- Caption -->
+        <img class="lightbox-content" id="lightbox-img">
         <div id="lightbox-caption"></div>
     </div>
 
