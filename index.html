@@ -9,12 +9,8 @@
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Nunito for reading text -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <!-- VT323 as a backup pixel font -->
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
-    <!-- REAL MINECRAFT FONT IMPORT -->
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
     <!-- CSS LINK -->
@@ -31,6 +27,8 @@
                 <button class="nav-btn active-link" onclick="openTab('home')">About Us</button>
                 <button class="nav-btn" onclick="openTab('discord')">Discord</button>
                 <button class="nav-btn" onclick="openTab('rules')">Rules</button>
+                <!-- NEW AUDIO BUTTON -->
+                <button class="nav-btn" onclick="openTab('audio')">Audio</button>
             </div>
         </div>
     </nav>
@@ -39,31 +37,21 @@
 
         <!-- HEADER -->
         <header class="header-box">
-
-            <!-- Logo Left -->
             <div class="header-logo">
                 <img src="logo.png" alt="Server Logo" class="floating-logo">
             </div>
-
-            <!-- Text Right (Updated to match your image perfectly) -->
             <div class="header-text-motd">
-                <!-- Line 1: White Text -->
                 <div class="server-name-top">SEQUENCE SMP</div>
-
-                <!-- Line 2: Gold & Gray -->
                 <div class="motd-main-line">
                     <span class="gold-text">SEQUENCE</span>
                     <span class="gray-text"> • 1.21.10+</span>
                 </div>
-
-                <!-- Line 3: Fire & Gold -->
                 <div class="motd-sub-line">
                     <span class="fire-icon">🔥</span>
                     <span class="gold-text">ULTIMATE MINECRAFT SMP REBIRTHED</span>
                     <span class="fire-icon">🔥</span>
                 </div>
             </div>
-
         </header>
 
         <!-- SERVER STATUS BAR -->
@@ -78,46 +66,24 @@
             </div>
         </div>
 
-        <!-- === TAB 1: HOME (ABOUT US) === -->
+        <!-- === TAB 1: HOME === -->
         <div id="home" class="tab-content active-tab">
             <div class="card news-card">
                 <div class="about-header">
                     <h2>📖 Sequence SMP: Where Every Chapter Unfolds</h2>
                 </div>
                 <div class="about-text">
-                    <p>
-                        Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created
-                            by siqns in December 2025</span>, and built on the foundational principles of
-                        <strong>friendly cooperation, creative freedom, and unforgettable long-term
-                            progression</strong>.
-                    </p>
+                    <p>Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created
+                            by siqns in December 2025</span>.</p>
                     <hr>
-                    <h3>🌟 Our Vision</h3>
-                    <p>
-                        We believe that the best Minecraft memories are created when players feel connected. Sequence
-                        SMP is designed as a semi-vanilla environment where players shape the world's history through
-                        their individual and collaborative efforts.
-                    </p>
-                    <br>
                     <h3>✨ What We Offer</h3>
                     <ul class="feature-list">
-                        <li>
-                            <strong>Semi-Vanilla Survival:</strong> Classic experience with quality-of-life plugins:
-                            <div class="command-list">
-                                <span class="cmd">/tpa</span> Teleport to a friend.<br>
-                                <span class="cmd">/rtpa</span> Explore the vast world instantly.<br>
-                                <span class="cmd">/back</span> Return to your last death spot.<br>
-                                <span class="cmd">/warps</span> Travel to key locations.
-                            </div>
-                        </li>
+                        <li><strong>Semi-Vanilla Survival</strong> with /tpa, /back, /warps.</li>
                         <li><strong>A Mature & Welcoming Community</strong></li>
                         <li><strong>Community Events & Projects</strong></li>
-                        <li><strong>Longevity & Stability</strong></li>
                     </ul>
                     <hr>
-                    <p style="text-align: center; font-weight: bold; font-size: 1.1em; color: #ffaa00;">
-                        Join Sequence SMP and start shaping your story today.
-                    </p>
+                    <p style="text-align: center; font-weight: bold; color: #ffaa00;">Join Sequence SMP today.</p>
                 </div>
             </div>
         </div>
@@ -148,7 +114,6 @@
                     <li><strong>2. No Hacking</strong></li>
                     <li><strong>3. Be Respectful</strong></li>
                     <li><strong>4. No Spamming</strong></li>
-                    <li><strong>5. Be a good boy</strong></li>
                 </ul>
                 <div class="center-content">
                     <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
@@ -156,12 +121,54 @@
             </div>
         </div>
 
+        <!-- === TAB 4: AUDIO (NEW) === -->
+        <div id="audio" class="tab-content" style="display:none;">
+            <div class="card audio-card full-page-card center-content">
+                <h2 style="color: #55ff55; font-size: 40px; margin-bottom: 5px;">SERVER RADIO</h2>
+                <p id="audio-status" style="color: #888; font-size: 16px;">Status: Disconnected</p>
+
+                <!-- Initial Connect Button -->
+                <div id="connect-wrapper">
+                    <div style="font-size: 60px; margin: 20px;">🔊</div>
+                    <p>Click below to connect to Voice/Music</p>
+                    <button id="connect-audio-btn" class="action-btn"
+                        style="background-color: #55ff55; color: black; box-shadow: 0 0 10px #55ff55;">ENABLE
+                        AUDIO</button>
+                </div>
+
+                <!-- Player Controls (Hidden until connected) -->
+                <div id="player-controls" style="display: none; width: 100%; max-width: 400px; margin: 0 auto;">
+
+                    <!-- Fake Visualizer Bars -->
+                    <div class="visualizer">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+
+                    <p id="now-playing-text"
+                        style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">Waiting for music...
+                    </p>
+
+                    <label for="volume-slider" style="display: block; margin-bottom: 10px; color: #aaa;">MASTER
+                        VOLUME</label>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                </div>
+
+            </div>
+        </div>
+
         <!-- FOOTER -->
         <div class="footer">
-            <p>&copy; 2025 SEQUENCE SMP Copyrighted to Loh Wei Feng 2025</p>
+            <p>&copy; 2025 SEQUENCE SMP</p>
         </div>
 
     </div>
+
+    <!-- HIDDEN AUDIO ELEMENT -->
+    <audio id="audio-player"></audio>
 
     <script src="script.js"></script>
 </body>
