@@ -202,14 +202,29 @@
 
     </div>
 
-    <!-- LIGHTBOX -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <!-- NEW LIGHTBOX (Pop-up Image Viewer with Navigation) -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="close-btn">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
+        <div class="lightbox-wrapper">
+            
+            <!-- Previous Button -->
+            <a class="prev" onclick="plusSlides(-1, event)">&#10094;</a>
+            
+            <!-- Image Content -->
+            <img class="lightbox-content" id="lightbox-img" src="">
+            
+            <!-- Next Button -->
+            <a class="next" onclick="plusSlides(1, event)">&#10095;</a>
+        </div>
+        
+        <!-- Caption -->
         <div id="lightbox-caption"></div>
     </div>
 
+    <!-- Hidden Audio Player -->
     <audio id="audio-player"></audio>
+
+    <!-- JS LINK -->
     <script src="script.js"></script>
 </body>
 </html>
