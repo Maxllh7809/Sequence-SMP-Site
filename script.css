@@ -1,142 +1,294 @@
-/* 1. General Page Settings */
+/* --- 1. GLOBAL SETTINGS --- */
 body {
-    background-color: #1a1a1a;
-    background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
-    font-family: 'VT323', monospace;
-    color: #ffffff;
+    background-color: #121212;
+    /* Cool dark gradient background */
+    background-image:
+        radial-gradient(circle at 50% 50%, #1e1e1e 0%, #0d0d0d 100%),
+        url('https://www.transparenttextures.com/patterns/dark-matter.png');
+    background-blend-mode: overlay;
+    font-family: 'Nunito', sans-serif;
+    /* Readable font for text */
+    color: #e0e0e0;
     margin: 0;
-    padding: 20px;
-    font-size: 20px;
+    padding-bottom: 50px;
 }
 
-/* 2. Layout Container */
+/* Titles use the Minecraft font */
+h1,
+h2,
+h3,
+.nav-title,
+.copy-btn,
+.ip-text,
+.status-label,
+.dots-blue,
+.dots-red {
+    font-family: 'VT323', monospace;
+}
+
 .container {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 80px auto 0;
+    /* Margin top 80px to clear navbar */
+    padding: 0 20px;
 }
 
-/* 3. The Big Header (Updated for Logo) */
-.header-box {
-    border: 4px solid #ffaa00;
-    background-color: #000000;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(255, 170, 0, 0.2);
+/* --- 2. NAVIGATION BAR --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-bottom: 3px solid #ffaa00;
+    z-index: 1000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
 
-    /* Flexbox to put Text and Logo side-by-side */
+.nav-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.nav-title {
+    color: #ffaa00;
+    font-size: 30px;
+    letter-spacing: 2px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #ffaa00;
+}
+
+/* --- 3. HERO HEADER --- */
+.header-box {
     display: flex;
     align-items: center;
-    /* Centers them vertically */
     justify-content: center;
-    /* Centers the whole group */
-    gap: 40px;
-    /* Space between text and logo */
-    flex-wrap: wrap;
-    /* Allows stacking on mobile phones */
+    gap: 50px;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+    /* No border, just glow */
 }
 
-/* Style for the Text part */
 .header-text {
     text-align: right;
-    /* Aligns text towards the logo */
 }
 
 .header-text h1 {
-    font-size: 80px;
-    margin: 0;
+    font-size: 90px;
+    margin: -15px 0;
     color: #ffaa00;
-    text-shadow: 4px 4px #8b0000;
-    text-transform: uppercase;
+    text-shadow: 0px 0px 20px rgba(255, 170, 0, 0.4), 4px 4px 0px #8b0000;
     line-height: 0.9;
-    /* Brings the words closer together */
+}
+
+.subtitle {
+    font-size: 18px;
     letter-spacing: 5px;
+    color: #888;
+    margin-top: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-/* Style for the Logo part */
 .header-logo img {
-    height: 160px;
-    /* Controls the size of the logo */
+    height: 180px;
     image-rendering: pixelated;
-    /* Keeps the pixel art sharp */
-    display: block;
+    filter: drop-shadow(0 0 20px rgba(255, 170, 0, 0.3));
+    /* Float Animation */
+    animation: float 3s ease-in-out infinite;
 }
 
-/* Mobile Fix: When screen is small, stack them */
-@media (max-width: 600px) {
-    .header-text {
-        text-align: center;
+/* Floating Animation Keyframes */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
     }
 
-    .header-box {
-        gap: 20px;
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
     }
 }
 
-/* 4. Server Status Section */
-.status-section {
-    margin-bottom: 30px;
+/* --- 4. SERVER STATUS BAR --- */
+.status-bar {
+    background: linear-gradient(90deg, #222, #1a1a1a);
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.ip-box {
-    display: inline-block;
-    font-size: 24px;
+.status-label {
+    color: #888;
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.ip-text {
+    color: #ffaa00;
+    font-size: 26px;
+    letter-spacing: 1px;
 }
 
 .copy-btn {
-    background-color: #333;
-    border: 2px solid #ffaa00;
-    color: white;
-    padding: 5px 15px;
-    font-family: 'VT323', monospace;
+    background: #ffaa00;
+    color: #000;
+    border: none;
+    padding: 8px 20px;
+    font-size: 20px;
     cursor: pointer;
-    font-size: 18px;
-    margin-left: 10px;
-    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 4px;
     transition: 0.2s;
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
 }
 
 .copy-btn:hover {
-    background-color: #ffaa00;
-    color: black;
+    background: #fff;
+    transform: scale(1.05);
 }
 
-/* 5. The Three-Column Grid */
+.player-count {
+    font-weight: bold;
+    color: #888;
+}
+
+.status-dot {
+    height: 10px;
+    width: 10px;
+    background-color: #ff5555;
+    /* Red for offline, Green for online */
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 5px #ff5555;
+}
+
+/* --- 5. CARDS GRID --- */
 .content-grid {
     display: flex;
-    gap: 20px;
+    gap: 25px;
     flex-wrap: wrap;
 }
 
-/* 6. The "Cards" General Style */
 .card {
-    border: 4px solid #ffaa00;
-    background-color: #252525;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 25px;
     flex: 1;
-    padding: 20px;
-    min-width: 250px;
+    min-width: 280px;
     position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    /* Hides internal spills */
 }
 
-/* Corner decorations */
-.card::after {
-    content: "";
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 10px;
-    height: 10px;
-    background-color: #ffaa00;
+/* Hover Effect for Cards */
+.card:hover {
+    transform: translateY(-10px);
+    /* Moves up */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-color: #555;
 }
 
-/* Standard Header (Gold) */
+/* Specific Card Styles */
+.news-card {
+    border-top: 4px solid #ffaa00;
+}
+
+.discord-card {
+    border-top: 4px solid #5555ff;
+    background: linear-gradient(180deg, #1a1a1a 0%, #1e1e24 100%);
+}
+
+.rules-card {
+    border-top: 4px solid #ff5555;
+    background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%);
+}
+
 .card h2 {
-    color: #ffaa00;
     margin-top: 0;
-    border-bottom: 2px solid #444;
-    padding-bottom: 10px;
+    font-size: 32px;
 }
 
-/* --- NEW STYLES FOR RULES & DISCORD --- */
+.news-item h3 {
+    color: #ffaa00;
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+.date {
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #333;
+    margin: 20px 0;
+}
+
+/* Special Text Styles */
+.title-blue {
+    color: #5555ff;
+    text-shadow: 0 0 10px rgba(85, 85, 255, 0.4);
+    font-size: 45px !important;
+    margin-bottom: 10px;
+}
+
+.title-red {
+    color: #ff5555;
+    text-shadow: 0 0 10px rgba(255, 85, 85, 0.4);
+    font-size: 45px !important;
+    margin-bottom: 10px;
+}
+
+.big-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.small-text {
+    font-size: 16px;
+    color: #888;
+}
+
+.dots-blue {
+    color: #5555ff;
+    letter-spacing: 5px;
+    margin-top: 20px;
+}
+
+.dots-red {
+    color: #ff5555;
+    letter-spacing: 5px;
+    margin-top: 20px;
+}
 
 .center-content {
     text-align: center;
@@ -145,62 +297,43 @@ body {
     justify-content: center;
 }
 
-.big-text {
-    font-size: 1.2em;
-    line-height: 1.4;
-}
-
-/* BLUE CARD STYLES */
-.title-blue {
-    color: #5555ff !important;
-    /* Minecraft Blue */
-    border-bottom: none !important;
-    /* Remove line */
-    font-size: 40px !important;
-    text-shadow: 2px 2px #000;
-}
-
-.dots-blue {
-    color: #5555ff;
-    font-size: 24px;
-    letter-spacing: 5px;
-    margin-top: 10px;
-}
-
-/* RED CARD STYLES */
-.title-red {
-    color: #ff5555 !important;
-    /* Minecraft Red */
-    border-bottom: none !important;
-    /* Remove line */
-    font-size: 40px !important;
-    text-shadow: 2px 2px #000;
-}
-
-.dots-red {
-    color: #ff5555;
-    font-size: 24px;
-    letter-spacing: 5px;
-    margin-top: 10px;
-}
-
-/* Standard text styles */
-.card h3 {
-    color: #ddd;
-    margin-bottom: 5px;
-}
-
-.date {
-    color: #888;
-    font-size: 0.8em;
-    display: block;
-    margin-bottom: 10px;
-}
-
-/* 7. Footer */
+/* --- 6. FOOTER --- */
 .footer {
-    margin-top: 40px;
-    text-align: right;
-    color: #666;
-    font-size: 16px;
+    text-align: center;
+    margin-top: 80px;
+    color: #555;
+    border-top: 1px solid #222;
+    padding-top: 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .header-box {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .header-text {
+        text-align: center;
+    }
+
+    .header-text h1 {
+        font-size: 60px;
+    }
+
+    .status-bar {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    /* Hide links on mobile for now */
+    .nav-content {
+        justify-content: center;
+    }
 }

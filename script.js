@@ -1,22 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Find the button and the IP text
     const copyButton = document.getElementById('copy-btn');
     const ipText = document.getElementById('server-ip').innerText;
 
-    // Listen for a click on the button
     if (copyButton) {
         copyButton.addEventListener('click', () => {
-            // Copy to clipboard
             navigator.clipboard.writeText(ipText).then(() => {
 
-                // Change button text temporarily to show it worked
+                // Change button style temporarily
                 const originalText = copyButton.innerText;
-                copyButton.innerText = "COPIED!";
+                const originalBg = copyButton.style.background;
 
-                // Reset text after 2 seconds
+                copyButton.innerText = "COPIED!";
+                copyButton.style.background = "#55ff55"; // Green color
+                copyButton.style.color = "#000";
+
                 setTimeout(() => {
                     copyButton.innerText = originalText;
+                    copyButton.style.background = originalBg;
+                    copyButton.style.color = "";
                 }, 2000);
             });
         });

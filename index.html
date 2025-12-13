@@ -6,66 +6,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sequence SMP</title>
 
-    <!-- Minecraft Font from Google -->
+    <!-- FONTS: 'VT323' for Titles, 'Nunito' for reading text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=VT323&display=swap"
+        rel="stylesheet">
 
-    <!-- LINK TO YOUR CSS FILE -->
+    <!-- CSS LINK -->
     <link rel="stylesheet" href="script.css">
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <span class="nav-title">SEQUENCE SMP</span>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Store</a>
+                <a href="#">Vote</a>
+                <a href="#">Discord</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
 
-        <!-- HEADER -->
+        <!-- HEADER WITH ANIMATED LOGO -->
         <header class="header-box">
             <div class="header-text">
                 <h1>SEQUENCE</h1>
                 <h1>SMP</h1>
+                <p class="subtitle">THE ULTIMATE MINECRAFT EXPERIENCE</p>
             </div>
             <div class="header-logo">
-                <!-- This pulls the image you uploaded -->
-                <img src="logo.png" alt="Server Logo">
+                <img src="logo.png" alt="Server Logo" class="floating-logo">
             </div>
         </header>
 
-        <!-- SERVER STATUS -->
-        <div class="status-section">
-            <div class="ip-box">
-                IP Address: <span id="server-ip" style="color:#ffaa00">sequence.playmc.cloud</span>
+        <!-- SERVER STATUS BAR -->
+        <div class="status-bar">
+            <div class="status-content">
+                <span class="status-label">SERVER IP:</span>
+                <span id="server-ip" class="ip-text">sequence.playmc.cloud</span>
             </div>
-            <button id="copy-btn" class="copy-btn">COPY</button>
-            <div class="player-count">Players Online: <span style="color: #ff5555;">Offline</span></div>
+            <button id="copy-btn" class="copy-btn">COPY IP</button>
+            <div class="player-count">
+                <span class="status-dot"></span> Online: <span style="color: #fff;">0 / 100</span>
+            </div>
         </div>
 
-        <!-- MAIN CONTENT GRID -->
+        <!-- MAIN GRID -->
         <div class="content-grid">
 
-            <!-- LEFT COLUMN: LATEST NEWS (Kept this the same) -->
-            <div class="card">
-                <h2>Latest Update</h2>
-                <h3>New Nether Update Live!</h3>
-                <span class="date">October 15, 2025</span>
-                <p>Check out the new biomes and mobs. We've added custom enchantments for end-game loot.</p>
-                <br>
-                <h3>Staff Apps Open</h3>
-                <span class="date">September 28, 2025</span>
-                <p>Staff applications are now open for Builder and Helper roles. Apply on Discord!</p>
+            <!-- CARD 1: UPDATES -->
+            <div class="card news-card">
+                <div class="card-header">
+                    <h2>LATEST NEWS</h2>
+                </div>
+                <div class="news-item">
+                    <h3>New Nether Update Live!</h3>
+                    <span class="date">Oct 15, 2025</span>
+                    <p>New biomes, custom mobs, and end-game enchantments are now available.</p>
+                </div>
+                <hr>
+                <div class="news-item">
+                    <h3>Staff Applications</h3>
+                    <span class="date">Sep 28, 2025</span>
+                    <p>We are looking for builders! Apply on our Discord channel today.</p>
+                </div>
             </div>
 
-            <!-- MIDDLE COLUMN: DISCORD (Updated to match image) -->
-            <div class="card center-content">
+            <!-- CARD 2: DISCORD (Blue Theme) -->
+            <div class="card center-content discord-card">
                 <h2 class="title-blue">DISCORD</h2>
-                <p class="big-text">We do NOT have a Discord server!<br>Just use Diddy Party for now.</p>
+                <p class="big-text">We do NOT have a Discord server yet!</p>
+                <p class="small-text">Just use Diddy Party for now.</p>
                 <div class="dots-blue">▪ ▪ ▪ ▪ ▪</div>
             </div>
 
-            <!-- RIGHT COLUMN: RULES (Updated to match image) -->
-            <div class="card center-content">
+            <!-- CARD 3: RULES (Red Theme) -->
+            <div class="card center-content rules-card">
                 <h2 class="title-red">RULES</h2>
-                <p class="big-text">We do have some rules!<br>Don't cheat & use common sense.</p>
+                <p class="big-text">We do have some rules!</p>
+                <p class="small-text">Don't cheat & use common sense.</p>
                 <div class="dots-red">▪ ▪ ▪ ▪ ▪</div>
             </div>
 
@@ -73,12 +98,13 @@
 
         <!-- FOOTER -->
         <div class="footer">
-            &copy; 2025 SEQUENCE SMP | Hosted on GitHub Pages
+            <p>&copy; 2025 SEQUENCE SMP</p>
+            <p style="font-size: 14px; opacity: 0.5;">Not affiliated with Mojang AB.</p>
         </div>
 
     </div>
 
-    <!-- LINK TO YOUR JS FILE -->
+    <!-- JS LINK -->
     <script src="script.js"></script>
 
 </body>
