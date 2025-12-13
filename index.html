@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sequence SMP</title>
 
-    <!-- FAVICON -->
+    <!-- FAVICON (THIS IS THE NEW LINE) -->
     <link rel="icon" type="image/png" href="logo.png">
 
     <!-- FONTS -->
@@ -15,42 +13,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
-    <!-- ICONS -->
+    <!-- ICONS (FontAwesome) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS -->
+    <!-- CSS LINK -->
     <link rel="stylesheet" href="script.css">
 </head>
-<body>
+
+    <!-- BACKGROUND PARTICLES -->
+    <div class="particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-content">
             <span class="nav-title">SEQUENCE SMP</span>
             <div class="nav-links">
-                <button class="nav-btn active-link" onclick="openTab('home')">
-                    <i class="fas fa-home"></i> About
-                </button>
-                <button class="nav-btn" onclick="openTab('discord')">
-                    <i class="fab fa-discord"></i> Discord
-                </button>
-                <button class="nav-btn" onclick="openTab('rules')">
-                    <i class="fas fa-book"></i> Rules
-                </button>
-                <button class="nav-btn" onclick="openTab('audio')">
-                    <i class="fas fa-music"></i> Audio
-                </button>
+                <button class="nav-btn active-link" onclick="openTab('home')"><i class="fas fa-home"></i> About Us</button>
+                <button class="nav-btn" onclick="openTab('discord')"><i class="fab fa-discord"></i> Discord</button>
+                <button class="nav-btn" onclick="openTab('rules')"><i class="fas fa-book"></i> Rules</button>
+                <button class="nav-btn" onclick="openTab('audio')"><i class="fas fa-music"></i> Audio</button>
             </div>
         </div>
     </nav>
 
-    <!-- MAIN CONTAINER -->
     <div class="container">
 
         <!-- HEADER -->
         <header class="header-box">
             <div class="header-logo">
-                <img src="logo.png" alt="Sequence SMP Logo">
+                <img src="logo.png" alt="Server Logo" class="floating-logo">
             </div>
             <div class="header-text-motd">
                 <div class="server-name-top">SEQUENCE SMP</div>
@@ -59,121 +53,166 @@
                     <span class="gray-text"> • 1.21.10+</span>
                 </div>
                 <div class="motd-sub-line">
-                    🔥 <span class="gold-text">ULTIMATE MINECRAFT SMP REBIRTHED</span> 🔥
+                    <span class="fire-icon">🔥</span> 
+                    <span class="gold-text">ULTIMATE MINECRAFT SMP REBIRTHED</span> 
+                    <span class="fire-icon">🔥</span>
                 </div>
             </div>
         </header>
 
-        <!-- STATUS BAR -->
+        <!-- SERVER STATUS BAR -->
+<!-- SERVER STATUS BAR -->
         <div class="status-bar">
-            <div>
-                <span class="status-label">
-                    <i class="fas fa-wifi"></i> SERVER IP:
-                </span>
+            <div class="status-content">
+                <span class="status-label"><i class="fas fa-wifi"></i> SERVER IP:</span>
                 <span id="server-ip" class="ip-text">sequence.playmc.cloud</span>
             </div>
-
-            <button class="copy-btn" onclick="copyIP()">
-                <i class="fas fa-copy"></i> COPY
-            </button>
-
+            <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> COPY IP</button>
+            
+            <!-- Player Count Area -->
             <div class="player-count">
-                <span class="status-dot"></span>
-                <span id="player-text">Loading...</span>
+                <span class="status-dot"></span> 
+                Online: <span id="player-text" style="color: #fff;">Loading...</span>
+                <span class="status-dot"></span> Online: <span id="player-text">Loading...</span>
 
+                <!-- NEW: HIDDEN PLAYER LIST -->
                 <div id="player-list-tooltip" class="player-tooltip">
                     No players online.
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB: HOME ================= -->
+        <!-- === TAB 1: HOME === -->
         <div id="home" class="tab-content active-tab">
+            <div class="card news-card">
+                <div class="about-header">
+                    <h2>📖 Sequence SMP: Where Every Chapter Unfolds</h2>
+                </div>
 
-            <h2>📖 Sequence SMP: Where Every Chapter Unfolds</h2>
+                <div class="about-text">
+                    <p>
+                        Sequence SMP is a community-driven Minecraft server, originally <span class="highlight">created by siqns in December 2025</span>, and built on the foundational principles of <strong>friendly cooperation, creative freedom, and unforgettable long-term progression</strong>.
+                    </p>
 
-            <p>
-                Sequence SMP is a community-driven Minecraft server, originally
-                <strong>created by siqns in December 2024</strong>, built on
-                cooperation, creativity, and long-term progression.
-            </p>
+                    <!-- SCROLLING GALLERY -->
+                    <br>
+                    <h3><i class="fas fa-camera"></i> Server Gallery</h3>
+                    <div class="scrolling-gallery-container">
+                        <div class="scrolling-gallery-track">
+                            <!-- IMAGES -->
+                            <div class="gallery-item"><img src="serverowner.jpg" alt="Server Owner"><div class="caption">Server Owner</div></div>
+                            <div class="gallery-item"><img src="spawn.png" alt="Front Spawn"><div class="caption">Front Spawn</div></div>
+                            <div class="gallery-item"><img src="spawnback.png" alt="Back Spawn"><div class="caption">Back Spawn</div></div>
+                            <div class="gallery-item"><img src="spawnleft.png" alt="Left Spawn"><div class="caption">Left Spawn</div></div>
+                            <div class="gallery-item"><img src="spawnright.png" alt="Right Spawn"><div class="caption">Right Spawn</div></div>
+                            <!-- DUPLICATES -->
+                            <div class="gallery-item"><img src="serverowner.jpg" alt="Server Owner"><div class="caption">Server Owner</div></div>
+                            <div class="gallery-item"><img src="spawn.png" alt="Front Spawn"><div class="caption">Front Spawn</div></div>
+                            <div class="gallery-item"><img src="spawnback.png" alt="Back Spawn"><div class="caption">Back Spawn</div></div>
+                            <div class="gallery-item"><img src="spawnleft.png" alt="Left Spawn"><div class="caption">Left Spawn</div></div>
+                            <div class="gallery-item"><img src="spawnright.png" alt="Right Spawn"><div class="caption">Right Spawn</div></div>
+                        </div>
+                    </div>
+                    <p style="font-size: 14px; text-align:center; color: #666;">(Click an image to zoom in)</p>
+                    <br>
 
-            <h3 style="margin-top:40px;">
-                <i class="fas fa-camera"></i> Server Gallery
-            </h3>
-
-            <div class="gallery">
-                <img src="serverowner.jpg" alt="Server Owner" onclick="openLightbox(this)">
-                <img src="spawn.png" alt="Spawn" onclick="openLightbox(this)">
-                <img src="spawnback.png" alt="Back Spawn" onclick="openLightbox(this)">
-                <img src="spawnleft.png" alt="Left Spawn" onclick="openLightbox(this)">
-                <img src="spawnright.png" alt="Right Spawn" onclick="openLightbox(this)">
+                    <h3>✨ What We Offer</h3>
+                    <ul class="feature-list">
+                        <li>
+                            <i class="fas fa-cube" style="color:#ffaa00;"></i> <strong>Semi-Vanilla Survival:</strong> Classic experience with quality-of-life plugins:
+                            <div class="command-list">
+                                <span class="cmd">/tpa</span> Teleport to a friend.<br>
+                                <span class="cmd">/randomtpa</span> Explore the vast world instantly.<br>
+                                <span class="cmd">/back</span> Return to your last death spot.<br>
+                                <span class="cmd">/warps</span> Travel to key locations.
+                            </div>
+                        </li>
+                        <li><i class="fas fa-users" style="color:#55ff55;"></i> <strong>A Mature & Welcoming Community</strong></li>
+                        <li><i class="fas fa-calendar-alt" style="color:#55ffff;"></i> <strong>Community Events & Projects</strong></li>
+                    </ul>
+                    <hr>
+                    <p style="text-align: center; font-weight: bold; font-size: 1.1em; color: #ffaa00;">
+                        Join Sequence SMP and start shaping your story today.
+                    </p>
+                </div>
             </div>
-
-            <p style="font-size:14px; text-align:center; opacity:0.6;">
-                Click an image to zoom
-            </p>
-
-            <h3 style="margin-top:50px;">✨ What We Offer</h3>
-            <ul>
-                <li>🧱 Semi-Vanilla Survival with QoL commands</li>
-                <li>👥 Mature & welcoming community</li>
-                <li>📅 Long-term events & projects</li>
-            </ul>
-
-            <p style="text-align:center; margin-top:30px; color:#ffaa00;">
-                Join Sequence SMP and start shaping your story.
-            </p>
-
         </div>
 
-        <!-- ================= TAB: DISCORD ================= -->
-        <div id="discord" class="tab-content" style="display:none; text-align:center;">
-            <h2><i class="fab fa-discord"></i> Discord Community</h2>
-            <p>Join the official Sequence SMP Discord server.</p>
-            <a href="https://discord.gg/BFdVGHWAfY" target="_blank">
-                <button class="action-btn">JOIN DISCORD</button>
-            </a>
+        <!-- === TAB 2: DISCORD === -->
+        <div id="discord" class="tab-content" style="display:none;">
+            <div class="card center-content discord-card full-page-card">
+                <h2 class="title-blue"><i class="fab fa-discord"></i> DISCORD COMMUNITY</h2>
+                <div style="font-size: 80px; margin: 20px;">💬</div>
+                <p class="big-text">Join the official Sequence SMP Discord!</p>
+                <br>
+                <a href="https://discord.gg/BFdVGHWAfY" target="_blank" style="text-decoration: none;">
+                    <button class="action-btn blue-btn"><i class="fas fa-sign-in-alt"></i> JOIN SERVER</button>
+                </a>
+                <div class="dots-blue">▪ ▪ ▪ ▪ ▪</div>
+            </div>
         </div>
 
-        <!-- ================= TAB: RULES ================= -->
+        <!-- === TAB 3: RULES === -->
         <div id="rules" class="tab-content" style="display:none;">
-            <h2><i class="fas fa-gavel"></i> Server Rules</h2>
-            <ul>
-                <li>No griefing</li>
-                <li>No hacking or exploits</li>
-                <li>Be respectful</li>
-                <li>No spamming</li>
-                <li>PvP outside spawn only</li>
-            </ul>
+            <div class="card rules-card full-page-card">
+                <div class="center-content">
+                    <h2 class="title-red"><i class="fas fa-gavel"></i> SERVER RULES</h2>
+                </div>
+                <br>
+                <ul class="rules-list">
+                    <li><i class="fas fa-bomb"></i> <strong>1. No Griefing</strong></li>
+                    <li><i class="fas fa-shield-alt"></i> <strong>2. No Hacking</strong></li>
+                    <li><i class="fas fa-handshake"></i> <strong>3. Be Respectful</strong></li>
+                    <li><i class="fas fa-comment-slash"></i> <strong>4. No Spamming</strong></li>
+                    <li><i class="fas fa-skull-crossbones"></i> <strong>5. PvP Outside Spawn Only</strong></li>
+                </ul>
+                <div class="center-content"><div class="dots-red">▪ ▪ ▪ ▪ ▪</div></div>
+            </div>
         </div>
 
-        <!-- ================= TAB: AUDIO ================= -->
-        <div id="audio" class="tab-content" style="display:none; text-align:center;">
-            <h2><i class="fas fa-broadcast-tower"></i> Server Radio</h2>
-            <p>Click below to connect to server audio.</p>
-            <button class="action-btn" onclick="startAudio()">ENABLE AUDIO</button>
+        <!-- === TAB 4: AUDIO === -->
+        <div id="audio" class="tab-content" style="display:none;">
+            <div class="card audio-card full-page-card center-content">
+                <h2 style="color: #55ff55; font-size: 40px; margin-bottom: 5px;"><i class="fas fa-broadcast-tower"></i> SERVER RADIO</h2>
+                <p id="audio-status" style="color: #888; font-size: 16px;">Status: Disconnected</p>
+
+                <div id="connect-wrapper">
+                    <div style="font-size: 60px; margin: 20px;">🔊</div>
+                    <p>Click below to connect to Voice/Music</p>
+                    <button id="connect-audio-btn" class="action-btn" style="background-color: #55ff55; color: black; box-shadow: 0 0 10px #55ff55;"><i class="fas fa-plug"></i> ENABLE AUDIO</button>
+                </div>
+
+                <div id="player-controls" style="display: none; width: 100%; max-width: 400px; margin: 0 auto;">
+                    <div class="visualizer">
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    </div>
+                    <p id="now-playing-text" style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">Waiting for music...</p>
+                    <label for="volume-slider" style="display: block; margin-bottom: 10px; color: #aaa;">MASTER VOLUME</label>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                    <button id="disconnect-btn" class="action-btn" style="background-color: #ff5555; color: white; box-shadow: 0 0 10px #ff5555; margin-top: 30px; font-size: 20px;"><i class="fas fa-power-off"></i> DISCONNECT</button>
+                </div>
+            </div>
         </div>
 
         <!-- FOOTER -->
-        <footer class="footer">
+        <div class="footer">
             <p>&copy; 2025 SEQUENCE SMP</p>
-            <p>
-                Website by <strong>Loh Wei Feng (Max)</strong><br>
-                Plugins by <strong>Jishnu H Marathamutu (Hooman)</strong>
-            </p>
-        </footer>
+            <div class="credits-box">
+                <p>Website by <span class="credit-name">Loh Wei Feng (Max)</span></p>
+                <p>Plugins by <span class="credit-name">Jishnu H Maruthamutu (Hooman)</span></p>
+            </div>
+        </div>
 
     </div>
 
     <!-- LIGHTBOX -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="close-btn">&times;</span>
-        <img id="lightbox-img">
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption"></div>
     </div>
 
-    <!-- JS -->
+    <audio id="audio-player"></audio>
     <script src="script.js"></script>
-
 </body>
 </html>
