@@ -60,22 +60,24 @@
             </div>
         </header>
 
-        <!-- SERVER STATUS BAR -->
+<!-- SERVER STATUS BAR -->
         <div class="status-bar">
             <div class="status-content">
                 <span class="status-label"><i class="fas fa-wifi"></i> SERVER IP:</span>
                 <span id="server-ip" class="ip-text">sequence.playmc.cloud</span>
             </div>
             <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> COPY IP</button>
+            
+            <!-- Player Count Area -->
             <div class="player-count">
-                <span class="status-dot"></span> 
-                Online: <span id="player-text" style="color: #fff;">Loading...</span>
+                <span class="status-dot"></span> Online: <span id="player-text">Loading...</span>
                 
                 <!-- NEW: HIDDEN PLAYER LIST -->
                 <div id="player-list-tooltip" class="player-tooltip">
                     No players online.
                 </div>
             </div>
+        </div>
 
         <!-- === TAB 1: HOME === -->
         <div id="home" class="tab-content active-tab">
