@@ -26,26 +26,35 @@ function openTab(tabName) {
     }
 }
 
-/* --- MAIN LOGIC --- */
+/* --- LIGHTBOX (GALLERY ZOOM) LOGIC --- */
+window.closeLightbox = function () {
+    document.getElementById('lightbox').style.display = "none";
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- VARIABLES ---
+    /* -- 1. SETUP LIGHTBOX CLICK EVENTS -- */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const galleryImages = document.querySelectorAll('.gallery-item img');
+
+    galleryImages.forEach(img => {
+        img.addEventListener('click', function () {
+            lightbox.style.display = "flex";
+            lightbox.style.flexDirection = "column";
+            lightbox.style.justifyContent = "center";
+            lightbox.style.alignItems = "center"; // Centering fix
+
+            lightboxImg.src = this.src;
+            lightboxCaption.innerText = this.nextElementSibling ? this.nextElementSibling.innerText : this.alt;
+        });
+    });
+
+    /* -- 2. COPY IP BUTTON -- */
     const copyButton = document.getElementById('copy-btn');
     const ipTextElement = document.getElementById('server-ip');
 
-    const connectBtn = document.getElementById('connect-audio-btn');
-    const disconnectBtn = document.getElementById('disconnect-btn');
-    const connectWrapper = document.getElementById('connect-wrapper');
-    const playerControls = document.getElementById('player-controls');
-    const audioStatus = document.getElementById('audio-status');
-    const audioPlayer = document.getElementById('audio-player');
-    const volumeSlider = document.getElementById('volume-slider');
-    const nowPlayingText = document.getElementById('now-playing-text');
-
-    let ws;
-    let isManualDisconnect = false;
-
-    // --- 1. COPY IP ---
     if (copyButton && ipTextElement) {
         copyButton.addEventListener('click', () => {
             const ipText = ipTextElement.innerText;
@@ -68,29 +77,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 2. CONNECT ---
-    connectBtn.addEventListener('click', async () => {
-        connectWrapper.style.display = 'none';
-        playerControls.style.display = 'block';
+    /* -- 3. AUDIO SYSTEM -- */
+    const connectBtn = document.getElementById('connect-audio-btn');
+    const disconnectBtn = document.getElementById('disconnect-btn');
+    const connectWrapper = document.getElementById('connect-wrapper');
+    const playerControls = document.getElementById('player-controls');
+    const audioStatus = document.getElementById('audio-status');
+    const audioPlayer = document.getElementById('audio-player');
+    const volumeSlider = document.getElementById('volume-slider');
+    const nowPlayingText = document.getElementById('now-playing-text');
 
-        if (volumeSlider && audioPlayer) {
-            audioPlayer.volume = volumeSlider.value;
-        }
+    let ws;
+    let isManualDisconnect = false;
 
-        // autoplay unlock on user gesture
-        try {
-            audioPlayer.muted = false;
-            audioPlayer.src = "";
-            await audioPlayer.play().catch(() => { });
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-        } catch { }
+    if (connectBtn) {
+        connectBtn.addEventListener('click', async () => {
+            connectWrapper.style.display = 'none';
+            playerControls.style.display = 'block';
 
-        isManualDisconnect = false;
-        initWebSocket();
-    });
+            if (volumeSlider && audioPlayer) {
+                audioPlayer.volume = volumeSlider.value;
+            }
 
-    // --- 3. DISCONNECT ---
+            // autoplay unlock on user gesture
+            try {
+                audioPlayer.muted = false;
+                audioPlayer.src = "";
+                await audioPlayer.play().catch(() => { });
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+            } catch { }
+
+            isManualDisconnect = false;
+            initWebSocket();
+        });
+    }
+
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
             isManualDisconnect = true;
@@ -104,14 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. VOLUME ---
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             if (audioPlayer) audioPlayer.volume = e.target.value;
         });
     }
 
-    // --- 5. WEBSOCKET ---
     function initWebSocket() {
         if (!audioStatus) return;
 

@@ -13,11 +13,15 @@
     <!-- 1. Body Text (Nunito) -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- 2. NEW HEADER FONT (Fredoka) -->
+    <!-- 2. UI Headers (Fredoka - The Nice Round Font) -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 3. Header Title (Real Minecraft Font) -->
+    <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
     <!-- CSS LINK -->
     <link rel="stylesheet" href="script.css">
+</head>
 
 <body>
 
@@ -42,7 +46,7 @@
 
     <div class="container">
 
-        <!-- HEADER -->
+        <!-- HEADER (RETRO PIXEL FONT RESTORED) -->
         <header class="header-box">
             <!-- Logo Left -->
             <div class="header-logo">
@@ -91,13 +95,13 @@
                             progression</strong>.
                     </p>
 
-                    <!-- NEW AUTO-SCROLLING GALLERY -->
+                    <!-- SCROLLING GALLERY SECTION -->
                     <br>
                     <h3>📸 Server Gallery</h3>
                     <div class="scrolling-gallery-container">
                         <div class="scrolling-gallery-track">
 
-                            <!-- ORIGINAL IMAGES -->
+                            <!-- IMAGES (Set 1) -->
                             <div class="gallery-item">
                                 <img src="serverowner.jpg" alt="Server Owner">
                                 <div class="caption">Server Owner</div>
@@ -117,21 +121,9 @@
                             <div class="gallery-item">
                                 <img src="spawnright.png" alt="Right Spawn">
                                 <div class="caption">Right Spawn</div>
-                            </div>
-                            <div class="gallery-item">
-                                <img src="spawntopback.png" alt="Top Back Spawn">
-                                <div class="caption">Top Back Spawn</div>
-                            </div>
-                            <div class="gallery-item">
-                                <img src="spawntopleft.png" alt="Top Left Spawn">
-                                <div class="caption">Top Left Spawn</div>
-                            </div>
-                            <div class="gallery-item">
-                                <img src="spawntopright.png" alt="Top Right Spawn">
-                                <div class="caption">Top Right Spawn</div>
                             </div>
 
-                            <!-- DUPLICATE IMAGES (For Seamless Looping) -->
+                            <!-- IMAGES (Set 2 - Duplicate for Loop) -->
                             <div class="gallery-item">
                                 <img src="serverowner.jpg" alt="Server Owner">
                                 <div class="caption">Server Owner</div>
@@ -151,22 +143,11 @@
                             <div class="gallery-item">
                                 <img src="spawnright.png" alt="Right Spawn">
                                 <div class="caption">Right Spawn</div>
-                            </div>
-                            <div class="gallery-item">
-                                <img src="spawntopback.png" alt="Top Back Spawn">
-                                <div class="caption">Top Back Spawn</div>
-                            </div>
-                            <div class="gallery-item">
-                                <img src="spawntopleft.png" alt="Top Left Spawn">
-                                <div class="caption">Top Left Spawn</div>
-                            </div>
-                            <div class="gallery-item">
-                                <img src="spawntopright.png" alt="Top Right Spawn">
-                                <div class="caption">Top Right Spawn</div>
                             </div>
 
                         </div>
                     </div>
+                    <p style="font-size: 14px; text-align:center; color: #666;">(Click an image to zoom in)</p>
                     <br>
 
                     <h3>✨ What We Offer</h3>
@@ -242,8 +223,6 @@
 
                 <!-- Player Controls (Hidden until connected) -->
                 <div id="player-controls" style="display: none; width: 100%; max-width: 400px; margin: 0 auto;">
-
-                    <!-- Visualizer Bars -->
                     <div class="visualizer">
                         <div class="bar"></div>
                         <div class="bar"></div>
@@ -251,28 +230,34 @@
                         <div class="bar"></div>
                         <div class="bar"></div>
                     </div>
-
                     <p id="now-playing-text"
-                        style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">Waiting for
-                        music...
+                        style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">Waiting for music...
                     </p>
-
                     <label for="volume-slider" style="display: block; margin-bottom: 10px; color: #aaa;">MASTER
                         VOLUME</label>
                     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-
-                    <!-- Disconnect Button -->
                     <button id="disconnect-btn" class="action-btn"
                         style="background-color: #ff5555; color: white; box-shadow: 0 0 10px #ff5555; margin-top: 30px; font-size: 20px;">DISCONNECT</button>
                 </div>
             </div>
         </div>
 
-        <!-- FOOTER -->
+        <!-- FOOTER WITH CREDITS -->
         <div class="footer">
             <p>&copy; 2025 SEQUENCE SMP</p>
+            <div class="credits-box">
+                <p>Website by <span class="credit-name">Loh Wei Feng (Max)</span></p>
+                <p>Plugins by <span class="credit-name">Jishnu H Marathamutu (Hooman)</span></p>
+            </div>
         </div>
 
+    </div>
+
+    <!-- LIGHTBOX (Pop-up Image Viewer) -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-btn">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <div id="lightbox-caption"></div>
     </div>
 
     <!-- Hidden Audio Player -->

@@ -1,6 +1,4 @@
-/* --- UPDATED FONTS (Friendly Style) --- */
-
-/* 1. Global Settings */
+/* --- 1. GLOBAL SETTINGS --- */
 body {
     background-color: #121212;
     background-image:
@@ -15,7 +13,31 @@ body {
     overflow-x: hidden;
 }
 
-/* 2. HEADERS - Using 'Fredoka' */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffaa00;
+    border: 3px solid #121212;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+}
+
+/* 2. FONTS SETUP */
+/* General Headers (Friendly, Modern) */
 h1,
 h2,
 h3,
@@ -28,120 +50,77 @@ h3,
 .nav-btn,
 .cmd,
 .caption,
-.header-text-motd,
 .action-btn {
     font-family: 'Fredoka', sans-serif;
+    /* Nice round font */
     font-weight: 600;
-    /* Nice and thick */
-    letter-spacing: 0.5px;
     text-transform: uppercase;
-    /* Keeps it looking like a title */
 }
 
-/* Specific Tweak for the Header Title to make it pop */
+/* 3. HEADER (PIXEL ART STYLE - The Exception) */
+.header-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px 20px;
+    margin-bottom: 40px;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.header-logo img {
+    height: 140px;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.2));
+    animation: float 3s ease-in-out infinite;
+}
+
+/* === RESTORED MINECRAFT FONT FOR HEADER === */
+.header-text-motd {
+    text-align: left;
+    line-height: 1.3;
+    font-family: 'Minecraft', monospace !important;
+    /* Force Pixel Font */
+}
+
 .server-name-top {
-    font-size: 32px;
+    font-size: 26px;
     color: #ffffff;
-    margin-bottom: 2px;
-    font-weight: 700;
+    text-shadow: 2px 2px 0px #3f3f3f;
+    margin-bottom: 6px;
+    font-weight: normal;
+    letter-spacing: 1px;
 }
 
 .motd-main-line {
-    font-size: 42px;
-    text-shadow: 2px 2px 0px #2a2a2a;
-    margin-bottom: 2px;
-    font-weight: 700;
+    font-size: 34px;
+    text-shadow: 3px 3px 0px #2a2a2a;
+    margin-bottom: 6px;
+    font-weight: normal;
 }
 
 .motd-sub-line {
     font-size: 24px;
     text-shadow: 2px 2px 0px #2a2a2a;
-    font-weight: 500;
+    letter-spacing: 1px;
+    font-weight: normal;
 }
 
-.about-header h2 {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 700;
-    font-size: 38px;
-    color: #ffaa00;
+.gold-text {
+    color: #FFAA00;
 }
 
-/* Background Particles */
-.particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
+.gray-text {
+    color: #AAAAAA;
 }
 
-.particles span {
-    position: absolute;
-    bottom: -50px;
-    width: 10px;
-    height: 10px;
-    background: rgba(255, 170, 0, 0.5);
-    box-shadow: 0 0 10px #ffaa00;
-    animation: rise 15s infinite linear;
+.fire-icon {
+    display: inline-block;
+    filter: drop-shadow(2px 2px 0px #2a2a2a);
+    font-style: normal;
 }
 
-.particles span:nth-child(1) {
-    left: 10%;
-    width: 10px;
-    height: 10px;
-    animation-duration: 10s;
-}
-
-.particles span:nth-child(2) {
-    left: 20%;
-    width: 15px;
-    height: 15px;
-    animation-duration: 12s;
-    animation-delay: 2s;
-}
-
-.particles span:nth-child(3) {
-    left: 35%;
-    width: 8px;
-    height: 8px;
-    animation-duration: 8s;
-    animation-delay: 4s;
-}
-
-.particles span:nth-child(4) {
-    left: 50%;
-    width: 12px;
-    height: 12px;
-    animation-duration: 14s;
-}
-
-.particles span:nth-child(5) {
-    left: 65%;
-    width: 10px;
-    height: 10px;
-    animation-duration: 11s;
-    animation-delay: 1s;
-}
-
-@keyframes rise {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
+/* 4. OTHER ELEMENTS */
 .container {
     max-width: 900px;
     margin: 80px auto 0;
@@ -193,7 +172,7 @@ h3,
     animation: fadeInUp 0.5s ease-out;
 }
 
-/* --- 2. NAVIGATION BAR --- */
+/* Navbar */
 .navbar {
     position: fixed;
     top: 0;
@@ -230,7 +209,7 @@ h3,
     background: none;
     border: none;
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
     text-decoration: none;
     text-transform: uppercase;
@@ -259,68 +238,7 @@ h3,
     color: #ffaa00;
 }
 
-/* --- 3. HEADER (MINECRAFT FONT) --- */
-.header-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    padding: 40px 20px;
-    margin-bottom: 40px;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
-}
-
-.header-logo img {
-    height: 140px;
-    image-rendering: pixelated;
-    filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.2));
-    animation: float 3s ease-in-out infinite;
-}
-
-.header-text-motd {
-    text-align: left;
-    line-height: 1.3;
-    font-family: 'Minecraft', 'VT323', monospace;
-}
-
-.server-name-top {
-    font-size: 26px;
-    color: #ffffff;
-    text-shadow: 2px 2px 0px #3f3f3f;
-    margin-bottom: 6px;
-    font-weight: normal;
-    letter-spacing: 1px;
-}
-
-.motd-main-line {
-    font-size: 34px;
-    text-shadow: 3px 3px 0px #2a2a2a;
-    margin-bottom: 6px;
-    font-weight: normal;
-}
-
-.motd-sub-line {
-    font-size: 24px;
-    text-shadow: 2px 2px 0px #2a2a2a;
-    letter-spacing: 1px;
-    font-weight: normal;
-}
-
-.gold-text {
-    color: #FFAA00;
-}
-
-.gray-text {
-    color: #AAAAAA;
-}
-
-.fire-icon {
-    display: inline-block;
-    filter: drop-shadow(2px 2px 0px #2a2a2a);
-    font-style: normal;
-}
-
-/* --- 4. STATUS BAR --- */
+/* Status Bar */
 .status-bar {
     background: linear-gradient(90deg, #222, #1a1a1a);
     border: 2px solid #333;
@@ -378,7 +296,7 @@ h3,
     animation: pulseRed 2s infinite;
 }
 
-/* --- 5. CONTENT CARDS --- */
+/* Content Cards */
 .card {
     background-color: #1a1a1a;
     border: 1px solid #333;
@@ -411,11 +329,15 @@ h3,
     background: linear-gradient(180deg, #1a1a1a 0%, #1a221a 100%);
 }
 
+/* About & Fonts */
 .about-header h2 {
-    font-size: 36px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 42px;
     color: #ffaa00;
     margin-top: 0;
-    text-shadow: 2px 2px #000;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
 }
 
 .about-text h3 {
@@ -486,7 +408,6 @@ h3,
 .action-btn {
     padding: 12px 30px;
     border: none;
-    font-family: 'VT323', monospace;
     font-size: 24px;
     cursor: pointer;
     margin-top: 20px;
@@ -513,39 +434,52 @@ h3,
 .scrolling-gallery-container {
     width: 100%;
     overflow: hidden;
-    /* Hides the scrollbar */
     border: 2px solid #333;
     border-radius: 8px;
     background: #000;
     margin-top: 15px;
     margin-bottom: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.scrolling-gallery-container::before,
+.scrolling-gallery-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.scrolling-gallery-container::before {
+    left: 0;
+    background: linear-gradient(to right, #1a1a1a, transparent);
+}
+
+.scrolling-gallery-container::after {
+    right: 0;
+    background: linear-gradient(to left, #1a1a1a, transparent);
 }
 
 .scrolling-gallery-track {
     display: flex;
     width: max-content;
-    /* Allows track to be wider than screen */
-    /* Adjust '30s' to change speed. Linear makes it smooth. */
     animation: scrollGallery 30s linear infinite;
 }
 
-/* Pause scrolling when mouse hovers over it */
 .scrolling-gallery-track:hover {
     animation-play-state: paused;
 }
 
 .gallery-item {
     position: relative;
-    /* Needed to position the caption */
     width: 300px;
-    /* Width of each image */
     height: 200px;
-    /* Height of each image */
     flex-shrink: 0;
-    /* Prevents squishing */
     margin-right: 10px;
-    /* Gap between images */
     border-right: 2px solid #333;
 }
 
@@ -554,47 +488,108 @@ h3,
     height: 100%;
     object-fit: cover;
     display: block;
+    cursor: pointer;
+    transition: transform 0.3s;
 }
 
-/* The Caption (Alt Text) Styling */
+.gallery-item img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
 .caption {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.7);
-    /* Semi-transparent black background */
     color: #ffaa00;
-    /* Gold text */
-    font-family: 'VT323', monospace;
+    font-family: 'Fredoka', sans-serif;
     font-size: 20px;
     text-align: center;
     padding: 5px 0;
     border-top: 1px solid #333;
+    pointer-events: none;
 }
 
-/* The Animation */
 @keyframes scrollGallery {
     0% {
         transform: translateX(0);
     }
 
     100% {
-        /* Move left by 50% because we duplicated the images. 
-           Once it hits 50%, it snaps back to 0 seamlessly. */
         transform: translateX(-50%);
     }
 }
 
-/* Mobile Adjustment */
-@media (max-width: 768px) {
-    .gallery-item {
-        width: 200px;
-        height: 150px;
+/* Lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s;
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 900px;
+    max-height: 80vh;
+    object-fit: contain;
+    border: 2px solid #ffaa00;
+    box-shadow: 0 0 20px #ffaa00;
+    border-radius: 5px;
+    animation: zoomIn 0.3s;
+}
+
+#lightbox-caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ffaa00;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 24px;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #ffaa00;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
     }
 }
 
-/* Audio Slider & Viz */
+/* Audio Slider */
 input[type=range] {
     -webkit-appearance: none;
     appearance: none;
@@ -604,6 +599,7 @@ input[type=range] {
 
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
+    appearance: none;
     height: 20px;
     width: 20px;
     border-radius: 50%;
@@ -709,6 +705,7 @@ hr {
     margin: 30px 0;
 }
 
+/* Credits & Footer */
 .footer {
     text-align: center;
     margin-top: 50px;
@@ -717,8 +714,100 @@ hr {
     padding-top: 20px;
 }
 
+.credits-box {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
+}
+
+.credits-box p {
+    margin: 5px 0;
+}
+
+.credit-name {
+    color: #ffaa00;
+    font-weight: bold;
+    font-family: 'Fredoka', sans-serif;
+}
+
 .center-content {
     text-align: center;
+}
+
+/* Particles */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particles span {
+    position: absolute;
+    bottom: -50px;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 170, 0, 0.5);
+    box-shadow: 0 0 10px #ffaa00;
+    animation: rise 15s infinite linear;
+}
+
+.particles span:nth-child(1) {
+    left: 10%;
+    width: 10px;
+    height: 10px;
+    animation-duration: 10s;
+}
+
+.particles span:nth-child(2) {
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-duration: 12s;
+    animation-delay: 2s;
+}
+
+.particles span:nth-child(3) {
+    left: 35%;
+    width: 8px;
+    height: 8px;
+    animation-duration: 8s;
+    animation-delay: 4s;
+}
+
+.particles span:nth-child(4) {
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    animation-duration: 14s;
+}
+
+.particles span:nth-child(5) {
+    left: 65%;
+    width: 10px;
+    height: 10px;
+    animation-duration: 11s;
+    animation-delay: 1s;
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 @media (max-width: 768px) {
@@ -738,11 +827,8 @@ hr {
         text-align: center;
     }
 
-    .gallery-grid {
-        flex-direction: column;
-    }
-
     .gallery-item {
+        width: 200px;
         height: 150px;
     }
 }
