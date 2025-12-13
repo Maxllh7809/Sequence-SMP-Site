@@ -59,8 +59,7 @@
                 </div>
             </div>
         </header>
-
-        <!-- SERVER STATUS BAR -->
+        
 <!-- SERVER STATUS BAR -->
         <div class="status-bar">
             <div class="status-content">
@@ -70,17 +69,15 @@
             <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> COPY IP</button>
             
             <!-- Player Count Area -->
-            <div class="player-count">
-                <span class="status-dot"></span> 
-                Online: <span id="player-text" style="color: #fff;">Loading...</span>
+<div class="player-count">
+                <!-- Cleaned up: Only the status dot and the ID span are here -->
                 <span class="status-dot"></span> Online: <span id="player-text">Loading...</span>
-
-                <!-- NEW: HIDDEN PLAYER LIST -->
+                
+                <!-- PLAYER LIST TOOLTIP (Hidden by default) -->
                 <div id="player-list-tooltip" class="player-tooltip">
                     No players online.
                 </div>
             </div>
-        </div>
 
         <!-- === TAB 1: HOME === -->
         <div id="home" class="tab-content active-tab">
