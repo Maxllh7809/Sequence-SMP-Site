@@ -1,5 +1,5 @@
 // --- CONFIGURATION ---
-// IMPORTANT: Change this URL to your backend server URL when you have one.
+// IMPORTANT: Change this URL to your backend server URL
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 
 // --- TAB SWITCHING LOGIC ---
@@ -19,8 +19,6 @@ function openTab(tabName) {
     tab.style.display = "block";
     void tab.offsetWidth; // Trigger reflow for animation
 
-    // Find the button that was clicked based on text content logic or passed event
-    // Since we use inline onclick, we rely on event.currentTarget
     if (event) {
         event.currentTarget.classList.add("active-link");
     }
@@ -56,14 +54,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. AUDIO CLIENT LOGIC
     const connectBtn = document.getElementById('connect-audio-btn');
+    const disconnectBtn = document.getElementById('disconnect-btn'); // New Button
     const connectWrapper = document.getElementById('connect-wrapper');
     const playerControls = document.getElementById('player-controls');
     const audioStatus = document.getElementById('audio-status');
     const audioPlayer = document.getElementById('audio-player');
     const volumeSlider = document.getElementById('volume-slider');
     const nowPlayingText = document.getElementById('now-playing-text');
-    let ws;
 
+    let ws;
+    let isManualDisconnect = false; // Flag to prevent auto-reconnect
+
+    // CONNECT BUTTON CLICK
     if (connectBtn) {
         connectBtn.addEventListener('click', () => {
             // UI Transition
@@ -74,7 +76,29 @@ document.addEventListener('DOMContentLoaded', () => {
             audioPlayer.volume = volumeSlider.value;
 
             // Connect
+            isManualDisconnect = false;
             initWebSocket();
+        });
+    }
+
+    // DISCONNECT BUTTON CLICK
+    if (disconnectBtn) {
+        disconnectBtn.addEventListener('click', () => {
+            isManualDisconnect = true; // Tell system not to retry
+
+            // Close Socket
+            if (ws) {
+                ws.close();
+            }
+
+            // Stop Music
+            stopAudio();
+
+            // Reset UI
+            playerControls.style.display = 'none';
+            connectWrapper.style.display = 'block';
+            audioStatus.innerText = "Status: Disconnected";
+            audioStatus.style.color = "#888";
         });
     }
 
@@ -113,9 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         ws.onclose = () => {
+            if (isManualDisconnect) {
+                // User clicked disconnect, don't retry
+                console.log("Disconnected manually.");
+                return;
+            }
+
+            // Otherwise, it was an error/timeout, so try again
             audioStatus.innerText = "Status: Disconnected (Retrying...)";
             audioStatus.style.color = "#ff5555";
-            setTimeout(initWebSocket, 3000); // Retry logic
+            setTimeout(initWebSocket, 3000);
         };
     }
 
@@ -137,6 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopAudio() {
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
-        nowPlayingText.innerText = "Audio Stopped";
+        nowPlayingText.innerText = "Waiting for music...";
     }
 });
