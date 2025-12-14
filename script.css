@@ -1083,3 +1083,22 @@ i {
         font-size: 24px;
     }
 }
+
+/* --- SERVER RADIO TITLE (Matches Server Rules) --- */
+.title-green {
+    font-family: 'Fredoka', sans-serif; /* Same font as Rules */
+    color: #55ff55;
+    font-size: 50px;      /* Increased to match Rules size */
+    font-weight: 800;     /* Bold like Rules */
+    margin: 0;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(85, 255, 85, 0.4);
+    letter-spacing: 4px;  /* THIS FIXES THE R/V OVERLAP */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Ensure the icon has space */
+.title-green i {
+    margin-right: 15px;
+}
