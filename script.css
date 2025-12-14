@@ -1316,3 +1316,16 @@ i {
     align-items: center;
     justify-content: center;
 }
+/* --- LINKED TAG STYLING --- */
+/* Remove the red arrow that usually appears on rule links */
+.tag.rule-trigger::after {
+    content: none !important;
+}
+
+/* Make it pop when hovered (like the commands) */
+.tag.rule-trigger:hover {
+    background: rgba(85, 255, 85, 0.3); /* Green glow */
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(85, 255, 85, 0.4);
+}
