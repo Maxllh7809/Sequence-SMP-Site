@@ -30,13 +30,20 @@ This website works in tandem with a backend server to handle the audio streaming
 
 ## ⚙️ Configuration
 
-### 1. Changing the Server IP
+### 1. Enabling the Player List (Important!)
+For the website to display the list of online players, you **must** enable the query setting on your Minecraft server.
+1.  Open your server files and find `server.properties`.
+2.  Find the line `enable-query` and change it to `true`.
+3.  Ensure `query.port` is set to your server port.
+4.  **Restart your server.**
+
+### 2. Changing the Server IP
 Open `index.html` and find the `status-bar` section:
 ```html
 <span id="server-ip" class="ip-text">sequence.playmc.cloud</span>
 ````
 
-### 2\. Configuring the Audio Backend
+### 3\. Configuring the Audio Backend
 
 This website requires a backend WebSocket server to handle audio streaming.
 Open `script.js` and update the top line:
@@ -46,7 +53,7 @@ Open `script.js` and update the top line:
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
 ```
 
-### 3\. Configuring Server Status (API)
+### 4\. Configuring Server Status (API)
 
 The site uses `mcsrvstat.us` to fetch player counts and the player list.
 Open `script.js` and find the API URL:
@@ -56,7 +63,7 @@ Open `script.js` and find the API URL:
 const SERVER_API_URL = "[https://api.mcsrvstat.us/3/sequence.playmc.cloud](https://api.mcsrvstat.us/3/sequence.playmc.cloud)";
 ```
 
-### 4\. Updating the Gallery
+### 5\. Updating the Gallery
 
 To add or change images, open `index.html` and look for the `scrolling-gallery-track`.
 
