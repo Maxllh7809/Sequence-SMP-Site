@@ -531,11 +531,13 @@ h3,
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Prevent inner scrollbars */
+    overflow: hidden;
+    /* Prevent inner scrollbars */
     background-color: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(5px);
     animation: fadeIn 0.3s;
-    user-select: none; /* Disallow text selection */
+    user-select: none;
+    /* Disallow text selection */
 }
 
 .lightbox-wrapper {
@@ -555,8 +557,10 @@ h3,
     border: 2px solid #ffaa00;
     box-shadow: 0 0 25px rgba(255, 170, 0, 0.5);
     border-radius: 5px;
-    transition: transform 0.3s ease-out; /* Smooth zoom/drag transition */
-    cursor: grab; /* Cursor to indicate dragging/panning */
+    transition: transform 0.3s ease-out;
+    /* Smooth zoom/drag transition */
+    cursor: grab;
+    /* Cursor to indicate dragging/panning */
 }
 
 /* Caption */
@@ -573,7 +577,8 @@ h3,
 }
 
 /* Navigation Buttons */
-.prev, .next {
+.prev,
+.next {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -590,22 +595,32 @@ h3,
     z-index: 2001;
 }
 
-.prev:hover, .next:hover {
+.prev:hover,
+.next:hover {
     background-color: rgba(0, 0, 0, 0.8);
     color: #ffaa00;
 }
 
-.next { right: 0; border-radius: 3px 0 0 3px; }
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
 
 .close-btn {
     position: absolute;
-    top: 15px; right: 35px;
-    color: #f1f1f1; font-size: 40px; font-weight: bold;
-    cursor: pointer; transition: 0.3s;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
     z-index: 2002;
 }
 
-.close-btn:hover { color: #ff5555; }
+.close-btn:hover {
+    color: #ff5555;
+}
 
 /* Audio Slider */
 input[type=range] {
@@ -850,6 +865,7 @@ hr {
         height: 150px;
     }
 }
+
 /* --- ICON STYLING --- */
 /* Add space between icon and text */
 i {
@@ -857,13 +873,17 @@ i {
 }
 
 /* Specific color tweaks for icons in lists if needed */
-.feature-list i, .rules-list i {
-    width: 25px; /* Ensures text aligns perfectly even if icons differ in width */
+.feature-list i,
+.rules-list i {
+    width: 25px;
+    /* Ensures text aligns perfectly even if icons differ in width */
     text-align: center;
 }
+
 /* --- PLAYER LIST TOOLTIP (UPDATED) --- */
 .player-count {
-    position: relative; /* Anchor for the absolute tooltip */
+    position: relative;
+    /* Anchor for the absolute tooltip */
     cursor: help;
 }
 
@@ -872,30 +892,38 @@ i {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    top: 140%;          /* Pushed down slightly more to not cover text */
-    right: 0;           /* Aligns to the right edge of the container */
-    transform: none;    /* Removed center transform for cleaner right-alignment */
-    
+    top: 140%;
+    /* Pushed down slightly more to not cover text */
+    right: 0;
+    /* Aligns to the right edge of the container */
+    transform: none;
+    /* Removed center transform for cleaner right-alignment */
+
     background-color: rgba(18, 18, 18, 0.98);
     border: 2px solid #ffaa00;
     border-radius: 8px;
     padding: 15px;
     min-width: 200px;
-    max-height: 300px;  /* Prevents it from getting too long */
-    overflow-y: auto;   /* Adds scrollbar if many players */
-    
+    max-height: 300px;
+    /* Prevents it from getting too long */
+    overflow-y: auto;
+    /* Adds scrollbar if many players */
+
     z-index: 2000;
     transition: all 0.3s ease-in-out;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-    pointer-events: none; /* Prevents flickering when moving mouse */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    /* Prevents flickering when moving mouse */
 }
 
 /* Arrow pointer at the top */
 #player-list-tooltip::after {
     content: "";
     position: absolute;
-    bottom: 100%; /* At the top of the tooltip */
-    right: 20px;  /* Align with the tooltip box */
+    bottom: 100%;
+    /* At the top of the tooltip */
+    right: 20px;
+    /* Align with the tooltip box */
     border-width: 8px;
     border-style: solid;
     border-color: transparent transparent #ffaa00 transparent;
@@ -905,13 +933,15 @@ i {
 .player-count:hover #player-list-tooltip {
     visibility: visible;
     opacity: 1;
-    top: 120%; /* Slight animation up */
+    top: 120%;
+    /* Slight animation up */
 }
 
 /* Scrollbar styling for the list specifically */
 #player-list-tooltip::-webkit-scrollbar {
     width: 6px;
 }
+
 #player-list-tooltip::-webkit-scrollbar-thumb {
     background-color: #ffaa00;
     border-radius: 3px;
@@ -934,7 +964,7 @@ i {
     height: 24px;
     margin-right: 12px;
     border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .player-row span {
@@ -942,14 +972,17 @@ i {
     color: #fff;
     font-size: 16px;
 }
+
 /* --- DISCORD WIDGET STYLING --- */
 .discord-widget-container {
     margin: 20px auto;
     width: 100%;
-    max-width: 350px; /* Keeps it a nice phone-like size */
+    max-width: 350px;
+    /* Keeps it a nice phone-like size */
     border: 2px solid #5555ff;
     border-radius: 8px;
-    box-shadow: 0 0 20px rgba(85, 85, 255, 0.2); /* Blue Glow */
+    box-shadow: 0 0 20px rgba(85, 85, 255, 0.2);
+    /* Blue Glow */
     overflow: hidden;
     transition: transform 0.3s ease;
 }
@@ -967,14 +1000,16 @@ i {
 
 /* Add a little arrow hint on hover */
 .rule-trigger::after {
-    content: '\f054'; /* FontAwesome chevron-right */
+    content: '\f054';
+    /* FontAwesome chevron-right */
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
     right: 15px;
     opacity: 0;
     transition: all 0.3s ease;
-    color: #ff5555; /* Match the red theme */
+    color: #ff5555;
+    /* Match the red theme */
 }
 
 .rule-trigger:hover::after {
@@ -984,14 +1019,17 @@ i {
 
 /* --- NEW RULES MODAL STYLES --- */
 .modal-overlay {
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     position: fixed;
-    z-index: 3000; /* Higher than navbar and gallery lightbox */
+    z-index: 3000;
+    /* Higher than navbar and gallery lightbox */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.85); /* Dark dimmer */
+    background-color: rgba(0, 0, 0, 0.85);
+    /* Dark dimmer */
     backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
@@ -999,11 +1037,13 @@ i {
 }
 
 .modal-box {
-    background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%); /* Match rules card bg */
+    background: linear-gradient(180deg, #1a1a1a 0%, #241e1e 100%);
+    /* Match rules card bg */
     padding: 30px;
     border-radius: 12px;
     width: 90%;
-    max-width: 800px; /* Nice wide box */
+    max-width: 800px;
+    /* Nice wide box */
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
@@ -1034,7 +1074,8 @@ i {
 
 /* Image Styling */
 .modal-img-container {
-    flex: 1; /* Takes up 1 part space */
+    flex: 1;
+    /* Takes up 1 part space */
     min-width: 300px;
 }
 
@@ -1043,12 +1084,13 @@ i {
     height: auto;
     border-radius: 8px;
     border: 2px solid #333;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Text description styling */
 .modal-text-container {
-    flex: 1; /* Takes up 1 part space */
+    flex: 1;
+    /* Takes up 1 part space */
     font-size: 16px;
     color: #ddd;
     line-height: 1.7;
@@ -1074,11 +1116,14 @@ i {
 /* Responsive layout for phones */
 @media (max-width: 768px) {
     .modal-body {
-        flex-direction: column; /* Stack image on top of text */
+        flex-direction: column;
+        /* Stack image on top of text */
     }
+
     .modal-img-container {
         min-width: 100%;
     }
+
     .modal-title {
         font-size: 24px;
     }
@@ -1086,14 +1131,18 @@ i {
 
 /* --- SERVER RADIO TITLE (Matches Server Rules) --- */
 .title-green {
-    font-family: 'Fredoka', sans-serif; /* Same font as Rules */
+    font-family: 'Fredoka', sans-serif;
+    /* Same font as Rules */
     color: #55ff55;
-    font-size: 50px;      /* Increased to match Rules size */
-    font-weight: 800;     /* Bold like Rules */
+    font-size: 50px;
+    /* Increased to match Rules size */
+    font-weight: 800;
+    /* Bold like Rules */
     margin: 0;
     text-transform: uppercase;
     text-shadow: 0 0 15px rgba(85, 255, 85, 0.4);
-    letter-spacing: 4px;  /* THIS FIXES THE R/V OVERLAP */
+    letter-spacing: 4px;
+    /* THIS FIXES THE R/V OVERLAP */
     text-align: center;
     margin-bottom: 20px;
 }
@@ -1140,10 +1189,13 @@ i {
     justify-content: center;
     font-size: 24px;
 }
+
 .icon-circle i {
-    margin: 0 !important;      /* Removes the global right margin */
+    margin: 0 !important;
+    /* Removes the global right margin */
     padding: 0 !important;
-    line-height: 0 !important; /* Fixes vertical alignment issues */
+    line-height: 0 !important;
+    /* Fixes vertical alignment issues */
 }
 
 .feature-card h4 {
@@ -1160,20 +1212,48 @@ i {
 }
 
 /* --- COLOR THEMES --- */
-.gold-card { border-bottom: 4px solid #ffaa00; }
-.gold-card .icon-circle { color: #ffaa00; border: 2px solid rgba(255, 170, 0, 0.3); }
-.gold-card:hover { box-shadow: 0 10px 20px rgba(255, 170, 0, 0.15); }
+.gold-card {
+    border-bottom: 4px solid #ffaa00;
+}
 
-.green-card { border-bottom: 4px solid #55ff55; }
-.green-card .icon-circle { color: #55ff55; border: 2px solid rgba(85, 255, 85, 0.3); }
-.green-card:hover { box-shadow: 0 10px 20px rgba(85, 255, 85, 0.15); }
+.gold-card .icon-circle {
+    color: #ffaa00;
+    border: 2px solid rgba(255, 170, 0, 0.3);
+}
 
-.blue-card { border-bottom: 4px solid #55ffff; }
-.blue-card .icon-circle { color: #55ffff; border: 2px solid rgba(85, 255, 255, 0.3); }
-.blue-card:hover { box-shadow: 0 10px 20px rgba(85, 255, 255, 0.15); }
+.gold-card:hover {
+    box-shadow: 0 10px 20px rgba(255, 170, 0, 0.15);
+}
+
+.green-card {
+    border-bottom: 4px solid #55ff55;
+}
+
+.green-card .icon-circle {
+    color: #55ff55;
+    border: 2px solid rgba(85, 255, 85, 0.3);
+}
+
+.green-card:hover {
+    box-shadow: 0 10px 20px rgba(85, 255, 85, 0.15);
+}
+
+.blue-card {
+    border-bottom: 4px solid #55ffff;
+}
+
+.blue-card .icon-circle {
+    color: #55ffff;
+    border: 2px solid rgba(85, 255, 255, 0.3);
+}
+
+.blue-card:hover {
+    box-shadow: 0 10px 20px rgba(85, 255, 255, 0.15);
+}
 
 /* --- MINI TAGS & COMMANDS --- */
-.mini-commands, .tag-row {
+.mini-commands,
+.tag-row {
     display: flex;
     justify-content: center;
     gap: 8px;
@@ -1198,4 +1278,39 @@ i {
     font-size: 11px;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+/* --- CLICKABLE COMMANDS --- */
+.command-trigger {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 10;
+}
+
+.command-trigger:hover {
+    background: #ffaa00;
+    /* Orange background on hover */
+    color: #000 !important;
+    /* Black text */
+    transform: scale(1.1);
+    /* Pop up slightly */
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+}
+
+/* --- MODAL UPDATES (For Text-Only Commands) --- */
+/* When the modal has the 'no-image' class, hide the image box */
+.modal-body.no-image .modal-img-container {
+    display: none;
+}
+
+/* Let the text take full width and center it */
+.modal-body.no-image .modal-text-container {
+    flex: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
