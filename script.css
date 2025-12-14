@@ -942,3 +942,19 @@ i {
     color: #fff;
     font-size: 16px;
 }
+/* --- DISCORD WIDGET STYLING --- */
+.discord-widget-container {
+    margin: 20px auto;
+    width: 100%;
+    max-width: 350px; /* Keeps it a nice phone-like size */
+    border: 2px solid #5555ff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(85, 85, 255, 0.2); /* Blue Glow */
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.discord-widget-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(85, 85, 255, 0.4);
+}
