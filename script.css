@@ -1316,33 +1316,84 @@ i {
     justify-content: center;
 }
 
-/* --- LINKED TAG STYLING --- */
-/* Remove the red arrow that usually appears on rule links */
-.tag.rule-trigger::after {
-    content: none !important;
+/* --- STAFF LIST POPUP STYLING --- */
+.staff-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* Space between staff members */
+    width: 100%;
 }
 
-/* Make it pop when hovered (like the commands) */
-.tag.rule-trigger:hover {
-    background: rgba(85, 255, 85, 0.3);
-    /* Green glow */
-    transform: scale(1.1);
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(85, 255, 85, 0.4);
+.staff-row {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    /* Dark Glass Card */
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s ease, background 0.2s;
 }
 
-/* Update this rule to include BOTH tags */
-.tag.rule-trigger::after,
-.tag.command-trigger::after {
-    content: none !important;
-    /* Hides the red arrow */
+.staff-row:hover {
+    background: rgba(255, 255, 255, 0.1);
+    /* Light up on hover */
+    transform: translateX(5px);
+    /* Slide slightly right */
 }
 
-/* Make Active Staff glow Green/Blue on hover */
-.tag.command-trigger:hover {
-    background: rgba(85, 255, 255, 0.3);
-    /* Cyan glow */
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(85, 255, 255, 0.4);
-    cursor: pointer;
+.staff-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.staff-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.staff-role {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.staff-name {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 700;
+}
+
+/* --- ROLE SPECIFIC COLORS --- */
+/* Owner (Red) */
+.role-owner {
+    color: #ff5555;
+}
+
+.border-owner {
+    border: 2px solid #ff5555;
+}
+
+/* Web Dev (Green) */
+.role-web {
+    color: #55ff55;
+}
+
+.border-web {
+    border: 2px solid #55ff55;
+}
+
+/* Plugin Dev (Cyan) */
+.role-plugin {
+    color: #55ffff;
+}
+
+.border-plugin {
+    border: 2px solid #55ffff;
 }
