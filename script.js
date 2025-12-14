@@ -165,17 +165,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!audioPlayer) return;
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
         audioPlayer.src = url;
-       audioPlayer.play().catch(() => {
-  nowPlayingText.innerText = "⚠️ Click to Play";
+        audioPlayer.play().catch(() => {
+            nowPlayingText.innerText = "⚠️ Click to Play";
 
-  const unlock = () => {
-    audioPlayer.play();
-    nowPlayingText.innerText = "♫ " + (text || "Now playing");
-    document.removeEventListener("click", unlock);
-  };
+            const unlock = () => {
+                audioPlayer.play();
+                nowPlayingText.innerText = "♫ " + (text || "Now playing");
+                document.removeEventListener("click", unlock);
+            };
 
-  document.addEventListener("click", unlock, { once: true });
-});
+            document.addEventListener("click", unlock, { once: true });
+        });
 
     }
 
@@ -187,60 +187,114 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 /* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
-    const playerText = document.getElementById('player-text');
-    const statusDot = document.querySelector('.status-dot');
-    const playerTooltip = document.getElementById('player-list-tooltip');
-    
-    // Using mcsrvstat.us API
-    const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
+const playerText = document.getElementById('player-text');
+const statusDot = document.querySelector('.status-dot');
+const playerTooltip = document.getElementById('player-list-tooltip');
 
-    function updateServerStatus() {
-        if (!playerText) return;
+// Using mcsrvstat.us API
+const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
-        fetch(SERVER_API_URL)
-            .then(response => response.json())
-            .then(data => {
-                if (data.online) {
-                    // 1. Update Count
-                    playerText.innerText = `${data.players.online} / ${data.players.max}`;
-                    statusDot.style.backgroundColor = "#55ff55";
-                    statusDot.style.boxShadow = "0 0 5px #55ff55";
+function updateServerStatus() {
+    if (!playerText) return;
 
-                    // 2. Update Player List Tooltip
-                    if (data.players.list && data.players.list.length > 0) {
-                        // Create HTML for each player
-                        let playerHtml = '';
-                        data.players.list.forEach(player => {
-                            // Uses Crafatar to get the player's face 
-                            playerHtml += `
+    fetch(SERVER_API_URL)
+        .then(response => response.json())
+        .then(data => {
+            if (data.online) {
+                // 1. Update Count
+                playerText.innerText = `${data.players.online} / ${data.players.max}`;
+                statusDot.style.backgroundColor = "#55ff55";
+                statusDot.style.boxShadow = "0 0 5px #55ff55";
+
+                // 2. Update Player List Tooltip
+                if (data.players.list && data.players.list.length > 0) {
+                    // Create HTML for each player
+                    let playerHtml = '';
+                    data.players.list.forEach(player => {
+                        // Uses Crafatar to get the player's face 
+                        playerHtml += `
                                 <div class="player-row">
                                     <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
                                     <span>${player.name}</span>
                                 </div>
                             `;
-                        });
-                        playerTooltip.innerHTML = playerHtml;
-                    } else {
-                        // Online but list is hidden or empty
-                        playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
-                    }
-
+                    });
+                    playerTooltip.innerHTML = playerHtml;
                 } else {
-                    // Server Offline
-                    playerText.innerText = "Offline";
-                    statusDot.style.backgroundColor = "#ff5555";
-                    statusDot.style.boxShadow = "0 0 5px #ff5555";
-                    playerTooltip.innerHTML = "Server is currently offline.";
+                    // Online but list is hidden or empty
+                    playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
                 }
-            })
-            .catch(error => {
-                console.error("Error fetching server status:", error);
-                playerText.innerText = "Error";
-            });
-    }
 
-    // Run immediately when page loads
-    updateServerStatus();
-    
-    // Refresh every 30 seconds
-    setInterval(updateServerStatus, 30000);
+            } else {
+                // Server Offline
+                playerText.innerText = "Offline";
+                statusDot.style.backgroundColor = "#ff5555";
+                statusDot.style.boxShadow = "0 0 5px #ff5555";
+                playerTooltip.innerHTML = "Server is currently offline.";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching server status:", error);
+            playerText.innerText = "Error";
+        });
+}
+
+// Run immediately when page loads
+updateServerStatus();
+
+// Refresh every 30 seconds
+setInterval(updateServerStatus, 30000);
+
+/* --- 5. RULES MODAL LOGIC (NEW) --- */
+const rulesModal = document.getElementById('rules-modal');
+const modalTitle = document.getElementById('modal-rule-title');
+const modalImage = document.getElementById('modal-rule-image');
+const modalDesc = document.getElementById('modal-rule-description');
+const closeModalBtn = document.querySelector('.close-modal-btn');
+const ruleTriggers = document.querySelectorAll('.rule-trigger');
+
+// Function to open modal with specific rule data
+function openRuleModal(title, imageSrc, description) {
+    modalTitle.innerText = title;
+    modalImage.src = imageSrc;
+    modalDesc.innerText = description;
+
+    rulesModal.style.display = "flex";
+    // Trigger reflow to ensure animation plays
+    void rulesModal.offsetWidth;
+    rulesModal.classList.add("fade-in");
+}
+
+// Function to close modal
+function closeRuleModal() {
+    rulesModal.style.display = "none";
+    rulesModal.classList.remove("fade-in");
+    // Clear source to stop any loading/glitches when reopening
+    setTimeout(() => { modalImage.src = ""; }, 300);
+}
+
+// Event Listeners for clicking rule items
+ruleTriggers.forEach(trigger => {
+    trigger.addEventListener('click', function () {
+        // Get data from the clicked HTML element
+        const title = this.getAttribute('data-title');
+        const img = this.getAttribute('data-image');
+        const desc = this.getAttribute('data-description');
+
+        openRuleModal(title, img, desc);
+    });
+});
+
+// Close button click
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeRuleModal);
+}
+
+// Close when clicking outside the modal box (on the dark overlay)
+window.addEventListener('click', (e) => {
+    if (e.target === rulesModal) {
+        closeRuleModal();
+    }
+});
+
+/* --- END OF SCRIPT.JS --- */
