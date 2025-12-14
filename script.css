@@ -1342,7 +1342,9 @@ i {
     content: none !important;
 }
 
-/* Green Glow for No Toxicity */
+/* --- SMART HOVER COLORS --- */
+
+/* 1. "No Toxicity" (Rule Trigger) - ALWAYS GREEN */
 .tag.rule-trigger:hover {
     background: rgba(85, 255, 85, 0.2);
     box-shadow: 0 0 15px rgba(85, 255, 85, 0.4);
@@ -1350,10 +1352,21 @@ i {
     cursor: pointer;
 }
 
-/* Cyan Glow for Active Staff */
-.tag.command-trigger:hover {
+/* 2. Commands inside Gold Card (/tpa, /home) - GLOW GOLD */
+.gold-card .tag.command-trigger:hover {
+    background: rgba(255, 170, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.6);
+    color: #ffaa00 !important;
+    transform: scale(1.1);
+    cursor: pointer;
+    border: 1px solid rgba(255, 170, 0, 0.5);
+}
+
+/* 3. "Active Staff" inside Green Card - GLOW CYAN */
+.green-card .tag.command-trigger:hover {
     background: rgba(85, 255, 255, 0.2);
     box-shadow: 0 0 15px rgba(85, 255, 255, 0.4);
+    color: #55ffff !important;
     transform: scale(1.05);
     cursor: pointer;
 }
