@@ -246,63 +246,63 @@ updateServerStatus();
 setInterval(updateServerStatus, 30000);
 
 /* --- 5. UNIFIED MODAL LOGIC (RULES & COMMANDS) --- */
-    const rulesModal = document.getElementById('rules-modal');
-    const modalTitle = document.getElementById('modal-rule-title');
-    const modalImage = document.getElementById('modal-rule-image');
-    const modalDesc = document.getElementById('modal-rule-description');
-    const modalBody = document.querySelector('.modal-body'); // Select the body container
-    const closeModalBtn = document.querySelector('.close-modal-btn');
+const rulesModal = document.getElementById('rules-modal');
+const modalTitle = document.getElementById('modal-rule-title');
+const modalImage = document.getElementById('modal-rule-image');
+const modalDesc = document.getElementById('modal-rule-description');
+const modalBody = document.querySelector('.modal-body'); // Select the body container
+const closeModalBtn = document.querySelector('.close-modal-btn');
 
-    // Updated Function: Handles both Images (Rules) and Text-Only (Commands)
-    function openInfoModal(title, description, imageSrc = null) {
-        modalTitle.innerText = title;
-        modalDesc.innerText = description;
-        
-        if (imageSrc) {
-            // IMAGE MODE (For Rules)
-            modalImage.src = imageSrc;
-            modalImage.style.display = "block"; 
-            modalBody.classList.remove('no-image'); // Show image column
-        } else {
-            // TEXT-ONLY MODE (For Commands)
-            modalImage.src = "";
-            modalBody.classList.add('no-image'); // Hide image column via CSS
-        }
-        
-        rulesModal.style.display = "flex";
-        void rulesModal.offsetWidth; 
-        rulesModal.classList.add("fade-in");
+// Updated Function: Handles both Images (Rules) and Text-Only (Commands)
+function openInfoModal(title, description, imageSrc = null) {
+    modalTitle.innerText = title;
+    modalDesc.innerHTML = description;
+
+    if (imageSrc) {
+        // IMAGE MODE (For Rules)
+        modalImage.src = imageSrc;
+        modalImage.style.display = "block";
+        modalBody.classList.remove('no-image'); // Show image column
+    } else {
+        // TEXT-ONLY MODE (For Commands)
+        modalImage.src = "";
+        modalBody.classList.add('no-image'); // Hide image column via CSS
     }
 
-    function closeRuleModal() {
-        rulesModal.style.display = "none";
-        rulesModal.classList.remove("fade-in");
-    }
+    rulesModal.style.display = "flex";
+    void rulesModal.offsetWidth;
+    rulesModal.classList.add("fade-in");
+}
 
-    // Listener for RULES (Has Images)
-    document.querySelectorAll('.rule-trigger').forEach(trigger => {
-        trigger.addEventListener('click', function() {
-            const title = this.getAttribute('data-title');
-            const img = this.getAttribute('data-image');
-            const desc = this.getAttribute('data-description');
-            openInfoModal(title, desc, img);
-        });
-    });
+function closeRuleModal() {
+    rulesModal.style.display = "none";
+    rulesModal.classList.remove("fade-in");
+}
 
-    // Listener for COMMANDS (No Images)
-    document.querySelectorAll('.command-trigger').forEach(trigger => {
-        trigger.addEventListener('click', function() {
-            const title = this.getAttribute('data-title');
-            const desc = this.getAttribute('data-desc');
-            // Pass 'null' for the image source
-            openInfoModal(title, desc, null);
-        });
+// Listener for RULES (Has Images)
+document.querySelectorAll('.rule-trigger').forEach(trigger => {
+    trigger.addEventListener('click', function () {
+        const title = this.getAttribute('data-title');
+        const img = this.getAttribute('data-image');
+        const desc = this.getAttribute('data-description');
+        openInfoModal(title, desc, img);
     });
+});
 
-    if (closeModalBtn) closeModalBtn.addEventListener('click', closeRuleModal);
-    
-    window.addEventListener('click', (e) => {
-        if (e.target === rulesModal) closeRuleModal();
+// Listener for COMMANDS (No Images)
+document.querySelectorAll('.command-trigger').forEach(trigger => {
+    trigger.addEventListener('click', function () {
+        const title = this.getAttribute('data-title');
+        const desc = this.getAttribute('data-desc');
+        // Pass 'null' for the image source
+        openInfoModal(title, desc, null);
     });
+});
+
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeRuleModal);
+
+window.addEventListener('click', (e) => {
+    if (e.target === rulesModal) closeRuleModal();
+});
 
 /* --- END OF SCRIPT.JS --- */

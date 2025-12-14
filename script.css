@@ -1261,14 +1261,14 @@ i {
 }
 
 .mini-commands span {
-    background: rgba(255, 255, 255, 0.1); 
-    color: #ffaa00; 
-    padding: 4px 10px; 
-    border-radius: 15px; 
-    font-size: 11px;       
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffaa00;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 11px;
     font-weight: bold;
-    text-transform: uppercase; 
-    border: none; 
+    text-transform: uppercase;
+    border: none;
 }
 
 .tag {
@@ -1315,6 +1315,7 @@ i {
     align-items: center;
     justify-content: center;
 }
+
 /* --- LINKED TAG STYLING --- */
 /* Remove the red arrow that usually appears on rule links */
 .tag.rule-trigger::after {
@@ -1323,8 +1324,25 @@ i {
 
 /* Make it pop when hovered (like the commands) */
 .tag.rule-trigger:hover {
-    background: rgba(85, 255, 85, 0.3); /* Green glow */
+    background: rgba(85, 255, 85, 0.3);
+    /* Green glow */
     transform: scale(1.1);
     cursor: pointer;
     box-shadow: 0 0 10px rgba(85, 255, 85, 0.4);
+}
+
+/* Update this rule to include BOTH tags */
+.tag.rule-trigger::after,
+.tag.command-trigger::after {
+    content: none !important;
+    /* Hides the red arrow */
+}
+
+/* Make Active Staff glow Green/Blue on hover */
+.tag.command-trigger:hover {
+    background: rgba(85, 255, 255, 0.3);
+    /* Cyan glow */
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(85, 255, 255, 0.4);
+    cursor: pointer;
 }
