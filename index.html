@@ -61,14 +61,17 @@
         </header>
 
         <!-- SERVER STATUS BAR -->
-        <div class="status-bar">
+<div class="status-bar">
             <div class="status-content">
                 <span class="status-label"><i class="fas fa-wifi"></i> SERVER IP:</span>
                 <span id="server-ip" class="ip-text">sequence.playmc.cloud</span>
             </div>
             <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> COPY IP</button>
+            
             <div class="player-count">
                 <span class="status-dot"></span> Online: <span id="player-text" style="color: #fff;">Loading...</span>
+                
+                <div id="player-list-tooltip" class="tooltip-content"></div>
             </div>
         </div>
 
