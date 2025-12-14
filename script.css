@@ -1397,3 +1397,8 @@ i {
 .border-plugin {
     border: 2px solid #55ffff;
 }
+/* --- HIDE ARROWS ON TAG BUTTONS --- */
+.tag.rule-trigger::after,
+.tag.command-trigger::after {
+    content: none !important; /* Forces the arrow to disappear */
+}
