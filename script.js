@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* -- 3. AUDIO SYSTEM (WITH VISUALIZER & WEBSOCKET) -- */
+    /* -- 3. AUDIO SYSTEM (FIXED RECONNECT & QUEUE) -- */
     const connectBtn = document.getElementById('connect-audio-btn');
     const disconnectBtn = document.getElementById('disconnect-btn');
     const connectWrapper = document.getElementById('connect-wrapper');
@@ -86,12 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioPlayer = document.getElementById('audio-player');
     const volumeSlider = document.getElementById('volume-slider');
     const nowPlayingText = document.getElementById('now-playing-text');
-    const visualizer = document.querySelector('.visualizer'); // Added for animations
+    const visualizer = document.querySelector('.visualizer');
 
     let ws;
+    // [FIX 1] This flag prevents auto-reconnect when you click disconnect
     let isManualDisconnect = false;
 
-    // 1. Connect Button Logic
+    // A. Connect Button Logic
     if (connectBtn) {
         connectBtn.addEventListener('click', async () => {
             connectWrapper.style.display = 'none';
@@ -110,16 +111,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioPlayer.currentTime = 0;
             } catch { }
 
-            if (visualizer) visualizer.style.opacity = "0.5"; // Dim visualizer initially
+            if (visualizer) visualizer.style.opacity = "0.5";
+
+            // [FIX 1] Reset flag so we can reconnect later
             isManualDisconnect = false;
             initWebSocket();
         });
     }
 
-    // 2. Disconnect Button Logic
+    // B. Disconnect Button Logic
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
+            // [FIX 1] Set flag to TRUE so onclose knows it was on purpose
             isManualDisconnect = true;
+
             if (ws) ws.close();
             stopAudio();
 
@@ -130,14 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Volume Slider Logic
+    // C. Volume Slider Logic
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             if (audioPlayer) audioPlayer.volume = e.target.value;
         });
     }
 
-    /* --- UPDATED WEBSOCKET & AUDIO LOGIC --- */
+    // D. WebSocket Connection
     function initWebSocket() {
         if (!audioStatus) return;
 
@@ -154,85 +159,77 @@ document.addEventListener('DOMContentLoaded', () => {
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
+                console.log("Audio Signal:", data);
 
-                if (data.action === 'play') {
-                    playAudio(data.url, data.text);
-                }
-                else if (data.action === 'stop') {
-                    stopAudio();
-                }
-                // Handle Queue Updates (Optional Visuals)
-                else if (data.action === 'queue') {
-                    console.log("Queue Updated:", data.queue);
-                }
+                if (data.action === 'play') playAudio(data.url, data.text);
+                else if (data.action === 'stop') stopAudio();
             } catch (e) { console.error("JSON Error:", e); }
         };
 
         ws.onclose = () => {
+            // [FIX 1] If user clicked disconnect, DO NOT RECONNECT
+            if (isManualDisconnect) {
+                console.log("Disconnected by user. Not reconnecting.");
+                return;
+            }
+
+            // Otherwise, it was a network error, so try again
             audioStatus.innerText = "Status: Disconnected (Retrying...)";
             audioStatus.style.color = "#ff5555";
             setTimeout(initWebSocket, 3000);
         };
     }
 
-    // 2. Add the "Ended" Listener to the Audio Player
+    // E. Add "Ended" Listener for Queue System
     if (audioPlayer) {
         audioPlayer.addEventListener('ended', () => {
             console.log("Song finished. Requesting next track...");
-
-            // VISUAL UPDATE
             nowPlayingText.innerText = "Loading next song...";
             nowPlayingText.style.color = "#ffaa00";
 
-            // SEND SIGNAL TO SERVER
             if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
                     action: "ended",
-                    url: audioPlayer.src // Send current URL so server knows WHICH song ended
+                    url: audioPlayer.src
                 }));
             }
         });
     }
 
-    // 3. Play Audio Function (unchanged from previous valid version)
+    // F. Play Audio Function
     function playAudio(url, text) {
         if (!audioPlayer) return;
 
-        // Reset Player
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0;
-
-        // UI Update
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
         nowPlayingText.style.color = "#55ff55";
-        if (document.querySelector('.visualizer')) document.querySelector('.visualizer').style.opacity = "1";
+        if (visualizer) visualizer.style.opacity = "1";
 
-        // Load & Play
-        audioPlayer.src = url; // Timestamp not strictly needed if queueing different songs
+        audioPlayer.src = url;
         audioPlayer.load();
 
-        audioPlayer.play().catch((e) => {
-            console.warn("Autoplay blocked:", e);
-            nowPlayingText.innerText = "⚠️ Click to Play: " + text;
+        audioPlayer.play().catch(() => {
+            nowPlayingText.innerText = "⚠️ Click to Play";
             nowPlayingText.style.color = "#ffaa00";
 
             const unlock = () => {
                 audioPlayer.play();
                 nowPlayingText.innerText = "♫ " + (text || "Now playing");
                 nowPlayingText.style.color = "#55ff55";
+                document.removeEventListener("click", unlock);
             };
             document.addEventListener("click", unlock, { once: true });
         });
     }
-    // 6. Stop Audio Function
+
+    // G. Stop Audio Function
     function stopAudio() {
         if (!audioPlayer) return;
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
 
         nowPlayingText.innerText = "Waiting for music...";
-        nowPlayingText.style.color = "#ffaa00"; // Orange text for waiting
-        if (visualizer) visualizer.style.opacity = "0.3"; // Dim visualizer
+        nowPlayingText.style.color = "#ffaa00";
+        if (visualizer) visualizer.style.opacity = "0.3";
     }
 });
 
@@ -241,7 +238,6 @@ const playerText = document.getElementById('player-text');
 const statusDot = document.querySelector('.status-dot');
 const playerTooltip = document.getElementById('player-list-tooltip');
 
-// Using mcsrvstat.us API
 const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
 function updateServerStatus() {
@@ -251,12 +247,10 @@ function updateServerStatus() {
         .then(response => response.json())
         .then(data => {
             if (data.online) {
-                // 1. Update Count
                 playerText.innerText = `${data.players.online} / ${data.players.max}`;
                 statusDot.style.backgroundColor = "#55ff55";
                 statusDot.style.boxShadow = "0 0 5px #55ff55";
 
-                // 2. Update Player List Tooltip
                 if (data.players.list && data.players.list.length > 0) {
                     let playerHtml = '';
                     data.players.list.forEach(player => {
@@ -273,7 +267,6 @@ function updateServerStatus() {
                 }
 
             } else {
-                // Server Offline
                 playerText.innerText = "Offline";
                 statusDot.style.backgroundColor = "#ff5555";
                 statusDot.style.boxShadow = "0 0 5px #ff5555";
@@ -286,10 +279,7 @@ function updateServerStatus() {
         });
 }
 
-// Run immediately when page loads
 updateServerStatus();
-
-// Refresh every 30 seconds
 setInterval(updateServerStatus, 30000);
 
 /* --- 5. UNIFIED MODAL LOGIC (RULES & COMMANDS) --- */
@@ -305,12 +295,10 @@ function openInfoModal(title, description, imageSrc = null) {
     modalDesc.innerHTML = description;
 
     if (imageSrc) {
-        // IMAGE MODE (For Rules)
         modalImage.src = imageSrc;
         modalImage.style.display = "block";
         modalBody.classList.remove('no-image');
     } else {
-        // TEXT-ONLY MODE (For Commands)
         modalImage.src = "";
         modalBody.classList.add('no-image');
     }
@@ -325,7 +313,6 @@ function closeRuleModal() {
     rulesModal.classList.remove("fade-in");
 }
 
-// Listener for RULES (Has Images)
 document.querySelectorAll('.rule-trigger').forEach(trigger => {
     trigger.addEventListener('click', function () {
         const title = this.getAttribute('data-title');
@@ -335,7 +322,6 @@ document.querySelectorAll('.rule-trigger').forEach(trigger => {
     });
 });
 
-// Listener for COMMANDS (No Images)
 document.querySelectorAll('.command-trigger').forEach(trigger => {
     trigger.addEventListener('click', function () {
         const title = this.getAttribute('data-title');
@@ -349,4 +335,4 @@ if (closeModalBtn) closeModalBtn.addEventListener('click', closeRuleModal);
 window.addEventListener('click', (e) => {
     if (e.target === rulesModal) closeRuleModal();
 });
-/* --- END OF SCRIPT.JS YES--- */
+/* --- END OF SCRIPT.JS --- */
