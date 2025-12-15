@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lightbox.style.display = "flex";
             lightbox.style.flexDirection = "column";
             lightbox.style.justifyContent = "center";
-            lightbox.style.alignItems = "center"; // Centering fix
+            lightbox.style.alignItems = "center";
 
             lightboxImg.src = this.src;
             lightboxCaption.innerText = this.nextElementSibling ? this.nextElementSibling.innerText : this.alt;
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* -- 3. AUDIO SYSTEM -- */
+    /* -- 3. AUDIO SYSTEM (WITH VISUALIZER & WEBSOCKET) -- */
     const connectBtn = document.getElementById('connect-audio-btn');
     const disconnectBtn = document.getElementById('disconnect-btn');
     const connectWrapper = document.getElementById('connect-wrapper');
@@ -86,10 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioPlayer = document.getElementById('audio-player');
     const volumeSlider = document.getElementById('volume-slider');
     const nowPlayingText = document.getElementById('now-playing-text');
+    const visualizer = document.querySelector('.visualizer'); // Added for animations
 
     let ws;
     let isManualDisconnect = false;
 
+    // 1. Connect Button Logic
     if (connectBtn) {
         connectBtn.addEventListener('click', async () => {
             connectWrapper.style.display = 'none';
@@ -99,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioPlayer.volume = volumeSlider.value;
             }
 
-            // autoplay unlock on user gesture
+            // Unlock Audio Context (Crucial for autoplay)
             try {
                 audioPlayer.muted = false;
                 audioPlayer.src = "";
@@ -108,11 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioPlayer.currentTime = 0;
             } catch { }
 
+            if (visualizer) visualizer.style.opacity = "0.5"; // Dim visualizer initially
             isManualDisconnect = false;
             initWebSocket();
         });
     }
 
+    // 2. Disconnect Button Logic
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
             isManualDisconnect = true;
@@ -126,12 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 3. Volume Slider Logic
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             if (audioPlayer) audioPlayer.volume = e.target.value;
         });
     }
 
+    // 4. WebSocket Connection
     function initWebSocket() {
         if (!audioStatus) return;
 
@@ -141,13 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ws = new WebSocket(WEBSOCKET_URL);
 
         ws.onopen = () => {
-            audioStatus.innerText = "Status: Connected ●";
-            audioStatus.style.color = "#55ff55";
+            console.log("Connected to Audio Server");
+            audioStatus.innerHTML = 'Status: <span style="color:#55ff55">● LIVE</span> Connected';
         };
 
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
+                console.log("Audio Signal:", data);
+
                 if (data.action === 'play') playAudio(data.url, data.text);
                 else if (data.action === 'stop') stopAudio();
             } catch (e) { console.error("JSON Error:", e); }
@@ -161,31 +169,42 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // 5. Play Audio Function
     function playAudio(url, text) {
         if (!audioPlayer) return;
+
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
+        nowPlayingText.style.color = "#55ff55"; // Green text for playing
+        if (visualizer) visualizer.style.opacity = "1"; // Bright visualizer
+
         audioPlayer.src = url;
         audioPlayer.play().catch(() => {
+            // Fallback if browser blocks autoplay
             nowPlayingText.innerText = "⚠️ Click to Play";
+            nowPlayingText.style.color = "#ffaa00";
 
             const unlock = () => {
                 audioPlayer.play();
                 nowPlayingText.innerText = "♫ " + (text || "Now playing");
+                nowPlayingText.style.color = "#55ff55";
                 document.removeEventListener("click", unlock);
             };
-
             document.addEventListener("click", unlock, { once: true });
         });
-
     }
 
+    // 6. Stop Audio Function
     function stopAudio() {
         if (!audioPlayer) return;
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
+
         nowPlayingText.innerText = "Waiting for music...";
+        nowPlayingText.style.color = "#ffaa00"; // Orange text for waiting
+        if (visualizer) visualizer.style.opacity = "0.3"; // Dim visualizer
     }
 });
+
 /* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
 const playerText = document.getElementById('player-text');
 const statusDot = document.querySelector('.status-dot');
@@ -208,10 +227,8 @@ function updateServerStatus() {
 
                 // 2. Update Player List Tooltip
                 if (data.players.list && data.players.list.length > 0) {
-                    // Create HTML for each player
                     let playerHtml = '';
                     data.players.list.forEach(player => {
-                        // Uses Crafatar to get the player's face 
                         playerHtml += `
                                 <div class="player-row">
                                     <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
@@ -221,7 +238,6 @@ function updateServerStatus() {
                     });
                     playerTooltip.innerHTML = playerHtml;
                 } else {
-                    // Online but list is hidden or empty
                     playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
                 }
 
@@ -250,10 +266,9 @@ const rulesModal = document.getElementById('rules-modal');
 const modalTitle = document.getElementById('modal-rule-title');
 const modalImage = document.getElementById('modal-rule-image');
 const modalDesc = document.getElementById('modal-rule-description');
-const modalBody = document.querySelector('.modal-body'); // Select the body container
+const modalBody = document.querySelector('.modal-body');
 const closeModalBtn = document.querySelector('.close-modal-btn');
 
-// Updated Function: Handles both Images (Rules) and Text-Only (Commands)
 function openInfoModal(title, description, imageSrc = null) {
     modalTitle.innerText = title;
     modalDesc.innerHTML = description;
@@ -262,11 +277,11 @@ function openInfoModal(title, description, imageSrc = null) {
         // IMAGE MODE (For Rules)
         modalImage.src = imageSrc;
         modalImage.style.display = "block";
-        modalBody.classList.remove('no-image'); // Show image column
+        modalBody.classList.remove('no-image');
     } else {
         // TEXT-ONLY MODE (For Commands)
         modalImage.src = "";
-        modalBody.classList.add('no-image'); // Hide image column via CSS
+        modalBody.classList.add('no-image');
     }
 
     rulesModal.style.display = "flex";
@@ -294,7 +309,6 @@ document.querySelectorAll('.command-trigger').forEach(trigger => {
     trigger.addEventListener('click', function () {
         const title = this.getAttribute('data-title');
         const desc = this.getAttribute('data-desc');
-        // Pass 'null' for the image source
         openInfoModal(title, desc, null);
     });
 });
@@ -304,5 +318,4 @@ if (closeModalBtn) closeModalBtn.addEventListener('click', closeRuleModal);
 window.addEventListener('click', (e) => {
     if (e.target === rulesModal) closeRuleModal();
 });
-
 /* --- END OF SCRIPT.JS --- */
