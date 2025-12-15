@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // 🔓 Unlock autoplay
         try {
             audioPlayer.muted = false;
-            await audioPlayer.play().catch(() => { });
+            await audioPlayer.play().catch(() => {});
             audioPlayer.pause();
             audioPlayer.currentTime = 0;
-        } catch { }
+        } catch {}
 
         visualizer && (visualizer.style.opacity = "0.5");
 
