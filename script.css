@@ -1370,3 +1370,24 @@ i {
     transform: scale(1.05);
     cursor: pointer;
 }
+
+/* --- FOOTER LOGO STYLING --- */
+.footer-logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    /* Centers it and adds space below */
+    max-width: 400px;
+    /* Prevents it from being huge on desktop */
+    width: 90%;
+    /* Fits nicely on mobile screens */
+    height: auto;
+    filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.3));
+    /* Gold glow */
+    transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+    transform: scale(1.05);
+    /* Slight pop when hovering */
+    filter: drop-shadow(0 0 25px rgba(255, 170, 0, 0.6));
+}
