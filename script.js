@@ -169,18 +169,33 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // 5. Play Audio Function
+    // 5. Play Audio Function (Force Reset Version)
     function playAudio(url, text) {
         if (!audioPlayer) return;
 
-        nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
-        nowPlayingText.style.color = "#55ff55"; // Green text for playing
-        if (visualizer) visualizer.style.opacity = "1"; // Bright visualizer
+        console.log("Switching track to:", text);
 
-        audioPlayer.src = url;
-        audioPlayer.play().catch(() => {
-            // Fallback if browser blocks autoplay
-            nowPlayingText.innerText = "⚠️ Click to Play";
+        // 1. Force Stop & Reset
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0; // Rewind
+        audioPlayer.removeAttribute('src'); // Completely clear source
+        audioPlayer.load(); // Reset buffer
+
+        // 2. Update UI
+        nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
+        nowPlayingText.style.color = "#55ff55";
+        if (visualizer) visualizer.style.opacity = "1";
+
+        // 3. Load New Song
+        // We add a timestamp (?t=...) to force the browser to treat it as a new request
+        // This prevents the browser from getting stuck on the old cached song
+        audioPlayer.src = url + "?t=" + new Date().getTime();
+        audioPlayer.load();
+
+        // 4. Play with Error Handling
+        audioPlayer.play().catch((e) => {
+            console.warn("Autoplay blocked:", e);
+            nowPlayingText.innerText = "⚠️ Click to Play: " + text;
             nowPlayingText.style.color = "#ffaa00";
 
             const unlock = () => {
