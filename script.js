@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. WebSocket Connection
+    /* --- UPDATED WEBSOCKET & AUDIO LOGIC --- */
     function initWebSocket() {
         if (!audioStatus) return;
 
@@ -154,45 +154,63 @@ document.addEventListener('DOMContentLoaded', () => {
         ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
-                console.log("Audio Signal:", data);
 
-                if (data.action === 'play') playAudio(data.url, data.text);
-                else if (data.action === 'stop') stopAudio();
+                if (data.action === 'play') {
+                    playAudio(data.url, data.text);
+                }
+                else if (data.action === 'stop') {
+                    stopAudio();
+                }
+                // Handle Queue Updates (Optional Visuals)
+                else if (data.action === 'queue') {
+                    console.log("Queue Updated:", data.queue);
+                }
             } catch (e) { console.error("JSON Error:", e); }
         };
 
         ws.onclose = () => {
-            if (isManualDisconnect) return;
             audioStatus.innerText = "Status: Disconnected (Retrying...)";
             audioStatus.style.color = "#ff5555";
             setTimeout(initWebSocket, 3000);
         };
     }
 
-    // 5. Play Audio Function (Force Reset Version)
+    // 2. Add the "Ended" Listener to the Audio Player
+    if (audioPlayer) {
+        audioPlayer.addEventListener('ended', () => {
+            console.log("Song finished. Requesting next track...");
+
+            // VISUAL UPDATE
+            nowPlayingText.innerText = "Loading next song...";
+            nowPlayingText.style.color = "#ffaa00";
+
+            // SEND SIGNAL TO SERVER
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    action: "ended",
+                    url: audioPlayer.src // Send current URL so server knows WHICH song ended
+                }));
+            }
+        });
+    }
+
+    // 3. Play Audio Function (unchanged from previous valid version)
     function playAudio(url, text) {
         if (!audioPlayer) return;
 
-        console.log("Switching track to:", text);
-
-        // 1. Force Stop & Reset
+        // Reset Player
         audioPlayer.pause();
-        audioPlayer.currentTime = 0; // Rewind
-        audioPlayer.removeAttribute('src'); // Completely clear source
-        audioPlayer.load(); // Reset buffer
+        audioPlayer.currentTime = 0;
 
-        // 2. Update UI
+        // UI Update
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
         nowPlayingText.style.color = "#55ff55";
-        if (visualizer) visualizer.style.opacity = "1";
+        if (document.querySelector('.visualizer')) document.querySelector('.visualizer').style.opacity = "1";
 
-        // 3. Load New Song
-        // We add a timestamp (?t=...) to force the browser to treat it as a new request
-        // This prevents the browser from getting stuck on the old cached song
-        audioPlayer.src = url + "?t=" + new Date().getTime();
+        // Load & Play
+        audioPlayer.src = url; // Timestamp not strictly needed if queueing different songs
         audioPlayer.load();
 
-        // 4. Play with Error Handling
         audioPlayer.play().catch((e) => {
             console.warn("Autoplay blocked:", e);
             nowPlayingText.innerText = "⚠️ Click to Play: " + text;
@@ -202,12 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioPlayer.play();
                 nowPlayingText.innerText = "♫ " + (text || "Now playing");
                 nowPlayingText.style.color = "#55ff55";
-                document.removeEventListener("click", unlock);
             };
             document.addEventListener("click", unlock, { once: true });
         });
     }
-
     // 6. Stop Audio Function
     function stopAudio() {
         if (!audioPlayer) return;
