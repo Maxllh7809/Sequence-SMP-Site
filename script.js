@@ -333,4 +333,4 @@ if (closeModalBtn) closeModalBtn.addEventListener('click', closeRuleModal);
 window.addEventListener('click', (e) => {
     if (e.target === rulesModal) closeRuleModal();
 });
-/* --- END OF SCRIPT.JS --- */
+/* --- END OF SCRIPT.JS YES--- */
