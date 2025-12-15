@@ -1,10 +1,11 @@
-/* --- CONFIGURATION --- */
+/* ================= CONFIG ================= */
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
+const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
 
-/* --- TAB SWITCHING LOGIC --- */
+/* ================= TAB SWITCHING ================= */
 function openTab(tabName) {
-    const allTabs = document.getElementsByClassName("tab-content");
-    for (let tab of allTabs) {
+    const tabs = document.getElementsByClassName("tab-content");
+    for (let tab of tabs) {
         tab.style.display = "none";
         tab.classList.remove("fade-in");
     }
@@ -22,14 +23,39 @@ function openTab(tabName) {
     if (event?.currentTarget) event.currentTarget.classList.add("active-link");
 }
 
-/* --- LIGHTBOX --- */
+/* ================= LIGHTBOX ================= */
 window.closeLightbox = () => {
     document.getElementById("lightbox").style.display = "none";
 };
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* --- AUDIO ELEMENTS --- */
+    /* ================= LIGHTBOX LOGIC ================= */
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxCaption = document.getElementById("lightbox-caption");
+
+    document.querySelectorAll(".gallery-item img").forEach(img => {
+        img.addEventListener("click", () => {
+            lightbox.style.display = "flex";
+            lightboxImg.src = img.src;
+            lightboxCaption.innerText =
+                img.nextElementSibling?.innerText || img.alt;
+        });
+    });
+
+    /* ================= COPY IP ================= */
+    const copyButton = document.getElementById("copy-btn");
+    const ipTextElement = document.getElementById("server-ip");
+
+    copyButton?.addEventListener("click", () => {
+        navigator.clipboard.writeText(ipTextElement.innerText);
+        const original = copyButton.innerText;
+        copyButton.innerText = "COPIED!";
+        setTimeout(() => copyButton.innerText = original, 2000);
+    });
+
+    /* ================= AUDIO SYSTEM ================= */
     const connectBtn = document.getElementById("connect-audio-btn");
     const disconnectBtn = document.getElementById("disconnect-btn");
     const connectWrapper = document.getElementById("connect-wrapper");
@@ -43,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let ws;
     let isManualDisconnect = false;
 
-    /* --- CONNECT BUTTON --- */
     connectBtn?.addEventListener("click", async () => {
         connectWrapper.style.display = "none";
         playerControls.style.display = "block";
@@ -52,113 +77,156 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 🔓 Unlock autoplay
         try {
-            audioPlayer.muted = false;
             await audioPlayer.play().catch(() => {});
             audioPlayer.pause();
             audioPlayer.currentTime = 0;
         } catch {}
 
-        visualizer && (visualizer.style.opacity = "0.5");
-
         isManualDisconnect = false;
         initWebSocket();
     });
 
-    /* --- DISCONNECT BUTTON --- */
     disconnectBtn?.addEventListener("click", () => {
         isManualDisconnect = true;
         ws?.close();
         stopAudio();
-
         playerControls.style.display = "none";
         connectWrapper.style.display = "block";
-        audioStatus.textContent = "Status: Disconnected";
-        audioStatus.style.color = "#888";
+        audioStatus.innerText = "Status: Disconnected";
     });
 
-    /* --- VOLUME --- */
     volumeSlider?.addEventListener("input", e => {
         audioPlayer.volume = e.target.value;
     });
 
-    /* --- WEBSOCKET --- */
     function initWebSocket() {
-        audioStatus.textContent = "Status: Connecting...";
-        audioStatus.style.color = "#ffaa00";
-
+        audioStatus.innerText = "Status: Connecting...";
         ws = new WebSocket(WEBSOCKET_URL);
 
         ws.onopen = () => {
-            console.log("WS connected");
-            audioStatus.innerHTML = 'Status: <span style="color:#55ff55">● LIVE</span>';
+            audioStatus.innerHTML =
+                'Status: <span style="color:#55ff55">● LIVE</span>';
         };
 
-        ws.onmessage = event => {
-            const data = JSON.parse(event.data);
+        ws.onmessage = e => {
+            const data = JSON.parse(e.data);
             console.log("WS:", data);
 
-            if (data.action === "play") {
+            if (data.action === "play")
                 playAudio(data.url, data.text);
-            }
 
-            if (data.action === "stop") {
+            if (data.action === "stop")
                 stopAudio();
-            }
 
-            // 🔥 IMPORTANT FIX: sync from queue state
-            if (data.action === "queue" && data.nowPlaying) {
+            // 🔥 FIX: sync from queue state
+            if (data.action === "queue" && data.nowPlaying)
                 playAudio(data.nowPlaying.url, data.nowPlaying.text);
-            }
         };
 
         ws.onclose = () => {
             if (isManualDisconnect) return;
-
-            audioStatus.textContent = "Status: Disconnected (Retrying...)";
-            audioStatus.style.color = "#ff5555";
             setTimeout(initWebSocket, 3000);
         };
     }
 
-    /* --- QUEUE CONTINUE --- */
-    audioPlayer.addEventListener("ended", () => {
+    audioPlayer?.addEventListener("ended", () => {
         ws?.readyState === WebSocket.OPEN &&
-            ws.send(JSON.stringify({ action: "ended", url: audioPlayer.src }));
+            ws.send(JSON.stringify({
+                action: "ended",
+                url: audioPlayer.src
+            }));
     });
 
-    /* --- PLAY AUDIO (FIXED) --- */
     function playAudio(url, text) {
         if (!url) return;
 
-        const sameTrack = audioPlayer.src === url;
+        const same = audioPlayer.src === url;
 
-        nowPlayingText.textContent = "♫ " + (text || "Now playing");
-        nowPlayingText.style.color = "#55ff55";
+        nowPlayingText.innerText = "♫ " + (text || "Now Playing");
         visualizer && (visualizer.style.opacity = "1");
 
-        if (!sameTrack) {
+        if (!same) {
             audioPlayer.src = url;
             audioPlayer.load();
         }
 
         audioPlayer.play().catch(() => {
-            nowPlayingText.textContent = "⚠️ Click to Play";
-            nowPlayingText.style.color = "#ffaa00";
-
-            document.addEventListener("click", () => {
-                audioPlayer.play();
-                nowPlayingText.textContent = "♫ " + (text || "Now playing");
-                nowPlayingText.style.color = "#55ff55";
-            }, { once: true });
+            nowPlayingText.innerText = "⚠️ Click to Play";
+            document.addEventListener("click", () => audioPlayer.play(), { once: true });
         });
     }
 
-    /* --- STOP AUDIO --- */
     function stopAudio() {
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
-        nowPlayingText.textContent = "Waiting for music...";
-        nowPlayingText.style.color = "#ffaa00";
+        nowPlayingText.innerText = "Waiting for music...";
         visualizer && (visualizer.style.opacity = "0.3");
     }
+});
+
+/* ================= SERVER STATUS ================= */
+const playerText = document.getElementById("player-text");
+const statusDot = document.querySelector(".status-dot");
+const playerTooltip = document.getElementById("player-list-tooltip");
+
+function updateServerStatus() {
+    fetch(SERVER_API_URL)
+        .then(r => r.json())
+        .then(data => {
+            if (data.online) {
+                playerText.innerText = `${data.players.online} / ${data.players.max}`;
+                statusDot.style.background = "#55ff55";
+
+                playerTooltip.innerHTML = data.players.list?.length
+                    ? data.players.list.map(p => `
+                        <div class="player-row">
+                            <img src="https://crafatar.com/avatars/${p.uuid}?size=24&overlay">
+                            ${p.name}
+                        </div>
+                      `).join("")
+                    : "No players online";
+            } else {
+                playerText.innerText = "Offline";
+                statusDot.style.background = "#ff5555";
+            }
+        });
+}
+
+updateServerStatus();
+setInterval(updateServerStatus, 30000);
+
+/* ================= MODALS ================= */
+const rulesModal = document.getElementById("rules-modal");
+const modalTitle = document.getElementById("modal-rule-title");
+const modalImage = document.getElementById("modal-rule-image");
+const modalDesc = document.getElementById("modal-rule-description");
+const closeModalBtn = document.querySelector(".close-modal-btn");
+
+function openInfoModal(title, desc, img = null) {
+    modalTitle.innerText = title;
+    modalDesc.innerHTML = desc;
+    modalImage.style.display = img ? "block" : "none";
+    modalImage.src = img || "";
+    rulesModal.style.display = "flex";
+}
+
+function closeRuleModal() {
+    rulesModal.style.display = "none";
+}
+
+document.querySelectorAll(".rule-trigger").forEach(el =>
+    el.addEventListener("click", () =>
+        openInfoModal(el.dataset.title, el.dataset.description, el.dataset.image)
+    )
+);
+
+document.querySelectorAll(".command-trigger").forEach(el =>
+    el.addEventListener("click", () =>
+        openInfoModal(el.dataset.title, el.dataset.desc)
+    )
+);
+
+closeModalBtn?.addEventListener("click", closeRuleModal);
+window.addEventListener("click", e => {
+    if (e.target === rulesModal) closeRuleModal();
 });
