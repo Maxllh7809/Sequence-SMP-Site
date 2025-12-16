@@ -1376,7 +1376,7 @@ i {
     display: block;
     margin: 0 auto 20px auto;
     /* Centers it and adds space below */
-    max-width: 400px;
+    max-width: 100px;
     /* Prevents it from being huge on desktop */
     width: 90%;
     /* Fits nicely on mobile screens */
