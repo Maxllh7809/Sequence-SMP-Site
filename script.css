@@ -40,7 +40,6 @@ html {
 h1,
 h2,
 h3,
-.nav-title,
 .copy-btn,
 .ip-text,
 .status-label,
@@ -190,10 +189,28 @@ h3,
     padding: 10px 20px;
 }
 
-.nav-title {
-    color: #ffaa00;
-    font-size: 30px;
-    letter-spacing: 2px;
+/* --- NAVIGATION LOGO --- */
+.nav-logo {
+    height: 50px;
+    /* Adjust this to make it bigger/smaller */
+    width: auto;
+    filter: drop-shadow(0 0 5px rgba(255, 170, 0, 0.5));
+    /* Gold glow */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(255, 170, 0, 0.8));
+}
+
+/* Optional: Adjust mobile size */
+@media (max-width: 768px) {
+    .nav-logo {
+        height: 40px;
+        /* Slightly smaller on phones */
+    }
 }
 
 .nav-links {
