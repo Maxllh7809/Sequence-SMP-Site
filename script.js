@@ -195,23 +195,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // F. Play Function
-    function playAudio(url, text) {
+    // F. Play Audio Function (With Requester Name)
+    function playAudio(url, text, requester) {
         if (!audioPlayer) return;
-        nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
+
+        // 1. Format the Text
+        let displayHtml = text ? "♫ " + text : "♫ Unknown Track";
+
+        // Add "Requested by..." if it exists
+        if (requester) {
+            displayHtml += `<br><span style="font-size: 0.6em; color: #888; font-weight: normal;">Requested by: ${requester}</span>`;
+        }
+
+        // 2. Update the Screen (Use innerHTML to allow the line break)
+        nowPlayingText.innerHTML = displayHtml;
         nowPlayingText.style.color = "#55ff55";
+
         if (visualizer) visualizer.style.opacity = "1";
 
+        // 3. Play Logic
         audioPlayer.src = url;
-        audioPlayer.load(); // Force reload
+        audioPlayer.load();
 
         audioPlayer.play().catch(() => {
-            nowPlayingText.innerText = "⚠️ Click to Play";
+            nowPlayingText.innerHTML = "⚠️ Click to Play<br><span style='font-size:0.6em; color:#888'>" + (text || "") + "</span>";
             nowPlayingText.style.color = "#ffaa00";
 
             const unlock = () => {
                 audioPlayer.play();
-                nowPlayingText.innerText = "♫ " + (text || "Now playing");
+                nowPlayingText.innerHTML = displayHtml;
                 nowPlayingText.style.color = "#55ff55";
                 document.removeEventListener("click", unlock);
             };
