@@ -776,6 +776,7 @@ hr {
     pointer-events: none;
 }
 
+/* Particles */
 .particles span {
     position: absolute;
     bottom: -50px;
@@ -784,6 +785,9 @@ hr {
     background: rgba(255, 170, 0, 0.5);
     box-shadow: 0 0 10px #ffaa00;
     animation: rise 15s infinite linear;
+
+    /* ADD THIS LINE FOR PERFORMANCE: */
+    will-change: transform, opacity;
 }
 
 .particles span:nth-child(1) {
@@ -1375,14 +1379,11 @@ i {
 .footer-logo {
     display: block;
     margin: 0 auto 20px auto;
-    /* Centers it and adds space below */
-    max-width: 100px;
-    /* Prevents it from being huge on desktop */
+    max-width: 400px;
+    /* CHANGED FROM 100px TO 400px */
     width: 90%;
-    /* Fits nicely on mobile screens */
     height: auto;
     filter: drop-shadow(0 0 15px rgba(255, 170, 0, 0.3));
-    /* Gold glow */
     transition: transform 0.3s ease;
 }
 

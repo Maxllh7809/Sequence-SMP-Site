@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lightbox.style.display = "flex";
             lightbox.style.flexDirection = "column";
             lightbox.style.justifyContent = "center";
-            lightbox.style.alignItems = "center"; // Centering fix
+            lightbox.style.alignItems = "center";
 
             lightboxImg.src = this.src;
             lightboxCaption.innerText = this.nextElementSibling ? this.nextElementSibling.innerText : this.alt;
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* -- 3. AUDIO SYSTEM -- */
+    /* -- 3. AUDIO SYSTEM (WITH VOLUME MEMORY) -- */
     const connectBtn = document.getElementById('connect-audio-btn');
     const disconnectBtn = document.getElementById('disconnect-btn');
     const connectWrapper = document.getElementById('connect-wrapper');
@@ -87,19 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumeSlider = document.getElementById('volume-slider');
     const nowPlayingText = document.getElementById('now-playing-text');
 
+    // Add visualizer selection if you have it in HTML
+    const visualizer = document.querySelector('.visualizer');
+
     let ws;
     let isManualDisconnect = false;
 
+    // A. Connect Button
     if (connectBtn) {
         connectBtn.addEventListener('click', async () => {
             connectWrapper.style.display = 'none';
             playerControls.style.display = 'block';
 
+            // Apply volume immediately upon connection
             if (volumeSlider && audioPlayer) {
                 audioPlayer.volume = volumeSlider.value;
             }
 
-            // autoplay unlock on user gesture
+            // Autoplay unlock
             try {
                 audioPlayer.muted = false;
                 audioPlayer.src = "";
@@ -108,11 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 audioPlayer.currentTime = 0;
             } catch { }
 
+            if (visualizer) visualizer.style.opacity = "0.5";
             isManualDisconnect = false;
             initWebSocket();
         });
     }
 
+    // B. Disconnect Button
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', () => {
             isManualDisconnect = true;
@@ -126,12 +133,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // C. Volume Slider (IMPROVED: SAVES TO BROWSER MEMORY)
     if (volumeSlider) {
+        // 1. Load saved volume
+        const savedVolume = localStorage.getItem('siteVolume');
+        if (savedVolume !== null) {
+            volumeSlider.value = savedVolume;
+            if (audioPlayer) audioPlayer.volume = savedVolume;
+        }
+
+        // 2. Save volume on change
         volumeSlider.addEventListener('input', (e) => {
-            if (audioPlayer) audioPlayer.volume = e.target.value;
+            const vol = e.target.value;
+            if (audioPlayer) audioPlayer.volume = vol;
+            localStorage.setItem('siteVolume', vol);
         });
     }
 
+    // D. WebSocket Logic
     function initWebSocket() {
         if (!audioStatus) return;
 
@@ -141,8 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ws = new WebSocket(WEBSOCKET_URL);
 
         ws.onopen = () => {
-            audioStatus.innerText = "Status: Connected ●";
-            audioStatus.style.color = "#55ff55";
+            audioStatus.innerHTML = 'Status: <span style="color:#55ff55">● LIVE</span> Connected';
         };
 
         ws.onmessage = (event) => {
@@ -161,31 +179,58 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // E. Queue Logic (Song Ended)
+    if (audioPlayer) {
+        audioPlayer.addEventListener('ended', () => {
+            console.log("Song finished. Requesting next track...");
+            nowPlayingText.innerText = "Loading next song...";
+            nowPlayingText.style.color = "#ffaa00";
+
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    action: "ended",
+                    url: audioPlayer.src
+                }));
+            }
+        });
+    }
+
+    // F. Play Function
     function playAudio(url, text) {
         if (!audioPlayer) return;
         nowPlayingText.innerText = text ? "♫ " + text : "♫ Unknown Track";
+        nowPlayingText.style.color = "#55ff55";
+        if (visualizer) visualizer.style.opacity = "1";
+
         audioPlayer.src = url;
+        audioPlayer.load(); // Force reload
+
         audioPlayer.play().catch(() => {
             nowPlayingText.innerText = "⚠️ Click to Play";
+            nowPlayingText.style.color = "#ffaa00";
 
             const unlock = () => {
                 audioPlayer.play();
                 nowPlayingText.innerText = "♫ " + (text || "Now playing");
+                nowPlayingText.style.color = "#55ff55";
                 document.removeEventListener("click", unlock);
             };
-
             document.addEventListener("click", unlock, { once: true });
         });
-
     }
 
+    // G. Stop Function
     function stopAudio() {
         if (!audioPlayer) return;
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
+
         nowPlayingText.innerText = "Waiting for music...";
+        nowPlayingText.style.color = "#ffaa00";
+        if (visualizer) visualizer.style.opacity = "0.3";
     }
 });
+
 /* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
 const playerText = document.getElementById('player-text');
 const statusDot = document.querySelector('.status-dot');
@@ -201,17 +246,15 @@ function updateServerStatus() {
         .then(response => response.json())
         .then(data => {
             if (data.online) {
-                // 1. Update Count
+                // Update Count
                 playerText.innerText = `${data.players.online} / ${data.players.max}`;
                 statusDot.style.backgroundColor = "#55ff55";
                 statusDot.style.boxShadow = "0 0 5px #55ff55";
 
-                // 2. Update Player List Tooltip
+                // Update List
                 if (data.players.list && data.players.list.length > 0) {
-                    // Create HTML for each player
                     let playerHtml = '';
                     data.players.list.forEach(player => {
-                        // Uses Crafatar to get the player's face 
                         playerHtml += `
                                 <div class="player-row">
                                     <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
@@ -221,12 +264,10 @@ function updateServerStatus() {
                     });
                     playerTooltip.innerHTML = playerHtml;
                 } else {
-                    // Online but list is hidden or empty
                     playerTooltip.innerHTML = "<div style='text-align:center; color:#888;'>No players list available<br>(or nobody is online)</div>";
                 }
 
             } else {
-                // Server Offline
                 playerText.innerText = "Offline";
                 statusDot.style.backgroundColor = "#ff5555";
                 statusDot.style.boxShadow = "0 0 5px #ff5555";
@@ -239,10 +280,7 @@ function updateServerStatus() {
         });
 }
 
-// Run immediately when page loads
 updateServerStatus();
-
-// Refresh every 30 seconds
 setInterval(updateServerStatus, 30000);
 
 /* --- 5. UNIFIED MODAL LOGIC (RULES & COMMANDS) --- */
@@ -250,23 +288,22 @@ const rulesModal = document.getElementById('rules-modal');
 const modalTitle = document.getElementById('modal-rule-title');
 const modalImage = document.getElementById('modal-rule-image');
 const modalDesc = document.getElementById('modal-rule-description');
-const modalBody = document.querySelector('.modal-body'); // Select the body container
+const modalBody = document.querySelector('.modal-body');
 const closeModalBtn = document.querySelector('.close-modal-btn');
 
-// Updated Function: Handles both Images (Rules) and Text-Only (Commands)
 function openInfoModal(title, description, imageSrc = null) {
     modalTitle.innerText = title;
     modalDesc.innerHTML = description;
 
     if (imageSrc) {
-        // IMAGE MODE (For Rules)
+        // IMAGE MODE
         modalImage.src = imageSrc;
         modalImage.style.display = "block";
-        modalBody.classList.remove('no-image'); // Show image column
+        modalBody.classList.remove('no-image');
     } else {
-        // TEXT-ONLY MODE (For Commands)
+        // TEXT MODE
         modalImage.src = "";
-        modalBody.classList.add('no-image'); // Hide image column via CSS
+        modalBody.classList.add('no-image');
     }
 
     rulesModal.style.display = "flex";
@@ -279,7 +316,6 @@ function closeRuleModal() {
     rulesModal.classList.remove("fade-in");
 }
 
-// Listener for RULES (Has Images)
 document.querySelectorAll('.rule-trigger').forEach(trigger => {
     trigger.addEventListener('click', function () {
         const title = this.getAttribute('data-title');
@@ -289,12 +325,10 @@ document.querySelectorAll('.rule-trigger').forEach(trigger => {
     });
 });
 
-// Listener for COMMANDS (No Images)
 document.querySelectorAll('.command-trigger').forEach(trigger => {
     trigger.addEventListener('click', function () {
         const title = this.getAttribute('data-title');
         const desc = this.getAttribute('data-desc');
-        // Pass 'null' for the image source
         openInfoModal(title, desc, null);
     });
 });
@@ -304,5 +338,4 @@ if (closeModalBtn) closeModalBtn.addEventListener('click', closeRuleModal);
 window.addEventListener('click', (e) => {
     if (e.target === rulesModal) closeRuleModal();
 });
-
 /* --- END OF SCRIPT.JS --- */
