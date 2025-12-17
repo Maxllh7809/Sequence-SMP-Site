@@ -1387,12 +1387,10 @@ i {
 
 /* Role Specific Colors */
 .role-owner {
-    background-image: linear-gradient(270deg,
-            #ffd700,
-            #ffb300,
-            #fff4b0,
-            #ffd700);
-    color: #ffd700;
+    background-image: linear-gradient(270deg, #ffd700, #ffb300, #fff4b0, #ffd700);
+    color: #000000;
+    /* Dark Brown/Black text is much easier to read on gold */
+    text-shadow: none;
 }
 
 .border-owner {
