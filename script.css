@@ -1310,8 +1310,9 @@ i {
     height: 45px;
     border-radius: 50%;
     margin-right: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box; /* ✅ FIX */
 }
+
 
 .staff-info {
     display: flex;
