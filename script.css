@@ -1304,59 +1304,38 @@ i {
     justify-content: center;
 }
 
-/* --- STAFF LIST POPUP STYLING --- */
+/* --- STAFF LIST FIXES --- */
+
+/* 1. Force the list to be centered and have a consistent max-width */
 .staff-list {
+    width: 100% !important;
+    max-width: 320px !important;
+    /* This controls the length of the boxes */
+    margin: 0 auto !important;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    align-items: center;
+    align-items: stretch !important;
+    /* This stretches children to full width */
 }
 
+/* 2. Force every row to fill the container */
 .staff-row {
+    width: 100% !important;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform 0.2s ease, background 0.2s;
-}
-
-.staff-row:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-}
-
-.staff-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin-right: 15px;
+    justify-content: flex-start !important;
+    /* Aligns content to left (looks cleaner) */
+    padding: 12px 20px !important;
+    /* Add padding for breathing room */
     box-sizing: border-box;
-    /* ✅ FIX */
+    /* Ensures padding doesn't break the width */
+    margin-bottom: 8px;
 }
 
-
-.staff-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.3;
-}
-
-.staff-role {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #fff;
-
-    background-size: 300% 300%;
-    animation: roleGradient 6s ease infinite,
-        roleGlow 2.5s ease-in-out infinite alternate;
+/* 3. Ensure the avatar wrapper doesn't get squished */
+.staff-row>div:first-child {
+    flex-shrink: 0;
+    /* Prevents avatar from shrinking */
 }
 
 /* Gradient animation */
@@ -1405,7 +1384,6 @@ i {
         text-shadow: 0 0 15px gold, 0 0 30px orange;
     }
 }
-
 
 /* Role Specific Colors */
 .role-owner {
