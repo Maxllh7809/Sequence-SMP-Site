@@ -1304,41 +1304,155 @@ i {
     justify-content: center;
 }
 
-/* --- STAFF LIST FIXES --- */
+/* --- STAFF LIST ENHANCED STYLING --- */
 
 /* 1. Force the list to be centered and have a consistent max-width */
 .staff-list {
     width: 100% !important;
     max-width: 320px !important;
-    /* This controls the length of the boxes */
     margin: 0 auto !important;
     display: flex;
     flex-direction: column;
     align-items: stretch !important;
-    /* This stretches children to full width */
+    /* Add subtle background pattern */
+    background:
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.02) 10px,
+            rgba(255, 255, 255, 0.02) 20px);
+    padding: 15px;
+    border-radius: 8px;
+    position: relative;
 }
 
-/* 2. Force every row to fill the container */
+/* 2. Enhanced staff rows with hover states and animations */
 .staff-row {
     width: 100% !important;
     display: flex;
     align-items: center;
     justify-content: flex-start !important;
-    /* Aligns content to left (looks cleaner) */
     padding: 12px 20px !important;
-    /* Add padding for breathing room */
     box-sizing: border-box;
-    /* Ensures padding doesn't break the width */
     margin-bottom: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    /* Fade-in animation */
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Stagger animation for each staff member */
+.staff-row:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.staff-row:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.staff-row:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.staff-row:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover effect for interactive rows */
+.staff-row:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Arrow indicator for clickable links */
+.staff-row[href]::after {
+    content: "→";
+    position: absolute;
+    right: 15px;
+    color: #ffaa00;
+    font-size: 20px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.staff-row[href]:hover::after {
+    opacity: 1;
+    right: 10px;
 }
 
 /* 3. Ensure the avatar wrapper doesn't get squished */
 .staff-row>div:first-child {
     flex-shrink: 0;
-    /* Prevents avatar from shrinking */
+    position: relative;
 }
 
-/* Gradient animation */
+/* 4. Enhanced avatar styling with hover effect */
+.staff-avatar {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 50%;
+}
+
+.staff-row:hover .staff-avatar {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* 5. Animated emojis on hover */
+.staff-row>div:first-child>span {
+    transition: transform 0.3s ease;
+}
+
+.staff-row:hover>div:first-child>span {
+    transform: scale(1.2);
+    animation: emojiFloat 0.6s ease infinite;
+}
+
+@keyframes emojiFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1.2);
+    }
+
+    50% {
+        transform: translateY(-3px) scale(1.2);
+    }
+}
+
+/* 6. Staff info container */
+.staff-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 7. Enhanced staff name */
+.staff-name {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s ease;
+}
+
+.staff-row:hover .staff-name {
+    color: #ffaa00;
+}
+
+/* 8. Gradient animation for roles */
 @keyframes roleGradient {
     0% {
         background-position: 0% 50%;
@@ -1353,7 +1467,7 @@ i {
     }
 }
 
-/* Glow pulse */
+/* 9. Glow pulse animation */
 @keyframes roleGlow {
     from {
         box-shadow: 0 0 8px currentColor;
@@ -1364,10 +1478,34 @@ i {
     }
 }
 
-.staff-name {
-    font-size: 16px;
-    color: #fff;
+/* 10. Base staff role styling */
+.staff-role {
+    position: relative;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #fff;
+    background-size: 300% 300%;
+    overflow: hidden;
+    animation:
+        roleGradient 6s ease infinite,
+        roleGlow 2.5s ease-in-out infinite alternate;
+    transition: transform 0.3s ease;
+}
+
+.staff-row:hover .staff-role {
+    transform: scale(1.05);
+}
+
+/* 11. Owner role with crown animation */
+.role-owner {
+    background-image: linear-gradient(270deg, #ffd700, #ffb300, #fff4b0, #ffd700);
+    color: #000000;
+    text-shadow: none;
 }
 
 .role-owner::after {
@@ -1385,20 +1523,13 @@ i {
     }
 }
 
-/* Role Specific Colors */
-.role-owner {
-    background-image: linear-gradient(270deg, #ffd700, #ffb300, #fff4b0, #ffd700);
-    color: #000000;
-    /* Dark Brown/Black text is much easier to read on gold */
-    text-shadow: none;
-}
-
 .border-owner {
     border: 3px solid gold;
     box-shadow: 0 0 15px gold;
     border-radius: 50%;
 }
 
+/* 12. Web developer role */
 .role-web {
     background-image: linear-gradient(270deg,
             #00d4ff,
@@ -1408,11 +1539,12 @@ i {
     color: #00d4ff;
 }
 
-
 .border-web {
     border: 2px solid #55bbff;
+    box-shadow: 0 0 10px rgba(85, 187, 255, 0.4);
 }
 
+/* 13. Plugin developer role */
 .role-plugin {
     background-image: linear-gradient(270deg,
             #b16cff,
@@ -1424,34 +1556,10 @@ i {
 
 .border-plugin {
     border: 2px solid #5b32ee;
+    box-shadow: 0 0 10px rgba(91, 50, 238, 0.4);
 }
 
-.staff-role {
-    position: relative;
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #fff;
-
-    background-size: 300% 300%;
-    overflow: hidden;
-
-    animation:
-        roleGradient 6s ease infinite,
-        roleGlow 2.5s ease-in-out infinite alternate;
-}
-
-.staff-row {
-    position: relative;
-    z-index: 1;
-}
-
-
-
+/* 14. Shimmer effect overlay (optional enhancement) */
 @keyframes shimmer {
     from {
         transform: translateX(-100%);
@@ -1462,6 +1570,93 @@ i {
     }
 }
 
+/* 15. Mobile responsive styling */
+@media (max-width: 480px) {
+    .staff-list {
+        max-width: 100% !important;
+        padding: 10px;
+    }
+
+    .staff-row {
+        padding: 10px 15px !important;
+    }
+
+    .staff-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .staff-role {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .staff-name {
+        font-size: 16px;
+    }
+
+    /* Hide arrow on mobile for cleaner look */
+    .staff-row[href]::after {
+        display: none;
+    }
+}
+
+/* 16. Tablet responsive styling */
+@media (max-width: 768px) and (min-width: 481px) {
+    .staff-list {
+        max-width: 280px !important;
+    }
+
+    .staff-avatar {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* 17. Enhanced tooltip styling for "Need help?" text */
+.staff-list+br+div {
+    animation: fadeIn 0.5s ease 0.5s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* 18. Add subtle pulse to non-clickable staff rows */
+.staff-row:not([href]) {
+    cursor: default;
+}
+
+.staff-row:not([href]):hover {
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateX(2px);
+}
+
+/* 19. Enhanced focus states for accessibility */
+.staff-row[href]:focus {
+    outline: 2px solid #ffaa00;
+    outline-offset: 2px;
+}
+
+/* 20. Add loading state animation (if needed) */
+@keyframes skeletonLoading {
+    0% {
+        background-position: -200px 0;
+    }
+
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.staff-row.loading {
+    background: linear-gradient(90deg, #1a1a1a 0px, #2a2a2a 100px, #1a1a1a 200px);
+    background-size: 200px 100%;
+    animation: skeletonLoading 1.5s ease-in-out infinite;
+}
 
 /* --- FINAL FIXES: REMOVE ARROWS & ADD HOVER GLOW --- */
 .tag.rule-trigger::after,
