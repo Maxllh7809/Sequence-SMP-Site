@@ -1222,6 +1222,28 @@ i {
     box-shadow: 0 10px 20px rgba(85, 255, 255, 0.15);
 }
 
+.red-card {
+    border-bottom: 4px solid #ff5555;
+}
+
+.red-card .icon-circle {
+    color: #ff5555;
+    border: 2px solid rgba(255, 85, 85, 0.3);
+}
+
+.red-card:hover {
+    box-shadow: 0 10px 20px rgba(255, 85, 85, 0.15);
+}
+
+/* Red Card Hover Glow for the Button */
+.red-card .tag.command-trigger:hover {
+    background: rgba(255, 85, 85, 0.2);
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.4);
+    color: #ff5555 !important;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
 /* --- MINI TAGS & COMMANDS --- */
 .mini-commands,
 .tag-row {
