@@ -249,7 +249,7 @@ const statusDot = document.querySelector('.status-dot');
 const playerTooltip = document.getElementById('player-list-tooltip');
 
 // Using mcsrvstat.us API
-const SERVER_API_URL = "https://api.mcsrvstat.us/3/sequence.playmc.cloud";
+const SERVER_API_URL = "https://api.mcsrvstat.us/3/15.235.160.20:25597";
 
 function updateServerStatus() {
     if (!playerText) return;
