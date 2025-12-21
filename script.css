@@ -317,11 +317,6 @@ h3,
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
-
-.full-page-card {
-    min-height: 400px;
-}
-
 .news-card {
     border-top: 4px solid #ffaa00;
 }
