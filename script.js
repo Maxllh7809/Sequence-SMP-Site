@@ -33,38 +33,38 @@ window.closeLightbox = function () {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-/* -- 1. SETUP LIGHTBOX CLICK EVENTS (IMPROVED) -- */
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightbox-img');
-const lightboxCaption = document.getElementById('lightbox-caption');
+/* -- 1. SETUP LIGHTBOX CLICK EVENTS (BULLETPROOF VERSION) -- */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
 
-// CHANGE: Select the whole box (.gallery-item), not just the 'img'
-const galleryItems = document.querySelectorAll('.gallery-item');
+    // We use 'document.addEventListener' to catch clicks on elements 
+    // that might be cloned or animated by the scrolling effect.
+    document.addEventListener('click', function (e) {
+        // 1. Check if the user clicked inside a gallery item
+        const item = e.target.closest('.gallery-item');
 
-galleryItems.forEach(item => {
-    item.addEventListener('click', function () {
-        // Find the image inside the box we just clicked
-        const img = this.querySelector('img');
-        const caption = this.querySelector('.caption');
-        
-        if (img) {
-            lightbox.style.display = "flex";
-            lightbox.style.flexDirection = "column";
-            lightbox.style.justifyContent = "center";
-            lightbox.style.alignItems = "center";
-            
-            // Set the image source
-            lightboxImg.src = img.src;
-            
-            // Set the caption (use the caption text if available, otherwise alt text)
-            if (caption) {
-                lightboxCaption.innerText = caption.innerText;
-            } else {
-                lightboxCaption.innerText = img.alt;
+        // 2. If they did, and the lightbox exists...
+        if (item && lightbox && lightboxImg) {
+            const img = item.querySelector('img');
+            const caption = item.querySelector('.caption');
+
+            if (img) {
+                lightbox.style.display = "flex";
+                lightbox.style.flexDirection = "column";
+                lightbox.style.justifyContent = "center";
+                lightbox.style.alignItems = "center";
+
+                // Set image and caption
+                lightboxImg.src = img.src;
+                if (caption) {
+                    lightboxCaption.innerText = caption.innerText;
+                } else {
+                    lightboxCaption.innerText = "Gallery Image";
+                }
             }
         }
     });
-});
 
     /* -- 2. COPY IP BUTTON -- */
     const copyButton = document.getElementById('copy-btn');
