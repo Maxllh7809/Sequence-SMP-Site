@@ -337,7 +337,50 @@ h3,
 .news-card {
     border-top: 4px solid #ffaa00;
 }
+/* --- HOME PAGE FIXES --- */
 
+/* 1. Make the Home Card much wider than the others */
+.home-card {
+    max-width: 1100px !important; /* Overrides the standard 700px */
+    padding: 40px 50px; /* Give it more internal breathing room */
+}
+
+/* 2. Improve the Title Layout */
+.about-header h2 {
+    font-size: 3.5rem; /* Make the title BIGGER */
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    background: -webkit-linear-gradient(#ffaa00, #ffcc33);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Makes the text look metallic gold */
+    filter: drop-shadow(0 0 10px rgba(255, 170, 0, 0.4));
+}
+
+/* 3. Fix the "Squashed" Text */
+.about-text p {
+    font-size: 1.2rem; /* Larger, easier to read text */
+    max-width: 800px;  /* Don't let text stretch typically wide */
+    margin: 0 auto 40px auto; /* Center the text block */
+    color: #ccc;
+}
+
+/* 4. Fix the Gallery Aspect Ratio */
+.scrolling-gallery-container {
+    height: 300px; /* Make it taller (was likely too short) */
+    border: 1px solid rgba(255, 170, 0, 0.3); /* Add a subtle gold border */
+    box-shadow: 0 0 30px rgba(0,0,0,0.8) inset; /* Inner shadow for depth */
+}
+
+.gallery-item {
+    width: 450px; /* Make images wider */
+    height: 100%; /* Fill the new height */
+}
+
+/* 5. Space out the Features Grid */
+.features-grid {
+    gap: 30px; /* More space between the 4 feature cards */
+}
 /* --- DISCORD CARD UPDATED --- */
 .discord-card {
     border-top: 4px solid #5555ff;
