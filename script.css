@@ -1091,81 +1091,96 @@ hr { border: 0; border-top: 1px solid #333; margin: 30px 0; }
     transform: scale(1.1);
 }
 
-/* --- FIXED VOLUME & ALIGNMENT --- */
+/* --- FIXED VOLUME & BUTTON POLISH --- */
 
-/* 1. Container for Volume Icon + Slider */
+/* 1. Volume Group Container */
 .volume-group {
     display: flex;
-    align-items: center; /* Vertically center everything */
-    gap: 8px;
-    color: #b3b3b3;
-    height: 32px; /* Match height of Play button */
-}
-
-.volume-group i { 
-    font-size: 14px; 
-    display: flex; /* Fixes icon vertical alignment */
     align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 32px; /* Fixed height to match buttons */
 }
 
-/* 2. The Slider Bar */
+/* 2. The Volume Slider */
 #volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
     width: 70px;
-    height: 4px; /* The height of the track */
+    height: 4px; /* Track height */
     background: #404040;
     border-radius: 2px;
-    -webkit-appearance: none;
+    outline: none;
+    margin: 0; /* Remove default margins */
     cursor: pointer;
-    
-    /* FIX: Force vertical centering */
-    margin: 0;
-    align-self: center;
-    position: relative;
-    top: -1px; /* Micro-adjustment to look perfect with the icon */
 }
 
+/* Slider Knob (Thumb) - Chrome/Safari/Edge */
 #volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
+    appearance: none;
     width: 12px;
     height: 12px;
-    background: #fff;
     border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
     
-    /* Center the thumb on the track */
-    margin-top: -4px; /* (Thumb Height - Track Height) / 2 * -1 */
+    /* VITAL: Centers the knob on the track */
+    /* (Thumb Height 12px - Track Height 4px) / 2 * -1 = -4px */
+    margin-top: -4px; 
     
-    opacity: 0; 
-    transition: opacity 0.2s;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    transition: transform 0.1s;
 }
 
-.volume-group:hover #volume-slider::-webkit-slider-thumb {
-    opacity: 1;
+#volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
 }
 
-/* 3. The Close Button (Red Outline) */
+/* Slider Knob - Firefox */
+#volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+/* 3. The Close (X) Button - PERFECT CIRCLE FIX */
 .close-btn-spot {
+    /* Reset layout */
     background: transparent;
-    border: 1px solid #ff5555; /* Thin red outline */
+    border: 1px solid #ff5555;
     color: #ff5555;
     cursor: pointer;
     
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+    /* Force Dimensions */
+    width: 32px !important;    /* Fixed width */
+    height: 32px !important;   /* Fixed height */
+    min-width: 32px;           /* Prevents squishing */
+    border-radius: 50%;        /* Makes it a circle */
+    padding: 0;                /* Removes internal spacing */
     
+    /* Centering the Icon */
     display: flex;
     align-items: center;
     justify-content: center;
     
-    font-size: 12px;
-    padding: 0;
-    margin-left: 10px;
+    margin-left: 15px; /* Space from volume */
     transition: all 0.2s ease;
+}
+
+/* Fix the icon inside the button */
+.close-btn-spot i {
+    font-size: 14px;
+    line-height: 1; /* Stops icon from floating up/down */
+    margin: 0; /* Remove default margins */
 }
 
 .close-btn-spot:hover {
     background: #ff5555;
     color: #fff;
     transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 85, 85, 0.4);
 }
