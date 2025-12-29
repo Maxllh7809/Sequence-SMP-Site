@@ -982,199 +982,173 @@ hr { border: 0; border-top: 1px solid #333; margin: 30px 0; }
     pointer-events: none;
 }
 
-/* --- FLOATING SPOTIFY WIDGET (SLEEK VERSION) --- */
+/* --- FLOATING AUDIO WIDGET (SLIDE-OUT VERSION) --- */
 .floating-widget {
     position: fixed;
     bottom: 30px;
     right: 30px;
     z-index: 9999;
     font-family: 'Fredoka', sans-serif;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
 }
 
-/* 1. The "Connect" Pill */
+/* 1. The "Connect" State */
 #connect-wrapper {
-    background: rgba(10, 10, 10, 0.9);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 20px;
+    background: #000;
+    border: 1px solid #333;
+    padding: 12px 25px;
     border-radius: 50px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    color: #fff;
 }
 
 #connect-wrapper:hover {
-    background: rgba(85, 255, 85, 0.15);
     border-color: #55ff55;
-    transform: translateY(-2px);
+    background: #111;
+    transform: scale(1.05);
 }
 
 .pulse-icon { color: #55ff55; animation: pulseGreen 2s infinite; }
-.widget-text { color: #fff; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+.widget-text { font-weight: bold; font-size: 14px; text-transform: uppercase; }
 
-/* 2. The "Now Playing" Card - COMPACT & CLEAN */
+/* 2. The Player (Connected State) */
 #player-controls {
-    background: rgba(15, 15, 15, 0.9);
-    backdrop-filter: blur(12px);
-    /* Subtle border + Neon Accent on left */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-left: 3px solid #55ff55; 
-    border-radius: 8px; /* Slightly sharper corners like reference */
-    padding: 10px 15px;
+    /* Glassmorphism Base */
+    background: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(85, 255, 85, 0.3); /* Subtle green border */
+    border-radius: 50px; /* Fully rounded pill shape */
+    padding: 8px 10px; /* Tight padding */
     
     display: flex;
     align-items: center;
     gap: 12px;
+    height: 60px;
     
-    /* Fixed small size */
-    min-width: 260px;
-    height: 55px; 
-    
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative; /* Needed for absolute positioning children */
+    /* Animation Basics */
+    max-width: 280px; /* Start small */
+    transition: max-width 0.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth expanding */
+    overflow: hidden; /* Hide the volume slider until hover */
 }
 
+/* EXPAND ON HOVER */
 #player-controls:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    max-width: 450px; /* Expand to show hidden controls */
+    border-color: #55ff55;
+    box-shadow: 0 0 25px rgba(85, 255, 85, 0.15);
 }
 
-/* Album Art (Spinning Disc) */
+/* Album Art Circle */
 .album-art {
-    width: 34px;
-    height: 34px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%; /* Circle looks more like music */
+    width: 44px;
+    height: 44px;
+    background: #000;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid #333;
     flex-shrink: 0;
 }
 
-.album-art i { font-size: 16px; color: #55ff55; }
+.album-art i { color: #55ff55; font-size: 20px; }
 .spin-animation { animation: spinDisk 4s linear infinite; }
-@keyframes spinDisk { 100% { transform: rotate(360deg); } }
 
-/* Text Info */
+/* Song Text Info */
 .song-info {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow: hidden;
-    margin-right: 5px;
+    min-width: 120px; /* Ensure text has space */
+    white-space: nowrap;
 }
 
 #now-playing-title {
-    font-size: 13px;
-    font-weight: 700;
     color: #fff;
-    white-space: nowrap;
+    font-weight: 700;
+    font-size: 14px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2;
 }
 
 #now-playing-artist {
-    font-size: 10px;
     color: #888;
+    font-size: 11px;
     margin-top: 2px;
 }
 
-/* Mini Visualizer */
+/* Visualizer (Always Visible) */
 .mini-visualizer {
     display: flex;
     gap: 3px;
-    align-items: flex-end;
-    height: 16px;
-    flex-shrink: 0;
-}
-.mini-visualizer .bar {
-    width: 3px;
-    background: #55ff55;
-    border-radius: 2px;
-    animation: bounce 0.6s infinite alternate;
-}
-/* Randomize bounce timings */
-.mini-visualizer .bar:nth-child(2) { animation-delay: 0.1s; }
-.mini-visualizer .bar:nth-child(3) { animation-delay: 0.2s; }
-
-/* 3. CONTROLS (Only visible on HOVER) */
-
-/* The "Close" X Button - Pop up style */
-.close-widget-btn {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #ff5555;
-    color: white;
-    width: 20px;
     height: 20px;
-    border-radius: 50%;
-    border: 2px solid #121212; /* Matches background to look "cut out" */
-    
-    font-size: 14px;
+    align-items: flex-end;
+    margin-right: 10px;
+}
+.mini-visualizer .bar { width: 3px; background: #55ff55; border-radius: 2px; }
+.mini-visualizer .bar:nth-child(1) { height: 100%; animation: bounce 0.5s infinite; }
+.mini-visualizer .bar:nth-child(2) { height: 60%; animation: bounce 0.7s infinite; }
+.mini-visualizer .bar:nth-child(3) { height: 80%; animation: bounce 0.6s infinite; }
+
+/* --- HIDDEN CONTROLS (Reveal on Hover) --- */
+
+/* Wrapper for Volume + Close */
+.volume-popup {
+    /* Initially hidden via width */
+    width: 0; 
+    opacity: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    
-    /* HIDDEN BY DEFAULT */
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    gap: 10px;
+    transition: all 0.4s ease;
+    overflow: hidden; /* Ensures contents hide properly */
+    border-left: 1px solid #333; /* Separator line */
+    padding-left: 0;
 }
 
-/* Show X on hover */
-#player-controls:hover .close-widget-btn {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* Volume Slider - Slides up from top */
-.volume-popup {
-    position: absolute;
-    top: -20px; /* Float just above the card */
-    left: 0;
-    width: 100%;
-    
-    display: flex;
-    justify-content: center;
-    
-    /* HIDDEN BY DEFAULT */
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-    transition: all 0.2s ease;
-}
-
-/* Show Volume on hover */
+/* Reveal Trigger */
 #player-controls:hover .volume-popup {
+    width: 140px; /* Slide open */
     opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+    padding-left: 15px; /* Add spacing after separator */
 }
 
-/* Custom Range Slider */
+/* Sleek Slider */
 #volume-slider {
-    width: 90%;
+    width: 80px;
     height: 4px;
-    background: rgba(0, 0, 0, 0.8);
+    background: #333;
     border-radius: 10px;
     -webkit-appearance: none;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-
 #volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 10px;
-    height: 10px;
-    background: #55ff55;
+    width: 12px;
+    height: 12px;
+    background: #fff;
     border-radius: 50%;
-    box-shadow: 0 0 5px #55ff55;
+    box-shadow: 0 0 5px rgba(255,255,255,0.5);
 }
+
+/* Close Button (X) */
+.close-widget-btn {
+    background: none;
+    border: none;
+    color: #ff5555;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+.close-widget-btn:hover { transform: scale(1.2) rotate(90deg); color: #fff; }
+
+@keyframes spinDisk { 100% { transform: rotate(360deg); } }
+@keyframes bounce { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
