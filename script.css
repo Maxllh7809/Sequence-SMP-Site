@@ -1091,49 +1091,81 @@ hr { border: 0; border-top: 1px solid #333; margin: 30px 0; }
     transform: scale(1.1);
 }
 
-/* Volume Section */
+/* --- FIXED VOLUME & ALIGNMENT --- */
+
+/* 1. Container for Volume Icon + Slider */
 .volume-group {
     display: flex;
-    align-items: center;
+    align-items: center; /* Vertically center everything */
     gap: 8px;
     color: #b3b3b3;
+    height: 32px; /* Match height of Play button */
 }
 
-.volume-group i { font-size: 14px; }
+.volume-group i { 
+    font-size: 14px; 
+    display: flex; /* Fixes icon vertical alignment */
+    align-items: center;
+}
 
-/* Custom Slider */
+/* 2. The Slider Bar */
 #volume-slider {
-    width: 60px;
-    height: 4px;
+    width: 70px;
+    height: 4px; /* The height of the track */
     background: #404040;
     border-radius: 2px;
     -webkit-appearance: none;
     cursor: pointer;
+    
+    /* FIX: Force vertical centering */
+    margin: 0;
+    align-self: center;
+    position: relative;
+    top: -1px; /* Micro-adjustment to look perfect with the icon */
 }
 
 #volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background: #fff;
     border-radius: 50%;
-    opacity: 0; /* Hidden until hover like Spotify */
+    
+    /* Center the thumb on the track */
+    margin-top: -4px; /* (Thumb Height - Track Height) / 2 * -1 */
+    
+    opacity: 0; 
     transition: opacity 0.2s;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 .volume-group:hover #volume-slider::-webkit-slider-thumb {
     opacity: 1;
 }
 
-/* Close X */
+/* 3. The Close Button (Red Outline) */
 .close-btn-spot {
-    background: none;
-    border: none;
-    color: #b3b3b3;
+    background: transparent;
+    border: 1px solid #ff5555; /* Thin red outline */
+    color: #ff5555;
     cursor: pointer;
-    font-size: 16px;
+    
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 12px;
     padding: 0;
-    margin-left: 5px;
+    margin-left: 10px;
+    transition: all 0.2s ease;
 }
 
-.close-btn-spot:hover { color: #fff; }
+.close-btn-spot:hover {
+    background: #ff5555;
+    color: #fff;
+    transform: scale(1.1);
+}
