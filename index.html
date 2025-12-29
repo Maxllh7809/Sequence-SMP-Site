@@ -34,7 +34,6 @@
                     Us</button>
                 <button class="nav-btn" onclick="openTab('discord')"><i class="fab fa-discord"></i> Discord</button>
                 <button class="nav-btn" onclick="openTab('rules')"><i class="fas fa-book"></i> Rules</button>
-                <button class="nav-btn" onclick="openTab('audio')"><i class="fas fa-music"></i> Audio</button>
             </div>
         </div>
     </nav>
@@ -315,40 +314,39 @@
         </div>
     </div>
 
-    <div id="audio" class="tab-content" style="display:none;">
-        <div class="card center-content audio-card">
-            <h2 class="title-green"><i class="fas fa-broadcast-tower"></i> SERVER RADIO</h2>
+<div id="audio-widget" class="floating-widget">
+        
+        <div id="connect-wrapper" class="widget-state" onclick="connectAudio()">
+            <div class="pulse-icon"><i class="fas fa-music"></i></div>
+            <span class="widget-text">Connect to Radio</span>
+        </div>
 
-            <p id="audio-status" style="color: #888; font-size: 16px;">Status: Disconnected</p>
-
-            <div id="connect-wrapper">
-                <div style="font-size: 60px; margin: 20px;">🔊</div>
-                <p>Click below to connect to Voice/Music</p>
-                <button id="connect-audio-btn" class="action-btn"
-                    style="background-color: #55ff55; color: black; box-shadow: 0 0 10px #55ff55;"><i
-                        class="fas fa-plug"></i> ENABLE AUDIO</button>
+        <div id="player-controls" class="widget-state" style="display: none;">
+            
+            <div class="album-art">
+                <i class="fas fa-compact-disc spin-animation"></i>
             </div>
 
-            <div id="player-controls" style="display: none; width: 100%; max-width: 400px; margin: 0 auto;">
-                <div class="visualizer">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-                <p id="now-playing-text" style="color: #ffaa00; font-size: 24px; font-weight: bold; margin: 20px 0;">
-                    Waiting for music...
-                </p>
-                <label for="volume-slider" style="display: block; margin-bottom: 10px; color: #aaa;">MASTER
-                    VOLUME</label>
+            <div class="song-info">
+                <span id="now-playing-title">Waiting for music...</span>
+                <span id="now-playing-artist">Server Radio</span>
+            </div>
+
+            <div class="mini-visualizer">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+
+            <div class="volume-popup">
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
-                <button id="disconnect-btn" class="action-btn"
-                    style="background-color: #ff5555; color: white; box-shadow: 0 0 10px #ff5555; margin-top: 30px; font-size: 20px;"><i
-                        class="fas fa-power-off"></i> DISCONNECT</button>
             </div>
+
+            <button id="disconnect-btn" class="close-widget-btn">&times;</button>
         </div>
     </div>
+
+    <audio id="audio-player"></audio>
+    <script src="script.js"></script>
+</body>
 
     <div class="footer">
         <img src="Website Resources/title.png" alt="Sequence SMP Logo" class="footer-logo">
