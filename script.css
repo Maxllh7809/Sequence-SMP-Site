@@ -252,7 +252,16 @@ h3,
 }
 
 /* Status Bar */
+/* Status Bar */
 .status-bar {
+    /* 1. LIMIT THE WIDTH */
+    max-width: 700px;      /* Matches your cards width */
+    width: 95%;            /* Good for mobile */
+    
+    /* 2. CENTER IT */
+    margin: 0 auto 30px;   /* Top=0, Auto=Center, Bottom=30px */
+
+    /* Keep your existing styling */
     background: linear-gradient(90deg, #222, #1a1a1a);
     border: 2px solid #333;
     border-radius: 10px;
@@ -260,7 +269,6 @@ h3,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
