@@ -1,6 +1,6 @@
 /* --- CONFIGURATION --- */
 const WEBSOCKET_URL = "wss://sequence-audio-backend.onrender.com";
-const SERVER_API_URL = "https://api.mcsrvstat.us/3/15.235.160.20:25597";
+const SERVER_API_URL = "https://api.mcsrvstat.us/3/mc.siqns.dev"; // Changed to your actual IP domain
 
 /* --- 1. TAB SWITCHING LOGIC --- */
 function openTab(tabName) {
@@ -34,6 +34,7 @@ window.closeLightbox = function () {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    /* -- A. Lightbox Logic -- */
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /* --- 3. COPY IP BUTTON --- */
+    /* -- B. Copy IP Button -- */
     const copyButton = document.getElementById('copy-btn');
     const ipTextElement = document.getElementById('server-ip');
 
@@ -88,24 +89,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* --- 4. FLOATING AUDIO WIDGET LOGIC --- */
+    /* --- 3. SPOTIFY AUDIO WIDGET LOGIC --- */
     const widgetConnect = document.getElementById('connect-wrapper');
     const widgetPlayer = document.getElementById('player-controls');
+    
     const audioPlayer = document.getElementById('audio-player');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const playIcon = playPauseBtn ? playPauseBtn.querySelector('i') : null;
+    
     const titleText = document.getElementById('now-playing-title');
     const artistText = document.getElementById('now-playing-artist');
+    
     const disconnectBtn = document.getElementById('disconnect-btn');
     const volumeSlider = document.getElementById('volume-slider');
 
     let ws;
     let isManualDisconnect = false;
 
-    // A. Connect Function (Attached to the global window object)
+    // Connect Function (Global Scope for HTML onclick)
     window.connectAudio = async function() {
         if (!widgetConnect || !widgetPlayer) return;
 
         widgetConnect.style.display = 'none';
-        widgetPlayer.style.display = 'flex';
+        widgetPlayer.style.display = 'flex'; // Show Spotify player
         
         isManualDisconnect = false;
 
@@ -116,19 +122,36 @@ document.addEventListener('DOMContentLoaded', () => {
             audioPlayer.volume = savedVolume;
         }
 
-        // Attempt Auto-play (User interaction already happened via click)
+        // Attempt Auto-play
         try {
-            audioPlayer.src = ""; // Reset source
+            audioPlayer.src = ""; // Reset source to be safe
             await audioPlayer.play().catch(() => {}); 
         } catch {}
 
         initWebSocket();
     };
 
-    // B. Disconnect Logic
+    // Play/Pause Button Logic
+    if (playPauseBtn && audioPlayer) {
+        playPauseBtn.addEventListener('click', () => {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                if(playIcon) playIcon.className = 'fas fa-pause';
+            } else {
+                audioPlayer.pause();
+                if(playIcon) playIcon.className = 'fas fa-play';
+            }
+        });
+
+        // Sync icon if song ends or starts automatically
+        audioPlayer.addEventListener('play', () => { if(playIcon) playIcon.className = 'fas fa-pause'; });
+        audioPlayer.addEventListener('pause', () => { if(playIcon) playIcon.className = 'fas fa-play'; });
+    }
+
+    // Disconnect Logic
     if (disconnectBtn) {
         disconnectBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent bubbling
+            e.stopPropagation();
             isManualDisconnect = true;
             if(ws) ws.close();
             
@@ -142,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // C. Volume Slider Logic
+    // Volume Slider Logic
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             const vol = e.target.value;
@@ -151,14 +174,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // D. WebSocket Logic
+    // WebSocket Logic (Data Stream)
     function initWebSocket() {
         if(ws && ws.readyState === WebSocket.OPEN) return;
 
         ws = new WebSocket(WEBSOCKET_URL);
 
         ws.onopen = () => {
-            if(artistText) artistText.innerText = "Connected! Waiting for music...";
+            if(artistText) artistText.innerText = "Connected...";
         };
 
         ws.onmessage = (event) => {
@@ -172,8 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Play Audio
                     if(audioPlayer) {
-                        audioPlayer.src = data.url;
-                        audioPlayer.play().catch(e => console.log("Playback failed", e));
+                        // Only change source if it's actually different
+                        if (audioPlayer.src !== data.url) {
+                            audioPlayer.src = data.url;
+                            audioPlayer.play().catch(e => console.log("Playback auto-start blocked", e));
+                        }
                     }
                 } 
                 else if (data.action === 'stop') {
@@ -191,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // E. Auto-Next Song
+    // Auto-Next Song Trigger
     if (audioPlayer) {
         audioPlayer.addEventListener('ended', () => {
             if(titleText) titleText.innerText = "Loading next song...";
@@ -201,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* --- 5. SERVER STATUS (PLAYER COUNT & LIST) --- */
+    /* --- 4. SERVER STATUS (PLAYER COUNT & LIST) --- */
     const playerText = document.getElementById('player-text');
     const statusDot = document.querySelector('.status-dot');
     const playerTooltip = document.getElementById('player-list-tooltip');
@@ -253,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateServerStatus();
     setInterval(updateServerStatus, 30000);
 
-    /* --- 6. UNIFIED MODAL LOGIC (RULES & COMMANDS) --- */
+    /* --- 5. UNIFIED MODAL LOGIC (RULES & COMMANDS) --- */
     const rulesModal = document.getElementById('rules-modal');
     const modalTitle = document.getElementById('modal-rule-title');
     const modalImage = document.getElementById('modal-rule-image');
