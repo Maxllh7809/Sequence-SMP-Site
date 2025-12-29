@@ -268,9 +268,9 @@ function updateServerStatus() {
                     let playerHtml = '';
                     data.players.list.forEach(player => {
                         playerHtml += `
-                                <div class="player-row">
-                                    <img src="https://crafatar.com/avatars/${player.uuid}?size=24&overlay" class="player-head">
-                                    <span>${player.name}</span>
+                            <div class="player-row">
+                                <img src="https://minotar.net/helm/${player.name}/24.png" class="player-head">
+                                <span>${player.name}</span>
                                 </div>
                             `;
                     });
