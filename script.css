@@ -1091,30 +1091,42 @@ hr { border: 0; border-top: 1px solid #333; margin: 30px 0; }
     transform: scale(1.1);
 }
 
-/* --- FIXED VOLUME & BUTTON POLISH (FINAL) --- */
+/* --- FIXED VOLUME & BUTTON POLISH (PIXEL PERFECT) --- */
 
 /* 1. Volume Group Container */
 .volume-group {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    height: 32px;
+    gap: 12px; /* Slightly more space */
+    height: 100%;
 }
 
-/* 2. The Volume Slider */
+/* 2. The Speaker Icon */
+.volume-group i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1; /* Reset line height */
+    margin: 0;      /* Remove any previous margins */
+}
+
+/* 3. The Volume Slider */
 #volume-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 70px;
-    height: 4px; 
+    height: 4px;
     background: #404040;
     border-radius: 2px;
     outline: none;
-    margin: 0;
     cursor: pointer;
+    display: block;
+    margin: 0;
     
-    /* FIX: Lift the entire slider up 1 pixel */
+    /* FIX: Lift the entire slider up by 1px to match the icon center */
     position: relative;
     top: -1px; 
 }
@@ -1129,44 +1141,39 @@ hr { border: 0; border-top: 1px solid #333; margin: 30px 0; }
     background: #ffffff;
     cursor: pointer;
     
-    /* FIX: Pull the dot UP to center it on the line */
-    /* If it looks low, make this number larger negative (e.g. -5px) */
+    /* Centers the knob on the track */
+    /* (Thumb 12px - Track 4px) / 2 * -1 = -4px */
     margin-top: -4px; 
     
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
 
-/* 3. The Close (X) Button - FORCED CIRCLE */
+/* 4. The Close (X) Button */
 .close-btn-spot {
     background: transparent;
     border: 1px solid #ff5555;
     color: #ff5555;
     cursor: pointer;
     
-    /* FORCE SQUARE DIMENSIONS */
+    /* STRICT CIRCLE DIMENSIONS */
     width: 32px !important;
     height: 32px !important;
-    min-width: 32px !important; /* Prevents squishing */
-    max-width: 32px !important; /* Prevents stretching */
-    
+    min-width: 32px;
+    flex-shrink: 0;
     border-radius: 50%;
-    padding: 0 !important; /* Remove internal padding */
-    margin: 0 0 0 10px; /* Only left margin */
     
-    /* Perfect Center Content */
+    padding: 0;
+    margin-left: 15px;
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    
     transition: all 0.2s ease;
 }
 
 .close-btn-spot i {
     font-size: 14px;
-    /* Remove any weird icon margins */
-    margin: 0; 
-    padding: 0;
-    line-height: 0; 
+    line-height: 0;
 }
 
 .close-btn-spot:hover {
