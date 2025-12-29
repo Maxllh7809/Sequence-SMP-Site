@@ -33,23 +33,38 @@ window.closeLightbox = function () {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* -- 1. SETUP LIGHTBOX CLICK EVENTS -- */
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxCaption = document.getElementById('lightbox-caption');
-    const galleryImages = document.querySelectorAll('.gallery-item img');
+/* -- 1. SETUP LIGHTBOX CLICK EVENTS (IMPROVED) -- */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
 
-    galleryImages.forEach(img => {
-        img.addEventListener('click', function () {
+// CHANGE: Select the whole box (.gallery-item), not just the 'img'
+const galleryItems = document.querySelectorAll('.gallery-item');
+
+galleryItems.forEach(item => {
+    item.addEventListener('click', function () {
+        // Find the image inside the box we just clicked
+        const img = this.querySelector('img');
+        const caption = this.querySelector('.caption');
+        
+        if (img) {
             lightbox.style.display = "flex";
             lightbox.style.flexDirection = "column";
             lightbox.style.justifyContent = "center";
             lightbox.style.alignItems = "center";
-
-            lightboxImg.src = this.src;
-            lightboxCaption.innerText = this.nextElementSibling ? this.nextElementSibling.innerText : this.alt;
-        });
+            
+            // Set the image source
+            lightboxImg.src = img.src;
+            
+            // Set the caption (use the caption text if available, otherwise alt text)
+            if (caption) {
+                lightboxCaption.innerText = caption.innerText;
+            } else {
+                lightboxCaption.innerText = img.alt;
+            }
+        }
     });
+});
 
     /* -- 2. COPY IP BUTTON -- */
     const copyButton = document.getElementById('copy-btn');
